@@ -1,0 +1,1 @@
+from .repositorioContaLocal import RepositorioContaLocal

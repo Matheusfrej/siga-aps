@@ -3,9 +3,13 @@ from utils.singleton import SingletonMetaclass
 
 from negocio.controladores import *
 
+from negocio.cadastros import CadastroConta
+
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
-        self.__controladorLogin = ControladorLogin()
+        cadastro_conta = CadastroConta()
+
+        self.__controladorLogin = ControladorLogin(cadastro_conta)
         self.__controladorCadastroCadeira = ControladorCadastroCadeira()
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario()
