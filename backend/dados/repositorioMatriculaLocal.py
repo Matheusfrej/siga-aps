@@ -1,15 +1,28 @@
 from dados.iRepositorioConta import IRepositorioMatricula
-from negocio.entidades.conta import ContaAluno
+from negocio.entidades.matricula import Matricula
 
 from datetime import date
 
 class RepositorioMatriculaLocal(IRepositorioMatricula):
     def __init__(self):
-        self._matriculas = [ContaAluno(curso='Ciência da Computação', id=1, email='fgm3@cin.ufpe.br', cpf='09265297492', nome='Filipe Gomes de Melo', data_nascimento=date(2002, 2, 28), ano_entrada='2020.1', senha='senha123*')]
+        self._matriculas = [Matricula(id=1, aluno=1, cadeiras=[1], periodo="2023.1")]
         self._count = len(self._matriculas)
 
-    def get_by_id(self, id):
+    def get_by_id(self, id: int):
         return list(filter(lambda x: x.id == id, self._matriculas))[0]
     
-    def get_by_aluno(self, id_aluno):
-        return list(filter(lambda x: x.aluno.id == id_aluno, self._matriculas))[0]
+    def get_by_aluno(self, id_aluno: int):
+        return list(filter(lambda x: x.aluno.id == id_aluno, self._matriculas))
+    
+    def fazer_matricula(self, aluno: int, cadeiras: list, periodo: str):
+        nova_matricula = Matricula(id=2,aluno=aluno,cadeiras=cadeiras,periodo=periodo)
+        validar = self.validar_matricula(nova_matricula)
+        if validar:
+            self._matriculas.append(nova_matricula)
+            self._count += 1
+            return nova_matricula
+        else:
+            pass
+
+    def validar_matricula(self, matricula: Matricula):
+        return True

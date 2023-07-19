@@ -16,3 +16,11 @@ class IRepositorioCadeira:
     @abstractmethod
     def validar_cadeira(self, nome: str, horario: dict, centro_universitario: str, professor: int, corequisitos=[], equivalencias=[], prerequisitos=[], plano_ensino=''):
         pass
+
+    @abstractmethod
+    def deletar_cadeira(self, id):
+        pass
+
+    @abstractmethod
+    def editar_cadeira(self, nome: str, horario: dict, centro_universitario: str, professor: int, corequisitos=[], equivalencias=[], prerequisitos=[], plano_ensino=''):
+        pass
