@@ -4,13 +4,17 @@ from utils.singleton import SingletonMetaclass
 from negocio.controladores import *
 
 from negocio.cadastros import CadastroConta
+from negocio.cadastros import CadastroCadeira
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
         cadastro_conta = CadastroConta()
+        cadastro_cadeira = CadastroCadeira()
 
         self.__controladorLogin = ControladorLogin(cadastro_conta)
-        self.__controladorCadastroCadeira = ControladorCadastroCadeira()
+        self.__controladorCadastroCadeira: ControladorCadastroCadeira = ControladorCadastroCadeira(
+            cadastro_cadeira=cadastro_cadeira,
+            cadastro_conta=cadastro_conta)
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario()
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario()
@@ -23,9 +27,10 @@ class Fachada(metaclass=SingletonMetaclass):
             print(e)
             return 'Erro interno do servidor', 500
 
-    def cadastrarCadeira(self) -> Response:
+    def cadastrarCadeira(self, *args, **kwargs) -> Response:
         try:
-            pass
+            cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(*args, **kwargs)
+            return cadeira.__dict__
         except Exception as e:
             print(e)
             return 'Erro interno do servidor', 500

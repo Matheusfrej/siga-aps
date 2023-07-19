@@ -1,1 +1,2 @@
 from .repositorioContaLocal import RepositorioContaLocal
+from .repositorioCadeiraLocal import RepositorioCadeiraLocal

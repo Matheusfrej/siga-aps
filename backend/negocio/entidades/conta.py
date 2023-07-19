@@ -6,14 +6,14 @@ class ContaBase:
             id: int,
             email: str,
             cpf: str,
-            name: str,
+            nome: str,
             data_nascimento: date,
             ano_entrada: str,
             senha: str) -> None:
         self.id = id
         self.email = email
         self.cpf = cpf
-        self.name = name
+        self.nome = nome
         self.data_nascimento = data_nascimento
         self.ano_entrada = ano_entrada
         self.senha = senha

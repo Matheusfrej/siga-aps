@@ -1,17 +1,15 @@
-from .conta import ContaProfessor
-
 class Cadeira:
     def __init__(
             self,
             id: int,
             nome: str,
             horario: str,
-            prerequisitos: list[int],
-            corequisitos: list[int],
-            equivalencias: list[int],
-            plano_ensino: str,
             centro_universitario: str,
-            professor: ContaProfessor):
+            professor: int,
+            plano_ensino: str='',
+            prerequisitos: list[int]=[],
+            corequisitos: list[int]=[],
+            equivalencias: list[int]=[]):
         self.id = id
         self.nome = nome
         self.horario = horario
