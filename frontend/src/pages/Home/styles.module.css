@@ -1,6 +1,35 @@
 .homeContainer {
   width: 100%;
+  padding-top: 8rem;
+}
+
+.homeContent {
+  width: 100%;
+  max-width: 1280px;
+  margin: auto;
+  padding-top: 2rem;
+}
+
+.links {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  margin-top: 8rem;
+  padding: 3rem;
+  gap: 2rem;
+}
+
+.linkContainer {
+  padding: 3rem;
+  border: 1px solid black;
+  border-radius: 8px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  color: var(--blue-300)
+}
+
+.linkContainer:hover {
+  background: var(--gray-100);
+  color: var(--blue-700);
 }

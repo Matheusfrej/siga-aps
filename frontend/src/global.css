@@ -1,7 +1,7 @@
 :root {
-  --white: #fff;
+  --white: #f1f1f1;
 
-  --gray-100: #e1e1e6;
+  --gray-100: #ccc;
   --gray-300: #c4c4cc;
   --gray-400: #8d8d99;
   --gray-600: #323238;
@@ -9,6 +9,10 @@
   --gray-800: #202024;
   --gray-900: #121214;
 
+
+  --blue-300: #4E67C2;
+  --blue-500: #2943A0;
+  --blue-700: #112878;
   --green-300: #00B37E;
   --green-500: #00875f;
 
@@ -18,7 +22,7 @@
 
 :focus {
   outline: transparent;
-  box-shadow: 0 0 0 2px var(--green-500);
+  box-shadow: 0 0 0 2px var(--blue-500);
 }
 
 * {
