@@ -5,13 +5,14 @@ from negocio.controladores import *
 
 from negocio.cadastros import CadastroConta
 from negocio.cadastros import CadastroCadeira
+from subsistemaFirebase.iSubsistemaFirebase import iSubsistemaFirebase
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
         cadastro_conta = CadastroConta()
         cadastro_cadeira = CadastroCadeira()
-
-        self.__controladorLogin = ControladorLogin(cadastro_conta)
+        subsistemaFirebase = iSubsistemaFirebase()
+        self.__controladorLogin = ControladorLogin(cadastro_conta,subsistemaFirebase)
         self.__controladorCadastroCadeira: ControladorCadastroCadeira = ControladorCadastroCadeira(
             cadastro_cadeira=cadastro_cadeira,
             cadastro_conta=cadastro_conta)

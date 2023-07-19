@@ -2,8 +2,6 @@ from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
 
 from negocio import Fachada
-from utils.requestParsers import LoginRequestParser
-from utils.requestParsers import CadastroCadeiraRequestParser
 
 app = Flask(__name__)
 api = Api(app)
@@ -11,12 +9,11 @@ api = Api(app)
 fachada: Fachada = Fachada()
 
 class LoginResource(Resource):
-    req_parser = LoginRequestParser()
     def post(self):
-        print('BBBBBBBB')
-        args = self.req_parser.parse_args()
+        args = request.get_json()
         email = args['email']
         senha = args['senha']
+        print(email,senha)
         return fachada.efetuarLogin(email=email, senha=senha)
 
 
