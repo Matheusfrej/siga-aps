@@ -21,11 +21,9 @@ class LoginResource(Resource):
 
 
 class CadastrarCadeiraResource(Resource):
-    req_parser = CadastroCadeiraRequestParser()
     def post(self):
-        kwargs = self.req_parser.parse_args()
-        print(kwargs)
-        return fachada.cadastrarCadeira(**kwargs)
+        data = request.get_json()
+        return fachada.cadastrarCadeira(data)
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(CadastrarCadeiraResource, '/cadastrar-cadeira')

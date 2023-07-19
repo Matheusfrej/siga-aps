@@ -5,6 +5,6 @@ class CadastroCadeira:
     def __init__(self):
         self.repositorio_cadeira: IRepositorioCadeira = RepositorioCadeiraLocal()
 
-    def cadastrar_cadeira(self, *args, **kwargs):
-        cadeira = self.repositorio_cadeira.cadastrar_cadeira(*args, **kwargs)
+    def cadastrar_cadeira(self, data):
+        cadeira = self.repositorio_cadeira.create(data)
         return cadeira
