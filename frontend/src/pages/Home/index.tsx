@@ -1,7 +1,9 @@
+import styles from './styles.module.css'
+
 export function Home() {
   return (
-    <div>
-      <h1>AAAA</h1>
+    <div className={styles.homeContainer}>
+      <h1>Home</h1>
     </div>
   )
 }

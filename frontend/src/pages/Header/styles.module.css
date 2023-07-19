@@ -1,0 +1,10 @@
+.headerContainer {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--gray-100);
+}
