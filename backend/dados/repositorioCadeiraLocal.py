@@ -8,7 +8,9 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
         self._count = len(self._cadeiras) + 1
 
     def create(self, data):
-        cadeira = Cadeira(self._count, **data)
+        print(data)
+        cadeira = Cadeira(**data)
+        cadeira.id = self._count
         self._count += 1
         self._cadeiras.append(cadeira)
         return cadeira

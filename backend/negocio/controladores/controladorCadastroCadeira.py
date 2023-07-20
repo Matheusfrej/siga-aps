@@ -1,10 +1,10 @@
 from utils.singleton import SingletonMetaclass
-from dados.iRepositorioCadeira import IRepositorioCadeira
-from dados.iRepositorioConta import IRepositorioConta
+from negocio.cadastros.cadastroCadeira import CadastroCadeira
+from negocio.cadastros.cadastroConta import CadastroConta
 
 
 class ControladorCadastroCadeira(metaclass=SingletonMetaclass):
-    def __init__(self, cadastro_cadeira: IRepositorioCadeira, cadastro_conta: IRepositorioConta) -> None:
+    def __init__(self, cadastro_cadeira: CadastroCadeira, cadastro_conta: CadastroConta) -> None:
         self.cadastro_cadeira = cadastro_cadeira
         self.cadastro_conta = cadastro_conta
 

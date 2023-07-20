@@ -20,17 +20,17 @@ class LoginResource(Resource):
 class CadastrarCadeiraResource(Resource):
     def post(self):
         kwargs = request.get_json()
-        return fachada.cadastrarCadeira(**kwargs)
+        return fachada.cadastrarCadeira(kwargs)
     
 class MatriculaResource(Resource):
     def post(self):
         kwargs = request.get_json()
-        return fachada.realizarMatriculaCadeira(**kwargs)
+        return fachada.realizarMatriculaCadeira(kwargs)
     
 class VerHorarioResource(Resource):
     def post(self):
         kwargs = request.get_json()
-        return fachada.visualizarHorario(**kwargs)
+        return fachada.visualizarHorario(kwargs)
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(CadastrarCadeiraResource, '/cadastrar-cadeira')

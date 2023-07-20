@@ -46,9 +46,12 @@ class Fachada(metaclass=SingletonMetaclass):
             return 'Erro interno do servidor', 500
 
     def cadastrarCadeira(self, data) -> Response:
+        print(data)
         try:
             cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(data)
-            return cadeira.__dict__
+            obj = cadeira.__dict__.copy()
+            obj.pop('_sa_instance_state')
+            return obj
         except Exception as e:
             print(e)
             return 'Erro interno do servidor', 500
