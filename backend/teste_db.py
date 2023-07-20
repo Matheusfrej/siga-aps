@@ -44,11 +44,8 @@ def test_create_and_save():
     # print("ContaAluno:", conta_aluno)
     # print("Cadeira:", cadeira)
     # print("Matricula:", matricula)
-    contas = session.query(ContaBase).all()
-    print(contas)
-    pessoa_1 = contas[0]
-    pessoa_2 = contas[1]
-    print(pessoa_1.cadeiras)
-
+    cadeira = session.query(Cadeira).first()
+    cadeira.professor_id = 3
+    session.commit()
 if __name__ == "__main__":
     test_create_and_save()

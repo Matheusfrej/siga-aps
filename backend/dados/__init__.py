@@ -1,2 +1,3 @@
 from .repositorioContaLocal import RepositorioContaLocal
 from .repositorioCadeiraLocal import RepositorioCadeiraLocal
+from .repositorioContaSQLAlchemy import RepositorioContaSQLAlchemy
