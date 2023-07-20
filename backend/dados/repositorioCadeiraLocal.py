@@ -4,7 +4,7 @@ from negocio.entidades import Cadeira
 
 class RepositorioCadeiraLocal(IRepositorioCadeira):
     def __init__(self):
-        self._cadeiras = [Cadeira(id=1, nome="Introdução à Programação", horario={"segunda":"8", "quarta":"10", "sexta": "8"}, centro_universitario="Centro de Informática", professor=1)]
+        self._cadeiras = [Cadeira(nome="Introdução à Programação", horario={"segunda":"8", "quarta":"10", "sexta": "8"}, centro_universitario="Centro de Informática", professor=1)]
         self._count = len(self._cadeiras) + 1
 
     def create(self, data):
