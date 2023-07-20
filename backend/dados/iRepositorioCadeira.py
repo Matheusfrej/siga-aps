@@ -26,6 +26,6 @@ class IRepositorioCadeira(ABC):
         pass
 
     @abstractmethod
-    def validar_cadeira(self, nome: str, horario: dict, centro_universitario: str, professor: int, corequisitos=[], equivalencias=[], prerequisitos=[], plano_ensino=''):
+    def validar_cadeira(self, data):
         pass
 

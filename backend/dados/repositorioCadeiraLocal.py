@@ -1,5 +1,5 @@
 from dados.iRepositorioCadeira import IRepositorioCadeira
-from negocio.entidades import Cadeira
+from entidades import Cadeira
 
 
 class RepositorioCadeiraLocal(IRepositorioCadeira):

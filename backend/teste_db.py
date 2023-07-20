@@ -2,8 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import date
 # Import the classes you want to test
-from negocio.entidades import ContaAluno, ContaProfessor, Cadeira, Matricula, Base, ContaBase
+from entidades import ContaAluno, ContaProfessor, Cadeira, Matricula, Base, ContaBase
 from sqlalchemy import select
+
+import json
 
 # Create a database engine
 engine = create_engine('sqlite:///sigab.db')
@@ -26,7 +28,8 @@ def test_create_and_save():
     # conta_aluno = ContaAluno(curso='CC', email="alice@example.com", cpf="987654321", nome="Alice",
     #                          data_nascimento=date(1995, 5, 5), ano_entrada="2021", senha="12345")
 
-    # cadeira = Cadeira(nome="Database Systems", horario="MWF 10:00-11:00", centro_universitario="School of CS", professor=conta_prof)
+    # horario = json.dumps({'seg': [8, 9], 'ter': [10, 11]})
+    # cadeira = Cadeira(nome="Database Systems", horario=horario, centro_universitario="School of CS", professor=conta_prof)
     # matricula = Matricula(periodo="Spring 2023", aluno=conta_aluno, cadeiras=[cadeira])
 
     # # Associate the objects with their relationships
@@ -45,7 +48,7 @@ def test_create_and_save():
     # print("Cadeira:", cadeira)
     # print("Matricula:", matricula)
     cadeira = session.query(Cadeira).first()
-    cadeira.professor_id = 3
+    print(cadeira.horario)
     session.commit()
 if __name__ == "__main__":
     test_create_and_save()

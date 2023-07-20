@@ -1,5 +1,5 @@
 from dados.iRepositorioConta import IRepositorioMatricula
-from negocio.entidades import ContaAluno, Matricula
+from entidades import ContaAluno, Matricula
 
 from datetime import date
 

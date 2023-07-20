@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, Date, JSON
 from datetime import date
 
 from sqlalchemy.orm import relationship
@@ -105,7 +105,7 @@ class Cadeira(Base):
 
     id = Column(Integer, primary_key=True)
     nome = Column(String)
-    horario = Column(String)
+    horario = Column(JSON)
     plano_ensino = Column(String, default='')
     centro_universitario = Column(String)
 

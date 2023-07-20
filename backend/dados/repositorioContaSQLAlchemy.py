@@ -1,34 +1,37 @@
 from dados.iRepositorioConta import IRepositorioConta
-from negocio.entidades import ContaBase, ContaAluno, ContaProfessor, Session
+from entidades import ContaBase, ContaAluno, ContaProfessor, Session
 
 class RepositorioContaSQLAlchemy(IRepositorioConta):
     def __init__(self):
         self.Session = Session
 
     def create(self, data):
-        with Session() as session:
+        with self.Session() as session:
             nova_conta = ContaBase(**data)
             session.add(nova_conta)
             session.commit()
+            return nova_conta
 
     def create_aluno(self, data):
-        with Session() as session:
+        with self.Session() as session:
             nova_conta = ContaAluno(**data)
             session.add(nova_conta)
             session.commit()
+            return nova_conta
 
     def create_professor(self, data):
-        with Session() as session:
+        with self.Session() as session:
             nova_conta = ContaProfessor(**data)
             session.add(nova_conta)
             session.commit()
+            return nova_conta
 
     def read(self, id):
-        with Session() as session:
+        with self.Session() as session:
             return session.query(ContaBase).filter_by(id=id).first()
 
     def update(self, id, data):
-        with Session() as session:
+        with self.Session() as session:
             conta = session.query(ContaBase).filter_by(id=id).first()
             if conta:
                 # print(conta)
@@ -41,7 +44,7 @@ class RepositorioContaSQLAlchemy(IRepositorioConta):
                 pass
 
     def delete(self, id):
-        with Session() as session:
+        with self.Session() as session:
             conta = session.query(ContaBase).filter_by(id=id).first()
             if conta:
                 session.delete(conta)
@@ -50,5 +53,5 @@ class RepositorioContaSQLAlchemy(IRepositorioConta):
                 pass
 
     def get_by_email(self, email):
-        with Session() as session:
+        with self.Session() as session:
             return session.query(ContaBase).filter_by(email=email).first()
