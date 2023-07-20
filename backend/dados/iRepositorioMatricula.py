@@ -25,3 +25,7 @@ class IRepositorioMatricula(ABC):
     @abstractmethod
     def get_by_aluno(self, id_aluno):
         pass
+
+    @abstractmethod
+    def fazer_matricula(self, id):
+        pass

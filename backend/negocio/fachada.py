@@ -12,6 +12,7 @@ class Fachada(metaclass=SingletonMetaclass):
         cadastro_conta = CadastroConta()
         cadastro_cadeira = CadastroCadeira()
         subsistemaFirebase = iSubsistemaFirebase()
+        self.__subsistemaFirebase = subsistemaFirebase
         self.__controladorLogin = ControladorLogin(cadastro_conta,subsistemaFirebase)
         self.__controladorCadastroCadeira: ControladorCadastroCadeira = ControladorCadastroCadeira(
             cadastro_cadeira=cadastro_cadeira,
@@ -24,6 +25,22 @@ class Fachada(metaclass=SingletonMetaclass):
         try:
             token = self.__controladorLogin.efetuarLogin(email=email, senha=senha)
             return token
+        except Exception as e:
+            print(e)
+            return 'Erro interno do servidor', 500
+    
+    def criarConta(self, email: str, senha: str) -> Response:
+        try:
+            conta = self.__subsistemaFirebase.criarConta(email=email, senha=senha)
+            return conta
+        except Exception as e:
+            print(e)
+            return 'Erro interno do servidor', 500
+    
+    def getUserInfo(self, token: str) -> Response:
+        try:
+            user_info = self.__subsistemaFirebase.getInfoConta(token=token)
+            return user_info["users"][0]["email"]
         except Exception as e:
             print(e)
             return 'Erro interno do servidor', 500
@@ -43,14 +60,7 @@ class Fachada(metaclass=SingletonMetaclass):
             print(e)
             return 'Erro interno do servidor', 500
 
-    def visualizarHorarioLecionadas(self) -> Response:
-        try:
-            pass
-        except Exception as e:
-            print(e)
-            return 'Erro interno do servidor', 500
-
-    def visualizarHorarioCursadas(self) -> Response:
+    def visualizarHorario(self) -> Response:
         try:
             pass
         except Exception as e:
