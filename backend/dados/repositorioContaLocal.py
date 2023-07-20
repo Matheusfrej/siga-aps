@@ -1,11 +1,11 @@
 from dados.iRepositorioConta import IRepositorioConta
-from negocio.entidades.conta import ContaBase, ContaAluno, ContaProfessor
+from negocio.entidades import ContaBase, ContaAluno, ContaProfessor
 
 from datetime import date
 
 class RepositorioContaLocal(IRepositorioConta):
     def __init__(self):
-        conta_base_inicial = ContaBase(1, 'fgm3@cin.ufpe.br', '09265297492', 'Filipe Gomes de Melo', date(2002, 2, 28), '2020.1', 'senha123*')
+        conta_base_inicial = ContaBase('fgm3@cin.ufpe.br', '09265297492', 'Filipe Gomes de Melo', date(2002, 2, 28), '2020.1', 'senha123*')
         self._contas = [conta_base_inicial]
         self._count = len(self._contas) + 1
 

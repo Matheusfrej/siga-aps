@@ -1,3 +1,1 @@
-from .conta import ContaBase, ContaAluno, ContaProfessor
-from .cadeira import Cadeira
-
+from .models import Cadeira, ContaBase, ContaAluno, ContaProfessor, Base, Matricula
