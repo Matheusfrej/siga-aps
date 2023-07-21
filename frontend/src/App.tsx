@@ -1,13 +1,14 @@
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
-import { Header } from './components/Header'
+import { SigabContextProvider } from './contexts/sigabContext'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Router />
-    </BrowserRouter>
+    <SigabContextProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </SigabContextProvider>
   )
 }
 
