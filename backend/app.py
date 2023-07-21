@@ -13,44 +13,42 @@ class LoginResource(Resource):
         args = request.get_json()
         email = args['email']
         senha = args['senha']
-        print(email,senha)
         return fachada.efetuarLogin(email=email, senha=senha)
 
 class UserInfoResource(Resource):
     def post(self):
-        args = request.get_json()
-        token = args['token']
-        return fachada.getUserInfo(token=token)
+        data = request.get_json()
+        return fachada.getUserInfo(data)
 
 class CadastrarCadeiraResource(Resource):
     def post(self):
-        kwargs = request.get_json()
-        return fachada.cadastrarCadeira(kwargs)
+        data = request.get_json()
+        return fachada.cadastrarCadeira(data)
 
 class EditarCadeiraResource(Resource):
     def put(self):
-        kwargs = request.get_json()
-        return fachada.editarCadeira(kwargs)
+        data = request.get_json()
+        return fachada.editarCadeira(data)
 
 class DeletarCadeiraResource(Resource):
     def delete(self):
-        kwargs = request.get_json()
-        return fachada.deletarCadeira(kwargs)
+        data = request.get_json()
+        return fachada.deletarCadeira(data)
 
 class GetCadeirasProfessorResource(Resource):
     def get(self):
-        kwargs = request.get_json()
-        return fachada.getCadeiraProfessor(kwargs)
+        data = request.get_json()
+        return fachada.getCadeiraProfessor(data)
     
 class MatriculaResource(Resource):
     def post(self):
-        kwargs = request.get_json()
-        return fachada.realizarMatriculaCadeira(kwargs)
+        data = request.get_json()
+        return fachada.realizarMatriculaCadeira(data)
     
 class VerHorarioResource(Resource):
     def get(self):
-        kwargs = request.get_json()
-        return fachada.visualizarHorario(kwargs)
+        data = request.get_json()
+        return fachada.visualizarHorario(data)
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(CadastrarCadeiraResource, '/cadastrar-cadeira')

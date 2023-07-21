@@ -1,22 +1,18 @@
 class Horario:
     def __init__(self, cadeiras):
-        print(cadeiras)
         dicio = {
-            'seg': [],
-            'ter': [],
-            'qua': [],
-            'qui': [],
-            'sex': [],
-            'sab': [],
-            'dom': []
+            'seg': dict(),
+            'ter': dict(),
+            'qua': dict(),
+            'qui': dict(),
+            'sex': dict(),
+            'sab': dict(),
+            'dom': dict()
         }
 
         for c in cadeiras:
             for k, v in c.horario.items():
-                dicio[k] += v
-        
-        for k, v in dicio.items():
-            v.sort()
+                for h in v:
+                    dicio[k][h] = c.nome
 
         self.data = dicio
-        print(self.data)

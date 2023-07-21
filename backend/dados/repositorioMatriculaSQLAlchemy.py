@@ -53,5 +53,5 @@ class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
             month = curr_date.month
             periodo = f'{year}.{1 if month <= 6 else 2}'
             matricula = matriculas.filter_by(periodo=periodo).first()
-            print(matricula.cadeiras)
+            matricula.cadeiras
             return matricula

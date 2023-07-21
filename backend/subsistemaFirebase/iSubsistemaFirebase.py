@@ -14,7 +14,7 @@ class iSubsistemaFirebase:
         self.__fachadaFirebase = Firebase(self.config).auth()
 
     def validarLogin(self, email, senha):
-        logado = self.__fachadaFirebase.validarLogin(email,senha)
+        logado = self.__fachadaFirebase.validarLogin(email, senha)
         return logado
     
     def getInfoConta(self, token):

@@ -10,8 +10,8 @@ headers = {'Content-Type': 'application/json'}
 data = {'email': 'baws@cin.ufpe.br', 'senha': 123456}
 payload = json.dumps(data)
 response = requests.post(BASE + "login", headers=headers, data=payload)
-token = response.json().get('TOKEN')
-print(response.json().get('TOKEN'))
+token = response.json().get('idToken')
+print(response.json().get('idToken'))
 
 data = {'token': token}
 payload = json.dumps(data)

@@ -17,6 +17,6 @@ class CadastroCadeira:
         cadeira = self.repositorio_cadeira.delete(data)
         return cadeira
 
-    def get_cadeiras_by_professor(self, professor_id):
+    def get_cadeira_by_professor(self, professor_id):
         cadeiras = self.repositorio_cadeira.get_by_professor(professor_id)
         return cadeiras

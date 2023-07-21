@@ -8,7 +8,7 @@ class ControladorConta(metaclass=SingletonMetaclass):
     def efetuarLogin(self, email, senha):
         logado = self.__iSubsistemaFirebase.validarLogin(email, senha)
         if logado:
-            return logado["idToken"]
+            return logado
         else:
             return {'error': 'email ou senha inválidos'}, 401
     
