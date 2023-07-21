@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useState } from 'react'
 import { loginRequest } from '../services/loginService'
+import { toast } from 'react-toastify'
 
 interface SigabContextProviderProps {
   children: ReactNode
@@ -19,6 +20,7 @@ interface UserInfo {
 interface SigabContextType {
   userInfo: UserInfo
   login: (email: string, password: string) => Promise<boolean>
+  showToast: (message: string, didSuccess: boolean) => void
 }
 
 export const SigabContext = createContext({} as SigabContextType)
@@ -35,11 +37,38 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
     return true
   }
 
+  const showToast = (message: string, didSuccess: boolean) => {
+    if (didSuccess) {
+      toast.success(message, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      })
+    } else {
+      toast.error(message, {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      })
+    }
+  }
+
   return (
     <SigabContext.Provider
       value={{
         userInfo,
         login,
+        showToast,
       }}
     >
       {children}

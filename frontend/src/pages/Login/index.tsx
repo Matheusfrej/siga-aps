@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { SigabContext } from '../../contexts/sigabContext'
 
 export function Login() {
-  const { login } = useContext(SigabContext)
+  const { login, showToast } = useContext(SigabContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -17,9 +17,10 @@ export function Login() {
     if (logged) {
       setEmail('')
       setPassword('')
+      showToast('Login realizado com sucesso!', true)
       navigate('/')
     } else {
-      alert('Usuário ou senha inválidos')
+      showToast('Email ou senha inválidos', false)
       setPassword('')
     }
   }
