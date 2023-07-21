@@ -1,9 +1,11 @@
 from flask import Flask, request
+from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
 
 from negocio import Fachada
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 fachada: Fachada = Fachada()
@@ -13,7 +15,6 @@ class LoginResource(Resource):
         args = request.get_json()
         email = args['email']
         senha = args['senha']
-        print(email,senha)
         return fachada.efetuarLogin(email=email, senha=senha)
 
 
