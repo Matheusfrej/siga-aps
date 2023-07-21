@@ -1,13 +1,17 @@
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
-import { Header } from './components/Header'
+import { SigabContextProvider } from './contexts/sigabContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Router />
-    </BrowserRouter>
+    <SigabContextProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <ToastContainer />
+    </SigabContextProvider>
   )
 }
 

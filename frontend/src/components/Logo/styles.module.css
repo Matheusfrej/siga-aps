@@ -1,0 +1,7 @@
+.logoContainer span {
+  color: var(--red-500);
+}
+
+.logoContainer h2 {
+  font-size: 2rem;
+}
