@@ -1,6 +1,6 @@
-from dados.iRepositorioCadeira import IRepositorioCadeira
+from .iRepositorioCadeira import IRepositorioCadeira
 from entidades import Cadeira, Session
-
+from sqlalchemy.orm import load_only
 
 class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
     def __init__(self):
@@ -15,11 +15,11 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
 
     def read(self, id):
         with self.Session() as session:
-            return session.query(Cadeira).filter_by(id=id).first()
+            return session.query(Cadeira).filter_by(id=id).options(load_only('*')).first()
 
     def update(self, id, data):
         with self.Session() as session:
-            cadeira = session.query(Cadeira).filter_by(id=id).first()
+            cadeira = session.query(Cadeira).filter_by(id=id).options(load_only('*')).first()
             if cadeira:
                 # print(cadeira)
                 # for key, value in data.items():
@@ -32,7 +32,7 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
 
     def delete(self, id):
         with self.Session() as session:
-            cadeira = session.query(Cadeira).filter_by(id=id).first()
+            cadeira = session.query(Cadeira).filter_by(id=id).options(load_only('*')).first()
             if cadeira:
                 session.delete(cadeira)
                 session.commit()
@@ -44,8 +44,5 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
 
     def get_by_professor(self, professor_id):
         with self.Session() as session:
-            cadeiras = session.query(Cadeira).filter_by(professor_id=professor_id)
-            print(cadeiras)
+            cadeiras = session.query(Cadeira).filter_by(professor_id=professor_id).options(load_only('*'))
             return list(cadeiras)
-
-

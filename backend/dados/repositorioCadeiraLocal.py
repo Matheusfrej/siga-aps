@@ -1,4 +1,4 @@
-from dados.iRepositorioCadeira import IRepositorioCadeira
+from .iRepositorioCadeira import IRepositorioCadeira
 from entidades import Cadeira
 
 

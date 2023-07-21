@@ -1,4 +1,4 @@
-from dados.iRepositorioConta import IRepositorioMatricula
+from .iRepositorioMatricula import IRepositorioMatricula
 from entidades import ContaAluno, Matricula
 
 from datetime import date
