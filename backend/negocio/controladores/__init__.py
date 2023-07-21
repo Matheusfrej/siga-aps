@@ -1,6 +1,4 @@
-from .controladorLogin import ControladorLogin
+from .controladorConta import ControladorConta
 from .controladorCadastroCadeira import ControladorCadastroCadeira
 from .controladorRealizarMatricula import ControladorRealizarMatricula
 from .controladorVisualizarHorario import ControladorVisualizarHorario
-from .alunoStrategy import AlunoStrategy
-from .professorStrategy import ProfessorStrategy

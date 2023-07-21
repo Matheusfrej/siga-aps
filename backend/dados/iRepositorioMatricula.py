@@ -19,13 +19,9 @@ class IRepositorioMatricula(ABC):
         pass
 
     @abstractmethod
-    def get_by_email(self, email):
-        pass
-
-    @abstractmethod
     def get_by_aluno(self, id_aluno):
         pass
 
     @abstractmethod
-    def fazer_matricula(self, id):
+    def get_current_by_aluno(self, id_aluno):
         pass

@@ -1,5 +1,5 @@
-from dados.iRepositorioCadeira import IRepositorioCadeira
-from negocio.entidades import Cadeira
+from .iRepositorioCadeira import IRepositorioCadeira
+from entidades import Cadeira
 
 
 class RepositorioCadeiraLocal(IRepositorioCadeira):
@@ -8,7 +8,6 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
         self._count = len(self._cadeiras) + 1
 
     def create(self, data):
-        print(data)
         cadeira = Cadeira(**data)
         cadeira.id = self._count
         self._count += 1

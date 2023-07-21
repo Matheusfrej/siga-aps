@@ -1,9 +1,9 @@
-from dados import RepositorioContaLocal
+from dados import RepositorioContaSQLAlchemy
 
 class CadastroConta:
     def __init__(self):
-        self.repositorio_conta = RepositorioContaLocal()
+        self.repositorio_conta = RepositorioContaSQLAlchemy()
 
-    def verificaLogin(self, email, senha):
+    def get_by_email(self, email):
         user = self.repositorio_conta.get_by_email(email)
-        return user.senha == senha
+        return user

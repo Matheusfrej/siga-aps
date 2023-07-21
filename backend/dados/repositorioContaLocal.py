@@ -1,5 +1,5 @@
-from dados.iRepositorioConta import IRepositorioConta
-from negocio.entidades import ContaBase, ContaAluno, ContaProfessor
+from .iRepositorioConta import IRepositorioConta
+from entidades import ContaBase, ContaAluno, ContaProfessor
 
 from datetime import date
 

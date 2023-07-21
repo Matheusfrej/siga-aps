@@ -13,29 +13,50 @@ class LoginResource(Resource):
         args = request.get_json()
         email = args['email']
         senha = args['senha']
-        print(email,senha)
         return fachada.efetuarLogin(email=email, senha=senha)
 
+class UserInfoResource(Resource):
+    def post(self):
+        data = request.get_json()
+        return fachada.getUserInfo(data)
 
 class CadastrarCadeiraResource(Resource):
     def post(self):
-        kwargs = request.get_json()
-        return fachada.cadastrarCadeira(kwargs)
+        data = request.get_json()
+        return fachada.cadastrarCadeira(data)
+
+class EditarCadeiraResource(Resource):
+    def put(self):
+        data = request.get_json()
+        return fachada.editarCadeira(data)
+
+class DeletarCadeiraResource(Resource):
+    def delete(self):
+        data = request.get_json()
+        return fachada.deletarCadeira(data)
+
+class GetCadeirasProfessorResource(Resource):
+    def get(self):
+        data = request.get_json()
+        return fachada.getCadeiraProfessor(data)
     
 class MatriculaResource(Resource):
     def post(self):
-        kwargs = request.get_json()
-        return fachada.realizarMatriculaCadeira(kwargs)
+        data = request.get_json()
+        return fachada.realizarMatriculaCadeira(data)
     
 class VerHorarioResource(Resource):
-    def post(self):
-        kwargs = request.get_json()
-        return fachada.visualizarHorario(kwargs)
+    def get(self):
+        data = request.get_json()
+        return fachada.visualizarHorario(data)
 
 api.add_resource(LoginResource, '/login')
 api.add_resource(CadastrarCadeiraResource, '/cadastrar-cadeira')
+api.add_resource(EditarCadeiraResource, '/editar-cadeira')
+api.add_resource(DeletarCadeiraResource, '/deletar-cadeira')
+api.add_resource(GetCadeirasProfessorResource, '/get-cadeiras-professor')
 api.add_resource(VerHorarioResource, '/ver-horario')
-api.add_resource(MatriculaResource, '/matricula')
+api.add_resource(MatriculaResource, '/fazer-matricula')
 
 if __name__ == '__main__':
     app.run(debug=True)
