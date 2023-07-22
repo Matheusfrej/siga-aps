@@ -1,4 +1,4 @@
-import { CalendarBlank } from '@phosphor-icons/react'
+import { CalendarBlank, ClipboardText } from '@phosphor-icons/react'
 import styles from './styles.module.css'
 import { Header } from '../../components/Header'
 import { NavLink } from 'react-router-dom'
@@ -17,7 +17,7 @@ export function Home() {
             </NavLink>
             <a href="" className={styles.linkContainer}>
               <strong>Realizar Matrícula</strong>
-              <CalendarBlank size={32} weight="bold" />
+              <ClipboardText size={32} weight="bold" />
             </a>
           </div>
         </div>

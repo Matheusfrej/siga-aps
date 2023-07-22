@@ -3,10 +3,10 @@ import api from '../libs/api'
 export const getHorarioRequest = async (token: string) => {
   try {
     const response = await api.get('/ver-horario', {
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        'token': token
-      }
+        token,
+      },
     })
 
     return response.data

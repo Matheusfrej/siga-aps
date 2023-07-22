@@ -6,8 +6,8 @@ import { Horarios } from './pages/Horarios'
 export function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Home />} />
       <Route path="/horarios" element={<Horarios />} />
     </Routes>
   )
