@@ -5,7 +5,7 @@ import { useEffect, useState, useContext } from 'react'
 
 export function Horario() {
   const { showToast } = useContext(SigabContext)
-  const [horario, setHorario] = useState<object>()
+  const [, setHorario] = useState<object>()
 
   const matrizHorario = [
     ['vazio', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
@@ -72,6 +72,7 @@ export function Horario() {
       sex: {},
       sab: {},
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
