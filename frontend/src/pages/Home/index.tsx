@@ -1,6 +1,7 @@
 import { CalendarBlank } from '@phosphor-icons/react'
 import styles from './styles.module.css'
 import { Header } from '../../components/Header'
+import { NavLink } from 'react-router-dom'
 
 export function Home() {
   return (
@@ -10,10 +11,10 @@ export function Home() {
         <div className={styles.homeContent}>
           <h1>Olá, Fulano</h1>
           <div className={styles.links}>
-            <a href="" className={styles.linkContainer}>
+            <NavLink to={'/horarios'} className={styles.linkContainer}>
               <strong>Ver meus horários</strong>
               <CalendarBlank size={32} weight="bold" />
-            </a>
+            </NavLink>
             <a href="" className={styles.linkContainer}>
               <strong>Realizar Matrícula</strong>
               <CalendarBlank size={32} weight="bold" />

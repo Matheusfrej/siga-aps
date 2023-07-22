@@ -1,0 +1,42 @@
+.horarioContainer {
+  width: 70%;
+  height: 400px;
+  margin: auto;
+  /* padding: auto; */
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+.horarioContainer table {
+  /* width: 70%; */
+  border-collapse: collapse;
+  height: fit-content;
+  overflow: auto;
+}
+
+.horarioContainer th {
+  font-size: 1.5rem;
+}
+
+.horarioContainer td:first-child {
+  text-align: center;
+}
+
+.horarioContainer td div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.horarioContainer td div strong {
+  text-align: center;
+  /* width: 70%; */
+}
