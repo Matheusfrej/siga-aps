@@ -10,6 +10,8 @@ from subsistemaFirebase.iSubsistemaFirebase import iSubsistemaFirebase
 
 from utils import ProfessorStrategy, AlunoStrategy
 
+from utils import CadeiraSerializer
+
 import traceback
 
 class Fachada(metaclass=SingletonMetaclass):
@@ -40,7 +42,7 @@ class Fachada(metaclass=SingletonMetaclass):
     def get_curr_user_decorator(func):
         ''' usar em métodos que precisam do usuário '''
         def wrapper(self, data):
-            token = data.get('token')
+            token = data.pop('token')
             user_info = self.__subsistemaFirebase.getInfoConta(token=token)
             email = user_info["users"][0]["email"]
             data['user'] = self.__controladorConta.get_user_by_email(email=email)
@@ -77,11 +79,9 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def cadastrarCadeira(self, data) -> Response:
         try:
-            data['professor'] = data.pop('user')
+            data['professor'] = data.pop('user').id
             cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(data)
-            obj = cadeira.__dict__.copy()
-            obj.pop('_sa_instance_state')
-            return obj
+            return CadeiraSerializer(cadeira).get_data()
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
