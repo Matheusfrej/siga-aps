@@ -16,7 +16,6 @@ class ContaBase(Base):
     nome = Column(String)
     data_nascimento = Column(Date)
     ano_entrada = Column(String)
-    senha = Column(String)
 
     discriminator = Column(String)  # Discriminator column for identifying user types
     __mapper_args__ = {
@@ -30,14 +29,12 @@ class ContaBase(Base):
             cpf: str,
             nome: str,
             data_nascimento: date,
-            ano_entrada: str,
-            senha: str) -> None:
+            ano_entrada: str) -> None:
         self.email = email
         self.cpf = cpf
         self.nome = nome
         self.data_nascimento = data_nascimento
         self.ano_entrada = ano_entrada
-        self.senha = senha
 
     def __repr__(self) -> str:
         return f'<User {self.id}: {self.email}>'
