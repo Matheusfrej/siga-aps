@@ -6,6 +6,7 @@
   overflow: auto;
   display: flex;
   justify-content: center;
+  margin-bottom: 5rem;
   /* align-items: center; */
 }
 
@@ -21,22 +22,25 @@ table, th, td {
 }
 
 .horarioContainer th {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  background: var(--gray-100);
 }
 
 .horarioContainer td:first-child {
   text-align: center;
+  background: var(--gray-100);
 }
 
-.horarioContainer td div {
+.horarioCard {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: fit-content;
+  /* height: fit-content; */
+  flex: 1;
 }
 
 .horarioContainer td div strong {
   text-align: center;
-  /* width: 70%; */
 }
+

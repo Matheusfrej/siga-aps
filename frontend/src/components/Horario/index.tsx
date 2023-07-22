@@ -1,6 +1,31 @@
+import { SigabContext } from '../../contexts/sigabContext'
+import { getHorarioRequest } from '../../services/horarioService'
 import styles from './styles.module.css'
+import { useEffect, useState, useContext } from 'react'
 
 export function Horario() {
+  const { showToast } = useContext(SigabContext)
+  const [horario, setHorario] = useState()
+
+  const getHorario = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      return
+    }
+    console.log(token)
+
+    const response = await getHorarioRequest(token)
+    if (response === -1) {
+      showToast('Houve um erro ao carregar os seus horários', false)
+      return
+    }
+    console.log('chegou em Horario', response)
+  }
+
+  useEffect(() => {
+    getHorario()
+  }, [])
+
   return (
     <div className={styles.horarioContainer}>
       <table>
@@ -16,37 +41,37 @@ export function Horario() {
         <tr>
           <td>7h</td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
@@ -55,37 +80,37 @@ export function Horario() {
         <tr>
           <td>8h</td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
@@ -94,37 +119,37 @@ export function Horario() {
         <tr>
           <td>9h</td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
@@ -133,37 +158,37 @@ export function Horario() {
         <tr>
           <td>10h</td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>
           </td>
           <td>
-            <div>
+            <div className={styles.horarioCard}>
               <strong>Programação concorrente e distribuída</strong>
               <span>horario tal</span>
             </div>

@@ -29,7 +29,9 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
   const [userInfo, setUserInfo] = useState({} as UserInfo)
 
   const login = async (email: string, senha: string) => {
-    const token = await loginRequest(email, senha)
+    const response = await loginRequest(email, senha)
+    const token = response.idToken
+
     if (token === -1) {
       return false
     }
