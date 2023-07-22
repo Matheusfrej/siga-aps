@@ -18,14 +18,5 @@ class IRepositorioCadeira(ABC):
         pass
 
     @abstractmethod
-    def validar_cadeira(self, data):
-        pass
-
-    @abstractmethod
     def get_by_professor(self, professor_id):
         pass
-
-    @abstractmethod
-    def validar_cadeira(self, data):
-        pass
-

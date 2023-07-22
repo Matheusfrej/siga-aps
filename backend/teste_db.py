@@ -27,8 +27,8 @@ def test_create_and_save():
                                 data_nascimento=date(1990, 1, 1), ano_entrada="2022",
                                 siape="12345", formacao="Ph.D")
 
-    conta_aluno = ContaAluno(curso='CC', email="baws@cin.ufpe.br", cpf="987654321", nome="Bruna",
-                             data_nascimento=date(2001, 7, 15), ano_entrada="2020.1", senha="123456")
+    conta_aluno = ContaAluno(curso='CC', email="fgm3@cin.ufpe.br", cpf="987654321", nome="Bruna",
+                             data_nascimento=date(2001, 7, 15), ano_entrada="2020.1")
 
     horario1 = {'seg': [8, 9], 'qua': [10, 11]}
     horario2 = {'seg': [10, 11], 'qua': [8, 9]}
