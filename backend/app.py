@@ -20,36 +20,45 @@ class LoginResource(Resource):
 class UserInfoResource(Resource):
     def post(self):
         data = request.get_json()
+        data['token'] = request.headers.get('token')
         return fachada.getUserInfo(data)
 
 class CadastrarCadeiraResource(Resource):
     def post(self):
         data = request.get_json()
+        data['token'] = request.headers.get('token')
         return fachada.cadastrarCadeira(data)
 
 class EditarCadeiraResource(Resource):
     def put(self):
         data = request.get_json()
+        data['token'] = request.headers.get('token')
         return fachada.editarCadeira(data)
 
 class DeletarCadeiraResource(Resource):
     def delete(self):
         data = request.get_json()
+        data['token'] = request.headers.get('token')
         return fachada.deletarCadeira(data)
 
 class GetCadeirasProfessorResource(Resource):
     def get(self):
-        data = request.get_json()
+        data = {
+            'token': request.headers.get('token')
+        }
         return fachada.getCadeiraProfessor(data)
     
 class MatriculaResource(Resource):
     def post(self):
         data = request.get_json()
+        data['token'] = request.headers.get('token')
         return fachada.realizarMatriculaCadeira(data)
     
 class VerHorarioResource(Resource):
     def get(self):
-        data = request.get_json()
+        data = {
+            'token': request.headers.get('token')
+        }
         return fachada.visualizarHorario(data)
 
 api.add_resource(LoginResource, '/login')

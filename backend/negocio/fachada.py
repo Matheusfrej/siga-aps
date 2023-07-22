@@ -109,7 +109,7 @@ class Fachada(metaclass=SingletonMetaclass):
     
     def getCadeiraProfessor(self, data) -> Response:
         try:
-            cadeira = self.__controladorCadastroCadeira.get_cadeira_by_professor(data)
+            cadeira = self.__controladorCadastroCadeira.get_cadeira_by_professor(data['professor_id'])
             obj = cadeira.__dict__.copy()
             obj.pop('_sa_instance_state')
             return obj
