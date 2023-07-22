@@ -14,6 +14,7 @@ export const loginRequest = async (email: string, senha: string) => {
       withCredentials: false,
       headers,
     })
+
     return response.data
   } catch (error) {
     return -1
