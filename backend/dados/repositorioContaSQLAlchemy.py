@@ -1,5 +1,6 @@
 from .iRepositorioConta import IRepositorioConta
 from entidades import ContaBase, ContaAluno, ContaProfessor, Session
+from sqlalchemy.orm import joinedload
 
 class RepositorioContaSQLAlchemy(IRepositorioConta):
     def __init__(self):
@@ -49,9 +50,11 @@ class RepositorioContaSQLAlchemy(IRepositorioConta):
             if conta:
                 session.delete(conta)
                 session.commit()
+                return True
             else:
-                pass
+                # TODO fazer um raise
+                return False
 
     def get_by_email(self, email):
         with self.Session() as session:
-            return session.query(ContaBase).filter_by(email=email).first()
+            return session.query(ContaBase).filter_by(email=email).options(joinedload('*')).first()

@@ -18,9 +18,10 @@ class LoginResource(Resource):
         return fachada.efetuarLogin(email=email, senha=senha)
 
 class UserInfoResource(Resource):
-    def post(self):
-        data = request.get_json()
-        data['token'] = request.headers.get('token')
+    def get(self):
+        data = {
+            'token': request.headers.get('token')
+        }
         return fachada.getUserInfo(data)
 
 class CadastrarCadeiraResource(Resource):
@@ -46,7 +47,7 @@ class GetCadeirasProfessorResource(Resource):
         data = {
             'token': request.headers.get('token')
         }
-        return fachada.getCadeiraProfessor(data)
+        return fachada.getCadeirasProfessor(data)
     
 class MatriculaResource(Resource):
     def post(self):
@@ -62,6 +63,7 @@ class VerHorarioResource(Resource):
         return fachada.visualizarHorario(data)
 
 api.add_resource(LoginResource, '/login')
+api.add_resource(UserInfoResource, '/get-user-info')
 api.add_resource(CadastrarCadeiraResource, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraResource, '/editar-cadeira')
 api.add_resource(DeletarCadeiraResource, '/deletar-cadeira')
