@@ -7,6 +7,8 @@ export function Horario() {
   const { showToast } = useContext(SigabContext)
   const [horarioPessoa, setHorarioPessoa] = useState<any>()
 
+  const listaCadeiras: string[] = []
+
   const matrizHorario = [
     ['vazio', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
     ['7', '', '', '', '', '', ''],
@@ -84,15 +86,29 @@ export function Horario() {
               {horario.map((value, idx3) => {
                 const dia = matrizHorario[0][idx3]
                 const hora = matrizHorario[idx][0]
+                const temCadeira =
+                  value === '' &&
+                  horarioPessoa !== undefined &&
+                  dia in horarioPessoa &&
+                  hora in horarioPessoa[dia]
+                let nomeCadeira = ''
+                if (temCadeira) {
+                  nomeCadeira = horarioPessoa[dia][hora]
+                  if (!listaCadeiras.includes(nomeCadeira)) {
+                    listaCadeiras.push(nomeCadeira)
+                  }
+                }
                 return (
                   <>
-                    {value === '' &&
-                    horarioPessoa !== undefined &&
-                    dia in horarioPessoa &&
-                    hora in horarioPessoa[dia] ? (
-                      <td key={idx3}>
+                    {temCadeira ? (
+                      <td
+                        key={idx3}
+                        className={
+                          styles['cadeira' + listaCadeiras.indexOf(nomeCadeira)]
+                        }
+                      >
                         <div className={styles.horarioCard}>
-                          <strong>{horarioPessoa[dia][hora]}</strong>
+                          <strong>{nomeCadeira}</strong>
                           <span>
                             {hora}h - {hora}h50
                           </span>
