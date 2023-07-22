@@ -23,11 +23,11 @@ session = Session()
 
 def test_create_and_save():
     # # Create instances of the classes
-    conta_prof = ContaProfessor(email="baws@cin.ufpe.br", cpf="123456789", nome="John Doe",
+    conta_prof = ContaProfessor(email="baws@cin.ufpe.br", cpf="123456789", nome="Bruna",
                                 data_nascimento=date(1990, 1, 1), ano_entrada="2022",
                                 siape="12345", formacao="Ph.D")
 
-    conta_aluno = ContaAluno(curso='CC', email="fgm3@cin.ufpe.br", cpf="987654321", nome="Bruna",
+    conta_aluno = ContaAluno(curso='CC', email="fgm3@cin.ufpe.br", cpf="987654321", nome="Filipe",
                              data_nascimento=date(2001, 7, 15), ano_entrada="2020.1")
 
     horario1 = {'seg': [8, 9], 'qua': [10, 11]}
@@ -38,7 +38,7 @@ def test_create_and_save():
     cadeira1 = Cadeira(nome="Programação Concorrente Distribuída", horario=horario1, centro_universitario="CIn", professor=conta_prof)
     cadeira2 = Cadeira(nome="Análise e Projetos de Sistemas", horario=horario2, centro_universitario="CIn", professor=conta_prof)
     cadeira3 = Cadeira(nome="Sistemas de Informação", horario=horario3, centro_universitario="CIn", professor=conta_prof)
-    cadeira4 = Cadeira(nome="Análise e Projetos de Sistemas", horario=horario4, centro_universitario="CIn", professor=conta_prof)
+    cadeira4 = Cadeira(nome="Tópicos Avançados em Algoritmos", horario=horario4, centro_universitario="CIn", professor=conta_prof)
 
     matricula = Matricula(periodo="2023.2", aluno=conta_aluno, cadeiras=[])
 

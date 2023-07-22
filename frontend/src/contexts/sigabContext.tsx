@@ -18,6 +18,7 @@ interface SigabContextType {
   userInfo: UserInfo
   isLogged: () => boolean
   login: (email: string, password: string) => Promise<boolean>
+  logout: () => void
   showToast: (message: string, didSuccess: boolean) => void
 }
 
@@ -46,6 +47,11 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
     localStorage.setItem('userInfo', JSON.stringify(response.user))
     localStorage.setItem('tokenExpireDate', JSON.stringify(novaData))
     return true
+  }
+
+  const logout = () => {
+    localStorage.clear()
+    setUserInfo({} as UserInfo)
   }
 
   const didTokenExpire = () => {
@@ -90,6 +96,7 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
         userInfo,
         isLogged,
         login,
+        logout,
         showToast,
       }}
     >
