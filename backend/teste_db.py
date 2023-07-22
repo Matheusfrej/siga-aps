@@ -23,9 +23,9 @@ session = Session()
 
 def test_create_and_save():
     # # Create instances of the classes
-    # conta_prof = ContaProfessor(email="baws@cin.ufpe.br", cpf="123456789", nome="John Doe",
-    #                             data_nascimento=date(1990, 1, 1), ano_entrada="2022",
-    #                             siape="12345", formacao="Ph.D")
+    conta_prof = ContaProfessor(email="baws@cin.ufpe.br", cpf="123456789", nome="John Doe",
+                                data_nascimento=date(1990, 1, 1), ano_entrada="2022",
+                                siape="12345", formacao="Ph.D")
 
     conta_aluno = ContaAluno(curso='CC', email="baws@cin.ufpe.br", cpf="987654321", nome="Bruna",
                              data_nascimento=date(2001, 7, 15), ano_entrada="2020.1", senha="123456")
