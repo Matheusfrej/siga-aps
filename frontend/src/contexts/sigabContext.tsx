@@ -28,19 +28,20 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
 
   const login = async (email: string, senha: string) => {
     const response = await loginRequest(email, senha)
+    if (response === -1) {
+      return false
+    }
     const token = response.idToken
     const expireDate = response.expiresIn
     // console.log(expireDate)
     const dataAtual = new Date()
     const milissegundosAtuais = dataAtual.getTime()
-    const milissegundosMaisUmaHora = milissegundosAtuais + 10 * 1000
+    const milissegundosMaisUmaHora = milissegundosAtuais + expireDate * 1000
     const novaData = new Date(milissegundosMaisUmaHora)
 
     // console.log(novaData)
     setUserInfo(response.user)
-    if (token === -1) {
-      return false
-    }
+
     localStorage.setItem('token', token.toString())
     localStorage.setItem('userInfo', JSON.stringify(response.user))
     localStorage.setItem('tokenExpireDate', JSON.stringify(novaData))
