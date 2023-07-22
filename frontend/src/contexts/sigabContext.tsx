@@ -7,18 +7,16 @@ interface SigabContextProviderProps {
 }
 
 interface UserInfo {
-  id: number
   email: string
   cpf: string
   nome: string
-  data_nascimento: Date
   ano_entrada: string
-  senha: string
   discriminator: 'conta_aluno' | 'conta_professor'
 }
 
 interface SigabContextType {
   userInfo: UserInfo
+  isLogged: () => boolean
   login: (email: string, password: string) => Promise<boolean>
   showToast: (message: string, didSuccess: boolean) => void
 }
@@ -31,12 +29,24 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
   const login = async (email: string, senha: string) => {
     const response = await loginRequest(email, senha)
     const token = response.idToken
-
+    setUserInfo(response.user)
     if (token === -1) {
       return false
     }
     localStorage.setItem('token', token.toString())
+    localStorage.setItem('userInfo', JSON.stringify(response.user))
     return true
+  }
+
+  const isLogged = () => {
+    if (localStorage.getItem('token') !== null) {
+      const user = localStorage.getItem('userInfo')
+      if (user !== null) {
+        setUserInfo(JSON.parse(user))
+      }
+      return true
+    }
+    return false
   }
 
   const showToast = (message: string, didSuccess: boolean) => {
@@ -47,6 +57,7 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
     <SigabContext.Provider
       value={{
         userInfo,
+        isLogged,
         login,
         showToast,
       }}
