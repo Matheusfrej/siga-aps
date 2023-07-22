@@ -6,7 +6,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--gray-100);
+  background-color: var(--white);
   border-bottom: 1px solid var(--gray-300);
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.4);
   z-index: 999;

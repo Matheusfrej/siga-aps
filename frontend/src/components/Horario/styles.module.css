@@ -23,7 +23,10 @@ table, th, td {
 
 .horarioContainer th {
   font-size: 1.25rem;
-  background: var(--gray-100);
+  background: var(--blue-300);
+  color: var(--white);
+  border: 1px solid black;
+  font-weight: normal;
 }
 
 .horarioContainer td:first-child {
