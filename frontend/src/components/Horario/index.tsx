@@ -43,7 +43,7 @@ export function Horario() {
   }
 
   useEffect(() => {
-    getHorario()
+    // getHorario()
     setHorario({
       seg: {
         '8': 'Programação Concorrente Distribuída',
@@ -82,11 +82,11 @@ export function Horario() {
           if (idx === 0) {
             return (
               <tr key={idx}>
-                {horario.map((value, idx) => {
+                {horario.map((value, idx2) => {
                   return (
                     <>
                       {value !== 'vazio' && (
-                        <th key={idx}>
+                        <th key={idx2}>
                           {value === 'seg'
                             ? 'Segunda'
                             : value === 'ter'
@@ -100,7 +100,7 @@ export function Horario() {
                             : 'Sábado'}
                         </th>
                       )}
-                      {value === 'vazio' && <th key={idx}></th>}
+                      {value === 'vazio' && <th key={idx2}></th>}
                     </>
                   )
                 })}
@@ -109,18 +109,18 @@ export function Horario() {
           }
           return (
             <tr key={idx}>
-              {horario.map((value, idx) => {
+              {horario.map((value, idx3) => {
                 return (
                   <>
                     {value === '' && (
-                      <td key={idx}>
+                      <td key={idx3}>
                         <div className={styles.horarioCard}>
                           <strong>Programação concorrente e distribuída</strong>
                           <span>horario tal</span>
                         </div>
                       </td>
                     )}
-                    {value !== '' && <td key={value + idx}>{value}</td>}
+                    {value !== '' && <td key={idx3}>{value}</td>}
                   </>
                 )
               })}
