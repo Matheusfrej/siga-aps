@@ -27,6 +27,7 @@ class UserInfoResource(Resource):
 class CadastrarCadeiraResource(Resource):
     def post(self):
         data = request.get_json()
+        print("Cadastrar cadeira resource ", data)
         data['token'] = request.headers.get('token')
         return fachada.cadastrarCadeira(data)
 

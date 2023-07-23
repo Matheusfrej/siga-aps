@@ -8,13 +8,12 @@ data = {'email': 'baws@cin.ufpe.br', 'senha': 123456}
 payload = json.dumps(data)
 response = requests.post(BASE + "login", headers=headers, data=payload)
 token = response.json().get('idToken')
-print(response.json())
 headers = {'Content-Type': 'application/json', 'token': token}
 
-# data = {'nome': 'Cadeira', 'horario': {'seg': [8, 9]}, 'centro_universitario': 'CIn'}
-# payload = json.dumps(data)
-# response = requests.post(BASE + "cadastrar-cadeira", headers=headers, data=payload)
-# print(response.json())
+data = {'nome': 'Cadeira', 'horario': {'seg': [17, 18]}, 'centro_universitario': 'CIn'}
+payload = json.dumps(data)
+response = requests.post(BASE + "cadastrar-cadeira", headers=headers, data=payload)
+print(response.json())
 
 # data = {'horario': {'sex': [15, 16]}}
 # payload = json.dumps(data)
