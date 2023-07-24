@@ -15,14 +15,14 @@ payload = json.dumps(data)
 response = requests.post(BASE + "cadastrar-cadeira", headers=headers, data=payload)
 print(response.json())
 
-# data = {'horario': {'sex': [15, 16]}}
+# data = {'horario': {'sex': [15, 16]}, 'nome': 'Cadeira', 'centro_universitario': 'CIn'}
 # payload = json.dumps(data)
 # response = requests.post(BASE + "cadastrar-cadeira", headers=headers, data=payload)
 # print(response.json())
 
-# payload = json.dumps(data)
-# response = requests.get(BASE + "ver-horario", headers=headers)
-# print(response.json())
+payload = json.dumps(data)
+response = requests.get(BASE + "ver-horario", headers=headers)
+print(response.json())
 
 response = requests.get(BASE + "get-user-info", headers=headers)
 print(response.json())

@@ -1,5 +1,5 @@
 from flask import jsonify, Response
-from utils.singleton import SingletonMetaclass
+from utils import SingletonMetaclass
 
 from negocio.controladores import *
 from entidades import ContaProfessor, ContaAluno
@@ -14,13 +14,19 @@ from utils import CadeiraSerializer, ContaSerializer
 
 from utils import ConflitoDeHorarioError, CamposVaziosError
 
+from dados import SQLAlchemyRepositorioFactory
+
 import traceback
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
-        cadastro_conta = CadastroConta()
-        cadastro_cadeira = CadastroCadeira()
-        cadastro_matricula = CadastroMatricula()
+        repo_factory = SQLAlchemyRepositorioFactory()
+        repo_conta = repo_factory.criar_repositorio_conta()
+        repo_cadeira = repo_factory.criar_repositorio_cadeira()
+        repo_matricula = repo_factory.criar_repositorio_matricula()
+        cadastro_conta = CadastroConta(repo_conta)
+        cadastro_cadeira = CadastroCadeira(repo_cadeira)
+        cadastro_matricula = CadastroMatricula(repo_matricula)
         subsistemaFirebase = iSubsistemaFirebase()
         self.__subsistemaFirebase = subsistemaFirebase
         self.__controladorConta = ControladorConta(cadastro_conta,subsistemaFirebase)
@@ -29,14 +35,10 @@ class Fachada(metaclass=SingletonMetaclass):
             cadastro_conta=cadastro_conta)
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
-            cadastro_cadeira=cadastro_cadeira,
-            cadastro_matricula=cadastro_matricula,
-            strategy=ProfessorStrategy
+            strategy=ProfessorStrategy(cadastro_cadeira)
         )
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
-            cadastro_cadeira=cadastro_cadeira,
-            cadastro_matricula=cadastro_matricula,
-            strategy=AlunoStrategy
+            strategy=AlunoStrategy(cadastro_matricula)
         )
 
     def get_curr_user_decorator(func):

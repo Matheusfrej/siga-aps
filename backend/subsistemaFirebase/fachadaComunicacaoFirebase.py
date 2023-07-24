@@ -2,9 +2,10 @@ import requests
 import json
 from requests import Session
 from requests.exceptions import HTTPError
+from utils import SingletonMetaclass
 
 
-class Firebase:
+class Firebase(metaclass=SingletonMetaclass):
     """ Firebase Interface """
     def __init__(self, config):
         self.api_key = config["apiKey"]
@@ -15,7 +16,7 @@ class Firebase:
     def auth(self):
         return Auth(self.api_key, self.requests, self.credentials)
 
-class Auth:
+class Auth(metaclass=SingletonMetaclass):
     """ Authentication Service """
     def __init__(self, api_key, requests, credentials):
         self.api_key = api_key

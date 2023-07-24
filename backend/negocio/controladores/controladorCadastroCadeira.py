@@ -1,4 +1,4 @@
-from utils.singleton import SingletonMetaclass
+from utils import SingletonMetaclass
 from negocio.cadastros.cadastroCadeira import CadastroCadeira
 from negocio.cadastros.cadastroConta import CadastroConta
 

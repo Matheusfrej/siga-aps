@@ -1,9 +1,9 @@
 from .iRepositorioCadeira import IRepositorioCadeira
-from entidades import Cadeira, Session
+from entidades import Cadeira
 from sqlalchemy.orm import joinedload
 
 class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
-    def __init__(self):
+    def __init__(self, Session):
         self.Session = Session
 
     def create(self, data):
