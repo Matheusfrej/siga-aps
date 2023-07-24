@@ -6,7 +6,7 @@ interface SigabContextProviderProps {
   children: ReactNode
 }
 
-interface UserInfo {
+export interface UserInfo {
   email: string
   cpf: string
   nome: string
