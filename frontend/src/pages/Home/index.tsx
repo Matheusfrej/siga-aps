@@ -35,7 +35,10 @@ export function Home() {
               </a>
             )}
             {userInfo.discriminator === 'conta_professor' && (
-              <NavLink to={'/visualizar-minhas-cadeiras'} className={styles.linkContainer}>
+              <NavLink
+                to={'/visualizar-minhas-cadeiras'}
+                className={styles.linkContainer}
+              >
                 <strong>Ver minhas cadeiras</strong>
                 <ClipboardText size={32} weight="bold" />
               </NavLink>
