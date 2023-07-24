@@ -1,11 +1,10 @@
-from dados import RepositorioCadeiraSQLAlchemy
 from dados.iRepositorioCadeira import IRepositorioCadeira
 
 from utils import CamposVaziosError, ConflitoDeHorarioError
 
 class CadastroCadeira:
-    def __init__(self):
-        self.repositorio_cadeira: IRepositorioCadeira = RepositorioCadeiraSQLAlchemy()
+    def __init__(self, repositorio_cadeira):
+        self.repositorio_cadeira: IRepositorioCadeira = repositorio_cadeira
 
     def cadastrar_cadeira(self, data):
         valida = self.validar_cadeira(data)

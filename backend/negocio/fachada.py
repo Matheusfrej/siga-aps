@@ -14,13 +14,19 @@ from utils import CadeiraSerializer, ContaSerializer
 
 from utils import ConflitoDeHorarioError, CamposVaziosError
 
+from dados import SQLAlchemyRepositorioFactory
+
 import traceback
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
-        cadastro_conta = CadastroConta()
-        cadastro_cadeira = CadastroCadeira()
-        cadastro_matricula = CadastroMatricula()
+        repo_factory = SQLAlchemyRepositorioFactory()
+        repo_conta = repo_factory.criar_repositorio_conta()
+        repo_cadeira = repo_factory.criar_repositorio_cadeira()
+        repo_matricula = repo_factory.criar_repositorio_matricula()
+        cadastro_conta = CadastroConta(repo_conta)
+        cadastro_cadeira = CadastroCadeira(repo_cadeira)
+        cadastro_matricula = CadastroMatricula(repo_matricula)
         subsistemaFirebase = iSubsistemaFirebase()
         self.__subsistemaFirebase = subsistemaFirebase
         self.__controladorConta = ControladorConta(cadastro_conta,subsistemaFirebase)

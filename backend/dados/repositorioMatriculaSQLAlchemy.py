@@ -1,10 +1,10 @@
 from .iRepositorioMatricula import IRepositorioMatricula
-from entidades import Matricula, Session
+from entidades import Matricula
 
 from datetime import datetime
 
 class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
-    def __init__(self):
+    def __init__(self, Session):
         self.Session = Session
 
     def create(self, data):
