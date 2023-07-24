@@ -10,7 +10,9 @@ from subsistemaFirebase.iSubsistemaFirebase import iSubsistemaFirebase
 
 from utils import ProfessorStrategy, AlunoStrategy
 
-from utils import CadeiraSerializer
+from utils import CadeiraSerializer, ContaSerializer
+
+from utils import ConflitoDeHorarioError, CamposVaziosError
 
 import traceback
 
@@ -20,8 +22,6 @@ class Fachada(metaclass=SingletonMetaclass):
         cadastro_cadeira = CadastroCadeira()
         cadastro_matricula = CadastroMatricula()
         subsistemaFirebase = iSubsistemaFirebase()
-        self.__currentUser = None
-        self.__userType = None
         self.__subsistemaFirebase = subsistemaFirebase
         self.__controladorConta = ControladorConta(cadastro_conta,subsistemaFirebase)
         self.__controladorCadastroCadeira: ControladorCadastroCadeira = ControladorCadastroCadeira(
@@ -54,7 +54,7 @@ class Fachada(metaclass=SingletonMetaclass):
         ''' Realiza o login '''
         try:
             data = self.__controladorConta.efetuarLogin(email=email, senha=senha)
-            # data['user'] = self.__controladorConta.get_user_by_email(email=email)
+            data['user'] = ContaSerializer(self.__controladorConta.get_user_by_email(email=email)).get_data()
             return data
         except Exception as e:
             print(traceback.format_exc())
@@ -71,7 +71,8 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def getUserInfo(self, data) -> Response:
         try:
-            return data['user']
+            # TODO colocar o serializador
+            return ContaSerializer(data['user']).get_data()
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
@@ -82,6 +83,10 @@ class Fachada(metaclass=SingletonMetaclass):
             data['professor'] = data.pop('user').id
             cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(data)
             return CadeiraSerializer(cadeira).get_data()
+        except CamposVaziosError as e:
+            return e.__str__(), 400
+        except ConflitoDeHorarioError as e:
+            return e.__str__(), 500
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
@@ -90,29 +95,24 @@ class Fachada(metaclass=SingletonMetaclass):
         try:
             data['professor'] = data.pop('user')
             cadeira = self.__controladorCadastroCadeira.editar_cadeira(data)
-            obj = cadeira.__dict__.copy()
-            obj.pop('_sa_instance_state')
-            return obj
+            return CadeiraSerializer(cadeira).get_data()
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
 
     def deletarCadeira(self, data) -> Response:
         try:
-            cadeira = self.__controladorCadastroCadeira.deletar_cadeira(data)
-            obj = cadeira.__dict__.copy()
-            obj.pop('_sa_instance_state')
-            return obj
+            deleted = self.__controladorCadastroCadeira.deletar_cadeira(data)
+            return {'success': deleted}
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
-    
-    def getCadeiraProfessor(self, data) -> Response:
+
+    @get_curr_user_decorator
+    def getCadeirasProfessor(self, data) -> Response:
         try:
-            cadeira = self.__controladorCadastroCadeira.get_cadeira_by_professor(data)
-            obj = cadeira.__dict__.copy()
-            obj.pop('_sa_instance_state')
-            return obj
+            cadeiras = self.__controladorCadastroCadeira.get_cadeiras_by_professor(data['user'].id)
+            return CadeiraSerializer(cadeiras, many=True).get_data()
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500

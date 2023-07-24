@@ -8,6 +8,7 @@ class BaseSerializer:
     def to_representation(self, instance):
         data = dict()
         for field in self.Meta.fields:
+            print(field)
             if hasattr(instance, field):
                 data[field] = getattr(instance, field)
 
@@ -46,10 +47,7 @@ class ContaSerializer(BaseSerializer):
             'cpf',
             'nome',
             'ano_entrada',
-            'discriminator',
-            'curso',
-            'siape',
-            'formacao',
+            'discriminator'
         )
 
 

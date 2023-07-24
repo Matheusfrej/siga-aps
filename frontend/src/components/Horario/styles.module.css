@@ -1,0 +1,146 @@
+.horarioContainer {
+  width: 70%;
+  height: 400px;
+  margin: auto;
+  /* padding: auto; */
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+  margin-top: 1rem;
+
+  /* align-items: center; */
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+.horarioContainer table {
+  /* width: 70%; */
+  border-collapse: collapse;
+  height: fit-content;
+  overflow: auto;
+}
+
+.horarioContainer th {
+  font-size: 1.25rem;
+  background: var(--blue-300);
+  color: var(--white);
+  border: 1px solid black;
+  font-weight: normal;
+}
+
+.horarioContainer td:first-child {
+  text-align: center;
+  background: var(--gray-100);
+}
+
+.horarioCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* height: fit-content; */
+  flex: 1;
+}
+
+.horarioContainer td div strong {
+  text-align: center;
+  font-weight: 500;
+}
+
+.horarioContainer td {
+  border: 1px solid black;
+}
+
+.cadeira0 {
+  background-color: #9bcc50;
+  color: #212121;
+}
+
+.cadeira1 {
+  background-color: #b97fc9;
+  color: #fff;
+}
+
+.cadeira2 {
+  background-color: #729f3f;
+  color: #fff;
+}
+
+.cadeira3 {
+  background-color: #53a4cf;
+  color: #fff;
+}
+
+.cadeira4 {
+  background-color: #fdb9e9;
+  color: #212121;
+}
+
+.cadeira5 {
+  background-color: #fd7d24;
+  color: #fff;
+}
+
+.cadeira6 {
+  background-color: #7b62a3;
+  color: #fff;
+}
+
+.cadeira7 {
+  background-color: #f7de3f;
+  color: #212121;
+}
+
+.cadeira8 {
+  background-color: #a4acaf;
+  color: #212121;
+}
+
+.cadeira9 {
+  background-color: #f366b9;
+  color: #fff;
+}
+
+.cadeira10 {
+  background-color: #9eb7b8;
+  color: #212121;
+}
+
+.cadeira11 {
+  background-color: #707070;
+  color: #fff;
+}
+
+.cadeira12 {
+  background-color: #eed535;
+  color: #212121;
+}
+
+.cadeira13 {
+  background-color: #d56723;
+  color: #fff;
+}
+
+.cadeira14 {
+  background-color: #3dc7ef;
+  color: #212121;
+}
+
+.cadeira15 {
+  background-color: #51c4e7;
+  color: #212121;
+}
+
+.cadeira16 {
+  background-color: #a38c21;
+  color: #fff;
+}
+
+.cadeira17 {
+  background-color: #4592c4;
+  color: #fff;
+}
+

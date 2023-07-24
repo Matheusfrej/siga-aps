@@ -22,10 +22,9 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
         with self.Session() as session:
             cadeira = session.query(Cadeira).filter_by(id=id).first()
             if cadeira:
-                # print(cadeira)
-                # for key, value in data.items():
-                #     setattr(cadeira, key, value)
-                # session.commit()
+                for key, value in data.items():
+                    setattr(cadeira, key, value)
+                session.commit()
                 pass
             else:
                 #TODO lembrar de levantar um erro caso a cadeira não exista
@@ -37,15 +36,12 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
             if cadeira:
                 session.delete(cadeira)
                 session.commit()
+                return True
             else:
-                pass
-
-    def validar_cadeira(self, data):
-        pass
+                # TODO fazer um raise
+                return False
 
     def get_by_professor(self, professor_id):
         with self.Session() as session:
             cadeiras = session.query(Cadeira).filter_by(professor_id=professor_id)
-            for cadeira in cadeiras:
-                cadeira.nome
             return list(cadeiras)
