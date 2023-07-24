@@ -1,5 +1,5 @@
 from flask import jsonify, Response
-from utils.singleton import SingletonMetaclass
+from utils import SingletonMetaclass
 
 from negocio.controladores import *
 from entidades import ContaProfessor, ContaAluno
@@ -35,14 +35,10 @@ class Fachada(metaclass=SingletonMetaclass):
             cadastro_conta=cadastro_conta)
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
-            cadastro_cadeira=cadastro_cadeira,
-            cadastro_matricula=cadastro_matricula,
-            strategy=ProfessorStrategy
+            strategy=ProfessorStrategy(cadastro_cadeira)
         )
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
-            cadastro_cadeira=cadastro_cadeira,
-            cadastro_matricula=cadastro_matricula,
-            strategy=AlunoStrategy
+            strategy=AlunoStrategy(cadastro_matricula)
         )
 
     def get_curr_user_decorator(func):

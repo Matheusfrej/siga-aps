@@ -1,8 +1,9 @@
 from subsistemaFirebase.fachadaComunicacaoFirebase import Firebase
 from dotenv import load_dotenv
+from utils import SingletonMetaclass
 import os
 
-class iSubsistemaFirebase:
+class iSubsistemaFirebase(metaclass=SingletonMetaclass):
     def __init__(self):
         load_dotenv("config.env")
         self.api_key=os.getenv("API_KEY")

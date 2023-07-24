@@ -1,4 +1,4 @@
-from utils.singleton import SingletonMetaclass
+from utils import SingletonMetaclass
 
 class ControladorConta(metaclass=SingletonMetaclass):
     def __init__(self, cadastroConta, iSubsistemaFirebase):
