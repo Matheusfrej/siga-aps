@@ -1,6 +1,8 @@
 from dados import IRepositorioMatricula
+from utils import SingletonMetaclass
 
-class CadastroMatricula:
+
+class CadastroMatricula(metaclass=SingletonMetaclass):
     def __init__(self, repositorio_matricula):
         self.repositorio_matricula: IRepositorioMatricula = repositorio_matricula
 

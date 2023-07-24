@@ -1,8 +1,8 @@
 from dados.iRepositorioCadeira import IRepositorioCadeira
 
-from utils import CamposVaziosError, ConflitoDeHorarioError
+from utils import CamposVaziosError, ConflitoDeHorarioError, SingletonMetaclass
 
-class CadastroCadeira:
+class CadastroCadeira(metaclass=SingletonMetaclass):
     def __init__(self, repositorio_cadeira):
         self.repositorio_cadeira: IRepositorioCadeira = repositorio_cadeira
 
