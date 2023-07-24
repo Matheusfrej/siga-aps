@@ -6,7 +6,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--gray-100);
+  background-color: var(--white);
   border-bottom: 1px solid var(--gray-300);
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.4);
   z-index: 999;
@@ -17,8 +17,27 @@
   max-width: 1280px;
   margin: auto;
   font-size: 1.5rem;
+  display: flex;
 }
 
 .headerContainer div span {
   color: var(--red-500);
+}
+
+.headerContainer button {
+  border: none;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  gap: 0.25rem;
+
+}
+
+.headerContainer button:hover {
+  background: var(--gray-100);
+  color: var(--gray-900);
 }

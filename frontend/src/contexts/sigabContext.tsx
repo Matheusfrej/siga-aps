@@ -7,19 +7,18 @@ interface SigabContextProviderProps {
 }
 
 interface UserInfo {
-  id: number
   email: string
   cpf: string
   nome: string
-  data_nascimento: Date
   ano_entrada: string
-  senha: string
   discriminator: 'conta_aluno' | 'conta_professor'
 }
 
 interface SigabContextType {
   userInfo: UserInfo
+  isLogged: () => boolean
   login: (email: string, password: string) => Promise<boolean>
+  logout: () => void
   showToast: (message: string, didSuccess: boolean) => void
 }
 
@@ -29,12 +28,62 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
   const [userInfo, setUserInfo] = useState({} as UserInfo)
 
   const login = async (email: string, senha: string) => {
-    const token = await loginRequest(email, senha)
-    if (token === -1) {
+    const response = await loginRequest(email, senha)
+    if (response === -1) {
       return false
     }
+    const token = response.idToken
+    const expireDate = response.expiresIn
+    // console.log(expireDate)
+    const dataAtual = new Date()
+    const milissegundosAtuais = dataAtual.getTime()
+    const milissegundosMaisUmaHora = milissegundosAtuais + expireDate * 1000
+    const novaData = new Date(milissegundosMaisUmaHora)
+
+    // console.log(novaData)
+    setUserInfo(response.user)
+
     localStorage.setItem('token', token.toString())
+    localStorage.setItem('userInfo', JSON.stringify(response.user))
+    localStorage.setItem('tokenExpireDate', JSON.stringify(novaData))
     return true
+  }
+
+  const logout = () => {
+    localStorage.clear()
+    setUserInfo({} as UserInfo)
+  }
+
+  const didTokenExpire = () => {
+    if (localStorage.getItem('tokenExpireDate') !== null) {
+      const dataAtual = new Date().getTime()
+      let dataExpira = localStorage.getItem('tokenExpireDate')
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      dataExpira = JSON.parse(dataExpira!)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const dataExpiraDate = new Date(dataExpira!).getTime()
+      if (dataAtual > dataExpiraDate) {
+        return true
+      }
+      return false
+    }
+    return true
+  }
+
+  const isLogged = () => {
+    if (localStorage.getItem('token') !== null) {
+      const tokenExpire = didTokenExpire()
+      if (tokenExpire) {
+        localStorage.clear()
+        return false
+      }
+      const user = localStorage.getItem('userInfo')
+      if (user !== null) {
+        setUserInfo(JSON.parse(user))
+      }
+      return true
+    }
+    return false
   }
 
   const showToast = (message: string, didSuccess: boolean) => {
@@ -45,7 +94,9 @@ export function SigabContextProvider({ children }: SigabContextProviderProps) {
     <SigabContext.Provider
       value={{
         userInfo,
+        isLogged,
         login,
+        logout,
         showToast,
       }}
     >
