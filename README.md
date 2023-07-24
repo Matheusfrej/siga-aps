@@ -12,3 +12,9 @@ O nosso projeto foi organizado em duas pastas principais: frontend e backend. Pa
 
 ## Tecnologias
 Nosso backend está em Python, usando o framework Flask e o SQLAlchemy para integrar o banco de dados SQLite. Nosso frontend está em React com TypeScript. Fizemos login com o agente interno Firebase Auth.
+
+## Equipe
+- Alice Sales (avss2)
+- Bruna Alves (baws)
+- FIlipe Gomes (fgm3)
+- Matheus Frej (mflc)
