@@ -4,7 +4,7 @@ export function Logo() {
   return (
     <div className={styles.logoContainer}>
       <h2>
-        Siga<span>b</span>
+        Siga<span>B</span>
       </h2>
     </div>
   )
