@@ -25,7 +25,6 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
                 for key, value in data.items():
                     setattr(cadeira, key, value)
                 session.commit()
-                pass
             else:
                 #TODO lembrar de levantar um erro caso a cadeira não exista
                 pass

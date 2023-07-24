@@ -91,6 +91,7 @@ class Fachada(metaclass=SingletonMetaclass):
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
     
+    @get_curr_user_decorator
     def editarCadeira(self, data) -> Response:
         try:
             data['professor'] = data.pop('user')
@@ -100,6 +101,7 @@ class Fachada(metaclass=SingletonMetaclass):
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
 
+    @get_curr_user_decorator
     def deletarCadeira(self, data) -> Response:
         try:
             deleted = self.__controladorCadastroCadeira.deletar_cadeira(data)
