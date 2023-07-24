@@ -1,9 +1,9 @@
 from .iRepositorioConta import IRepositorioConta
-from entidades import ContaBase, ContaAluno, ContaProfessor, Session
+from entidades import ContaBase, ContaAluno, ContaProfessor
 from sqlalchemy.orm import joinedload
 
 class RepositorioContaSQLAlchemy(IRepositorioConta):
-    def __init__(self):
+    def __init__(self, Session):
         self.Session = Session
 
     def create(self, data):

@@ -15,4 +15,5 @@ class Horario:
                 for h in v:
                     dicio[k][h] = c.nome
 
+        self.cadeiras = cadeiras
         self.data = dicio

@@ -1,11 +1,10 @@
-from dados import RepositorioCadeiraSQLAlchemy
 from dados.iRepositorioCadeira import IRepositorioCadeira
 
-from utils import CamposVaziosError, ConflitoDeHorarioError
+from utils import CamposVaziosError, ConflitoDeHorarioError, SingletonMetaclass
 
-class CadastroCadeira:
-    def __init__(self):
-        self.repositorio_cadeira: IRepositorioCadeira = RepositorioCadeiraSQLAlchemy()
+class CadastroCadeira(metaclass=SingletonMetaclass):
+    def __init__(self, repositorio_cadeira):
+        self.repositorio_cadeira: IRepositorioCadeira = repositorio_cadeira
 
     def cadastrar_cadeira(self, data):
         valida = self.validar_cadeira(data)

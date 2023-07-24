@@ -1,2 +1,0 @@
-from .loginRequestParser import LoginRequestParser
-from .cadastroCadeiraParser import CadastroCadeiraRequestParser
