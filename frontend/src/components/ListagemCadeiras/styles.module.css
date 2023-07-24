@@ -1,0 +1,41 @@
+.listagemContainer {
+  width: 100%;
+  padding-top: 8rem;
+}
+
+.listagemContent {
+  width: 100%;
+  max-width: 1280px;
+  margin: auto;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+table.customTable {
+  margin-top: 3rem;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border: 2px solid #7EA8F8;
+  color: #000000;
+}
+
+table.customTable td, table.customTable th {
+  border-width: 2px;
+  border-color: #7EA8F8;
+  border-style: solid;
+  padding: 5px;
+  height: 3rem;
+}
+
+table.customTable thead {
+  background-color: #7EA8F8;
+}
+
+.linkContainer {
+  color: var(--white);
+  text-decoration: none;
+}
