@@ -1,0 +1,10 @@
+.CampoForms {
+  background-color: var(--gray-300);
+  padding: 2rem;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.CampoForms p {
+  color: var(--black);
+}

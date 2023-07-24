@@ -35,10 +35,10 @@ export function Home() {
               </a>
             )}
             {userInfo.discriminator === 'conta_professor' && (
-              <a href="" className={styles.linkContainer}>
+              <NavLink to={'/visualizar-minhas-cadeiras'} className={styles.linkContainer}>
                 <strong>Ver minhas cadeiras</strong>
                 <ClipboardText size={32} weight="bold" />
-              </a>
+              </NavLink>
             )}
           </div>
         </div>

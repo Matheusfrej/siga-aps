@@ -43,3 +43,23 @@ body, input, textarea, button {
   font-weight: 400;
   font-size: 1rem;
 }
+
+
+.btn{
+  color: #fff;
+  background-color: #0066CC;
+  padding: 10px 30px;
+  border: solid #0066cc 2px;
+  border-radius: 50px;
+  transition : 500ms;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn:hover{
+  background-color: #2b95ff;
+  border: solid 2px #2b95ff;
+}
