@@ -3,7 +3,7 @@ import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { Horarios } from './pages/Horarios'
 import { CadastrarCadeira } from './pages/CadastrarCadeira'
-import { ListagemCadeiras } from './components/ListagemCadeiras'
+import { ListagemCadeiras } from './pages/ListagemCadeiras'
 
 export function Router() {
   return (

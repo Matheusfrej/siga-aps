@@ -3,7 +3,7 @@ import {
   deletarCadeiraRequest,
   getCadeiras,
 } from '../../services/cadeiraService'
-import { Header } from '../Header'
+import { Header } from '../../components/Header'
 import styles from './styles.module.css'
 import { NavLink } from 'react-router-dom'
 import { Trash } from '@phosphor-icons/react'
