@@ -10,14 +10,13 @@ interface CadeiraInterface{
   nome: string;
   plano_ensino: string;
   centro_universitario: string;
-  horarios: any[]; // Replace 'any' with the appropriate type of formatted horarios
+  horarios: any[];
 }
 
 export function ListagemCadeiras() {
   const [cadeiras, setCadeiras] = useState<CadeiraInterface[]>([]);
 
   useEffect(() => {
-    // Fetch the list of Cadeiras from the backend when the component mounts
     fetchCadeiras();
   }, []);
 
