@@ -15,10 +15,16 @@ export function Header() {
     navigate('/login')
   }
 
+  const handleLogoClick = () => {
+    navigate('/')
+  }
+
   return (
     <header className={styles.headerContainer}>
       <div>
-        <Logo />
+        <div onClick={handleLogoClick} className={styles.logoHeader}>
+          <Logo />
+        </div>
         <button onClick={handleLogout}>
           <ArrowLineRight size={20} />
           <p>Sair</p>

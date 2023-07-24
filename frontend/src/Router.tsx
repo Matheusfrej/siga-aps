@@ -11,7 +11,10 @@ export function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
       <Route path="/horarios" element={<Horarios />} />
-      <Route path="/visualizar-minhas-cadeiras" element={<ListagemCadeiras />} />
+      <Route
+        path="/visualizar-minhas-cadeiras"
+        element={<ListagemCadeiras />}
+      />
       <Route path="/cadastrar-cadeira" element={<CadastrarCadeira />} />
     </Routes>
   )

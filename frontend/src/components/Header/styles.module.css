@@ -37,6 +37,10 @@
 
 }
 
+.logoHeader {
+  cursor: pointer;
+}
+
 .headerContainer button:hover {
   background: var(--gray-100);
   color: var(--gray-900);

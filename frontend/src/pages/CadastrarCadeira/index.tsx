@@ -8,36 +8,41 @@ import HorarioCadeira from '../../components/HorarioCadeira'
 import { useNavigate } from 'react-router'
 
 export function CadastrarCadeira() {
-    const { showToast } = useContext(SigabContext)
-    const [nome, setNome] = useState('')
-    const [planoEnsino, setPlanoEnsino] = useState('')
-    const [centroUniversitario, setCentroUniversitario] = useState('')
-    const [formattedHorarios, setFormattedHorarios] = useState<any[]>([]);
-    const navigate = useNavigate()
+  const { showToast } = useContext(SigabContext)
+  const [nome, setNome] = useState('')
+  const [planoEnsino, setPlanoEnsino] = useState('')
+  const [centroUniversitario, setCentroUniversitario] = useState('')
+  const [formattedHorarios, setFormattedHorarios] = useState<any[]>([])
+  const navigate = useNavigate()
 
-    const handleSaveHorarios = (formattedHorarios: any) => {
-      setFormattedHorarios(formattedHorarios);
-    };
+  const handleSaveHorarios = (formattedHorarios: any) => {
+    setFormattedHorarios(formattedHorarios)
+  }
 
-    const handleSubmit = (e: FormEvent) => {
-      e.preventDefault()   
-      const formData = {
-        nome: nome,
-        plano_ensino: planoEnsino,
-        centro_universitario: centroUniversitario
-      }
-      
-      cadastrarCadeiraRequest(formData.nome, formData.plano_ensino, formData.centro_universitario, formattedHorarios)
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    const formData = {
+      nome,
+      plano_ensino: planoEnsino,
+      centro_universitario: centroUniversitario,
+    }
+
+    cadastrarCadeiraRequest(
+      formData.nome,
+      formData.plano_ensino,
+      formData.centro_universitario,
+      formattedHorarios,
+    )
       .then((response) => {
         if (response === -1) {
-          showToast('Erro ao cadastrar a cadeira!', true)
+          showToast('Erro ao cadastrar a cadeira!', false)
         } else {
           showToast('Cadastro realizado com sucesso!', true)
           navigate('/horarios')
         }
       })
       .catch((error) => {
-        showToast(`Erro ao cadastrar a cadeira! ${error}`, true)
+        showToast(`Erro ao cadastrar a cadeira! ${error}`, false)
       })
   }
 
@@ -62,18 +67,30 @@ export function CadastrarCadeira() {
             <h1>Cadastro Cadeira</h1>
             <div className={styles.formGroup}>
               <label>Nome</label>
-              <input type="text" value={nome} onChange={(e) => handleNomeChange(e)} />
+              <input
+                type="text"
+                value={nome}
+                onChange={(e) => handleNomeChange(e)}
+              />
             </div>
             <div className={styles.formGroup}>
               <label>Plano de Ensino</label>
-              <input type="text" value={planoEnsino} onChange={(e) => handlePlanoEnsinoChange(e)} />
+              <input
+                type="text"
+                value={planoEnsino}
+                onChange={(e) => handlePlanoEnsinoChange(e)}
+              />
             </div>
             <div className={styles.formGroup}>
               <HorarioCadeira onSaveHorarios={handleSaveHorarios} />
             </div>
             <div className={styles.formGroup}>
               <label>Centro universitário</label>
-              <input type="text" value={centroUniversitario} onChange={(e) => handleCentroChange(e)} />
+              <input
+                type="text"
+                value={centroUniversitario}
+                onChange={(e) => handleCentroChange(e)}
+              />
             </div>
             <div>
               <button className="btn" type="submit">
