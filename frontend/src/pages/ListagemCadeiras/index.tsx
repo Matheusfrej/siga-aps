@@ -14,6 +14,7 @@ interface CadeiraInterface {
   nome: string
   plano_ensino: string
   centro_universitario: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   horarios: any[]
 }
 

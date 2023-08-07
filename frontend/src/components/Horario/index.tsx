@@ -5,6 +5,7 @@ import { useEffect, useState, useContext } from 'react'
 
 export function Horario() {
   const { showToast } = useContext(SigabContext)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [horarioPessoa, setHorarioPessoa] = useState<any>()
 
   const listaCadeiras: string[] = []
