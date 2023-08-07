@@ -1,0 +1,14 @@
+.matriculaContainer {
+  width: 100%;
+  padding-top: 8rem;
+}
+
+.matriculaContent {
+  max-width: 1280px;
+  margin: auto;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

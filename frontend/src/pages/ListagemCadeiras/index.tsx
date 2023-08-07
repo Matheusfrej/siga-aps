@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
   deletarCadeiraRequest,
   getCadeiras,
 } from '../../services/cadeiraService'
 import { Header } from '../../components/Header'
 import styles from './styles.module.css'
-import { NavLink } from 'react-router-dom'
-import { Trash } from '@phosphor-icons/react'
+import { Trash, Pencil } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
+import { SigabContext } from '../../contexts/sigabContext'
 
 interface CadeiraInterface {
   id: number
@@ -17,11 +18,9 @@ interface CadeiraInterface {
 }
 
 export function ListagemCadeiras() {
+  const { showToast } = useContext(SigabContext)
   const [cadeiras, setCadeiras] = useState<CadeiraInterface[]>([])
-
-  useEffect(() => {
-    fetchCadeiras()
-  }, [])
+  const navigate = useNavigate()
 
   const fetchCadeiras = async () => {
     try {
@@ -30,11 +29,22 @@ export function ListagemCadeiras() {
     } catch (error) {}
   }
 
+  useEffect(() => {
+    fetchCadeiras()
+  }, [])
+
+  const handleEditCadeira = async (cadeiraId: number) => {
+    console.log('editou cadeira', cadeiraId)
+  }
+
   const handleDeleteCadeira = async (cadeiraId: number) => {
     try {
       await deletarCadeiraRequest(cadeiraId)
       fetchCadeiras()
-    } catch (error) {}
+      showToast('Cadeira deletada com sucesso', true)
+    } catch (error) {
+      showToast('Houve um erro ao deletar uma cadeira', false)
+    }
   }
 
   return (
@@ -51,13 +61,11 @@ export function ListagemCadeiras() {
             }}
           >
             <h1>Listagem de Cadeiras</h1>
-            <button className="btn">
-              <NavLink
-                to={'/cadastrar-cadeira'}
-                className={styles.linkContainer}
-              >
-                <strong>Cadastrar uma nova cadeira</strong>
-              </NavLink>
+            <button
+              className="btn"
+              onClick={() => navigate('/cadastrar-cadeira')}
+            >
+              <strong>Cadastrar uma nova cadeira</strong>
             </button>
           </div>
           <table className={styles.customTable}>
@@ -76,18 +84,18 @@ export function ListagemCadeiras() {
                   <td>{cadeira.plano_ensino}</td>
                   <td>{cadeira.centro_universitario}</td>
                   <td>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <div className={styles.actionsContainer}>
                       <button
                         className="btn"
                         onClick={() => handleDeleteCadeira(cadeira.id)}
                       >
                         <Trash />
+                      </button>
+                      <button
+                        className="btn"
+                        onClick={() => handleEditCadeira(cadeira.id)}
+                      >
+                        <Pencil />
                       </button>
                     </div>
                   </td>
