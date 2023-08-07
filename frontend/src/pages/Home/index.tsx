@@ -29,10 +29,10 @@ export function Home() {
               <CalendarBlank size={32} weight="bold" />
             </NavLink>
             {userInfo.discriminator === 'conta_aluno' && (
-              <a href="" className={styles.linkContainer}>
+              <NavLink to={'/matricula'} className={styles.linkContainer}>
                 <strong>Realizar Matrícula</strong>
                 <ClipboardText size={32} weight="bold" />
-              </a>
+              </NavLink>
             )}
             {userInfo.discriminator === 'conta_professor' && (
               <NavLink

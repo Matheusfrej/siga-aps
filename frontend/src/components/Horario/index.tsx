@@ -3,7 +3,12 @@ import { getHorarioRequest } from '../../services/horarioService'
 import styles from './styles.module.css'
 import { useEffect, useState, useContext } from 'react'
 
-export function Horario() {
+interface HorarioProps {
+  isMatricula?: boolean
+  horarioMatricula?: object
+}
+
+export function Horario({ isMatricula, horarioMatricula }: HorarioProps) {
   const { showToast } = useContext(SigabContext)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [horarioPessoa, setHorarioPessoa] = useState<any>()
@@ -42,11 +47,17 @@ export function Horario() {
       return
     }
     delete response.dom
+    console.log(response)
+
     setHorarioPessoa(response)
   }
 
   useEffect(() => {
-    getHorario()
+    if (isMatricula) {
+      setHorarioPessoa(horarioMatricula)
+    } else {
+      getHorario()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
