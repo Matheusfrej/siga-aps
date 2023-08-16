@@ -2,4 +2,4 @@ from .iRepositorioMatricula import IRepositorioMatricula
 from .iRepositorioCadeira import IRepositorioCadeira
 from .iRepositorioConta import IRepositorioConta
 
-from .repositorioAlchemyFactory import SQLAlchemyRepositorioFactory
+from .factories import SQLAlchemyRepositorioFactory, ListRepositorioFactory

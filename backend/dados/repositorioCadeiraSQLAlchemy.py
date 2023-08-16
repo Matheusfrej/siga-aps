@@ -40,8 +40,3 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
             else:
                 # TODO fazer um raise
                 return False
-
-    def get_by_professor(self, professor_id):
-        with self.Session() as session:
-            cadeiras = session.query(Cadeira).filter_by(professor_id=professor_id)
-            return list(cadeiras)

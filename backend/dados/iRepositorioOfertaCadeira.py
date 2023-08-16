@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class IRepositorioCadeira(ABC):
+class IRepositorioOfertaCadeira(ABC):
     @abstractmethod
     def create(self, data):
         pass
@@ -15,4 +15,8 @@ class IRepositorioCadeira(ABC):
     
     @abstractmethod
     def delete(self, id):
+        pass
+
+    @abstractmethod
+    def get_by_professor(self, professor_id):
         pass

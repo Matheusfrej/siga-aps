@@ -42,10 +42,3 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
             if cadeira.nome == data['nome']:
                 return False
         return True
-
-    def get_by_professor(self, professor_id):
-        found_cadeiras = []
-        for cadeira in self._cadeiras:
-            if cadeira.professor == professor_id:
-                found_cadeiras.append(cadeira)
-        return found_cadeiras

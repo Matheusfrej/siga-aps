@@ -14,13 +14,21 @@ from utils import CadeiraSerializer, ContaSerializer
 
 from utils import ConflitoDeHorarioError, CamposVaziosError
 
-from dados import SQLAlchemyRepositorioFactory
+from dados import SQLAlchemyRepositorioFactory, ListRepositorioFactory
+
+from dotenv import load_dotenv
 
 import traceback
+import os
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
-        repo_factory = SQLAlchemyRepositorioFactory()
+        load_dotenv("config.env")
+        db_type = os.getenv("DB_TYPE")
+        if db_type == 'sqlalchemy':
+            repo_factory = SQLAlchemyRepositorioFactory()
+        else:
+            repo_factory = ListRepositorioFactory()
         repo_conta = repo_factory.criar_repositorio_conta()
         repo_cadeira = repo_factory.criar_repositorio_cadeira()
         repo_matricula = repo_factory.criar_repositorio_matricula()
@@ -34,6 +42,7 @@ class Fachada(metaclass=SingletonMetaclass):
             cadastro_cadeira=cadastro_cadeira,
             cadastro_conta=cadastro_conta)
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
+        # TODO passar a strategy quando chamar o método e não inicialmente
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
             strategy=ProfessorStrategy(cadastro_cadeira)
         )
@@ -92,7 +101,8 @@ class Fachada(metaclass=SingletonMetaclass):
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
-    
+
+    @get_curr_user_decorator
     def editarCadeira(self, data) -> Response:
         try:
             data['professor'] = data.pop('user')

@@ -48,13 +48,13 @@ class GetCadeirasProfessorResource(Resource):
             'token': request.headers.get('token')
         }
         return fachada.getCadeirasProfessor(data)
-    
+
 class MatriculaResource(Resource):
     def post(self):
         data = request.get_json()
         data['token'] = request.headers.get('token')
         return fachada.realizarMatriculaCadeira(data)
-    
+
 class VerHorarioResource(Resource):
     def get(self):
         data = {
