@@ -20,21 +20,9 @@ class CadastroCadeira(metaclass=SingletonMetaclass):
         deleted = self.repositorio_cadeira.delete(data)
         return deleted
 
-    def get_cadeiras_by_professor(self, professor_id):
-        cadeiras = self.repositorio_cadeira.get_by_professor(professor_id)
-        return cadeiras
-
     def validar_cadeira(self, data):
-        horario = data['horario']
-        cadeiras = self.get_cadeiras_by_professor(data['professor'])
-        for cadeira in cadeiras:
-            for k, v in cadeira.horario.items():
-                for h in v:
-                    if h in horario.get(k, []):
-                        raise ConflitoDeHorarioError(data['nome'], cadeira.nome)
-
         campos_vazios = []
-        campos_obg = ["nome", "horario", "centro_universitario", "professor"]
+        campos_obg = ['nome']
         for campo in campos_obg:
             if campo not in data.keys():
                 campos_vazios.append(campo)

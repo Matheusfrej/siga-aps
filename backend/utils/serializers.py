@@ -1,4 +1,4 @@
-from entidades import Cadeira, ContaBase, ContaAluno, ContaProfessor
+from entidades import Cadeira, ContaBase, ContaAluno, ContaProfessor, OfertaCadeira
 
 class BaseSerializer:
     def __init__(self, content, many=False) -> None:
@@ -55,13 +55,8 @@ class CadeiraSimpleSerializer(BaseSerializer):
         model = Cadeira
         fields = (
             'nome',
-            'horario',
-            'plano_ensino',
-            'centro_universitario',
+            'ementa',
         )
-        sub_serializers = {
-            'professor': ContaSerializer
-        }
 
 
 class CadeiraSerializer(BaseSerializer):
@@ -69,15 +64,26 @@ class CadeiraSerializer(BaseSerializer):
         model = Cadeira
         fields = (
             'nome',
-            'horario',
-            'plano_ensino',
-            'centro_universitario',
+            'ementa',
         )
-        sub_serializers = {
-            'professor': ContaSerializer,
-        }
         many_sub_serializers = {
             'prerequisitos': CadeiraSimpleSerializer,
             'corequisitos': CadeiraSimpleSerializer,
             'equivalencias': CadeiraSimpleSerializer
+        }
+
+
+class OfertaCadeiraSerializer(BaseSerializer):
+    class Meta:
+        medel = OfertaCadeira
+        fields = (
+            'ementa',
+            'horario',
+            'plano_ensino',
+            'centro_universitario',
+            'periodo'
+        )
+        sub_serializer = {
+            'cadeira': CadeiraSimpleSerializer,
+            'professor': ContaSerializer
         }

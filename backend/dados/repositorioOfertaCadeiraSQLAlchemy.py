@@ -47,6 +47,6 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
 
     def get_by_professor(self, professor_id):
         with self.Session() as session:
-            cadeiras = session.query(Cadeira).filter_by(professor_id=professor_id)
-            return list(cadeiras)
+            ofertas_cadeiras = session.query(OfertaCadeira).filter_by(professor_id=professor_id)
+            return list(ofertas_cadeiras)
 

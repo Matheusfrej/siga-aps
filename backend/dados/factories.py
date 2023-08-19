@@ -4,6 +4,7 @@ from entidades import Base
 from .repositorioContaSQLAlchemy import RepositorioContaSQLAlchemy
 from .repositorioCadeiraSQLAlchemy import RepositorioCadeiraSQLAlchemy
 from .repositorioMatriculaSQLAlchemy import RepositorioMatriculaSQLAlchemy
+from .repositorioOfertaCadeiraSQLAlchemy import RepositorioOfertaCadeiraSQLAlchemy
 from .repositorioContaLocal import RepositorioContaLocal
 from .repositorioCadeiraLocal import RepositorioCadeiraLocal
 from .repositorioMatriculaLocal import RepositorioMatriculaLocal
@@ -29,7 +30,7 @@ class AbstractRepositorioFactory(ABC):
 
 class SQLAlchemyRepositorioFactory(AbstractRepositorioFactory):
     def __init__(self) -> None:
-        self.engine = create_engine("sqlite:///sigab.db")
+        self.engine = create_engine('sqlite:///sigab.db')
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine)
 

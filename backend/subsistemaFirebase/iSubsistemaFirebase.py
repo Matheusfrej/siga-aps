@@ -5,12 +5,12 @@ import os
 
 class iSubsistemaFirebase(metaclass=SingletonMetaclass):
     def __init__(self):
-        load_dotenv("config.env")
-        self.api_key=os.getenv("API_KEY")
-        self.auth_domain=os.getenv("AUTH_DOMAIN")
+        load_dotenv('config.env')
+        self.api_key=os.getenv('API_KEY')
+        self.auth_domain=os.getenv('AUTH_DOMAIN')
         self.config = {
-        "apiKey": self.api_key,
-        "authDomain": self.auth_domain
+        'apiKey': self.api_key,
+        'authDomain': self.auth_domain
         } 
         self.__fachadaFirebase = Firebase(self.config).auth()
 
