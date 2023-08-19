@@ -95,6 +95,7 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def cadastrarCadeira(self, data) -> Response:
         try:
+            data.pop('user')
             cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(data)
             return CadeiraSerializer(cadeira).get_data()
         except CamposVaziosError as e:

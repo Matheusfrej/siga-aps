@@ -28,7 +28,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
 
     def validar_oferta_cadeira(self, data):
         campos_vazios = []
-        campos_obg = ['nome', 'centro_universitario', 'professor', 'periodo', 'horario']
+        campos_obg = ['centro_universitario', 'professor', 'periodo', 'horario']
         for campo in campos_obg:
             if campo not in data.keys():
                 campos_vazios.append(campo)
