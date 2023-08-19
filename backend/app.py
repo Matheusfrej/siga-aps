@@ -16,6 +16,7 @@ api.add_resource(CadastrarOfertaCadeiraPresenter, '/cadastrar-oferta-cadeira')
 api.add_resource(EditarOfertaCadeiraPresenter, '/editar-oferta-cadeira')
 api.add_resource(DeletarOfertaCadeiraPresenter, '/deletar-oferta-cadeira')
 api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor')
+api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
 api.add_resource(VerHorarioPresenter, '/ver-horario')
 api.add_resource(MatriculaPresenter, '/fazer-matricula')
 

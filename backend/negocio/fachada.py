@@ -58,6 +58,7 @@ class Fachada(metaclass=SingletonMetaclass):
     def get_curr_user_decorator(func):
         ''' usar em métodos que precisam do usuário '''
         def wrapper(self, data):
+            print('aqui',data)
             token = data.pop('token')
             user_info = self.__subsistemaFirebase.getInfoConta(token=token)
             email = user_info['users'][0]['email']
@@ -159,6 +160,16 @@ class Fachada(metaclass=SingletonMetaclass):
     def getOfertaCadeirasProfessor(self, data) -> Response:
         try:
             ofertas_cadeiras = self.__controladorOfertaCadeira.get_ofertas_cadeiras_by_professor(data['user'].id)
+            return OfertaCadeiraSerializer(ofertas_cadeiras, many=True).get_data()
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+    
+    @get_curr_user_decorator
+    def getOfertaCadeirasPeriodo(self, data) -> Response:
+        try:
+            print('aaaaaa', data)
+            ofertas_cadeiras = self.__controladorOfertaCadeira.get_ofertas_cadeiras_by_periodo(data['periodo'])
             return OfertaCadeiraSerializer(ofertas_cadeiras, many=True).get_data()
         except Exception as e:
             print(traceback.format_exc())

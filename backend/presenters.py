@@ -71,6 +71,15 @@ class GetOfertasCadeirasProfessorPresenter(Resource):
             'token': request.headers.get('token')
         }
         return fachada.getOfertaCadeirasProfessor(data)
+    
+
+class GetOfertasCadeirasPeriodoPresenter(Resource):
+    def get(self):
+        data = {
+            'token': request.headers.get('token'),
+            'periodo': request.headers.get('periodo')
+        }
+        return fachada.getOfertaCadeirasPeriodo(data)
 
 
 class MatriculaPresenter(Resource):

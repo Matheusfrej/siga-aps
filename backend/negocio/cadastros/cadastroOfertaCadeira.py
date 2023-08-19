@@ -25,6 +25,10 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
     def get_ofertas_cadeiras_by_professor(self, professor_id):
         ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_professor(professor_id)
         return ofertas_cadeiras
+    
+    def get_ofertas_cadeiras_by_periodo(self, periodo):
+        ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_periodo(periodo)
+        return ofertas_cadeiras
 
     def validar_oferta_cadeira(self, data):
         campos_vazios = []
