@@ -42,6 +42,7 @@ class ContaSerializer(BaseSerializer):
     class Meta:
         model = ContaBase
         fields = (
+            'id',
             'email',
             'cpf',
             'nome',
@@ -54,6 +55,7 @@ class CadeiraSimpleSerializer(BaseSerializer):
     class Meta:
         model = Cadeira
         fields = (
+            'id',
             'nome',
             'ementa',
         )
@@ -63,6 +65,7 @@ class CadeiraSerializer(BaseSerializer):
     class Meta:
         model = Cadeira
         fields = (
+            'id',
             'nome',
             'ementa',
         )

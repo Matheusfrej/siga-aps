@@ -18,5 +18,5 @@ class ControladorCadastroCadeira(metaclass=SingletonMetaclass):
         return nova_cadeira
 
     def deletar_cadeira(self, data):
-        deleted = self.cadastro_cadeira.deletar_cadeira(data)
+        deleted = self.cadastro_cadeira.deletar_cadeira(data.get('id'))
         return deleted

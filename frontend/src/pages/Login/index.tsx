@@ -20,6 +20,8 @@ export function Login() {
       showToast('Login realizado com sucesso!', true)
       navigate('/')
     } else {
+      console.log('entrou aq')
+
       showToast('Email ou senha inválidos', false)
       setPassword('')
     }

@@ -5,26 +5,28 @@ import { useEffect, useState, useContext } from 'react'
 
 export function Horario() {
   const { showToast } = useContext(SigabContext)
-  const [, setHorario] = useState<object>()
+  const [horarioPessoa, setHorarioPessoa] = useState<any>()
+
+  const listaCadeiras: string[] = []
 
   const matrizHorario = [
     ['vazio', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'],
-    ['7h', '', '', '', '', '', ''],
-    ['8h', '', '', '', '', '', ''],
-    ['9h', '', '', '', '', '', ''],
-    ['10h', '', '', '', '', '', ''],
-    ['11h', '', '', '', '', '', ''],
-    ['12h', '', '', '', '', '', ''],
-    ['13h', '', '', '', '', '', ''],
-    ['14h', '', '', '', '', '', ''],
-    ['15h', '', '', '', '', '', ''],
-    ['16h', '', '', '', '', '', ''],
-    ['17h', '', '', '', '', '', ''],
-    ['18h', '', '', '', '', '', ''],
-    ['19h', '', '', '', '', '', ''],
-    ['20h', '', '', '', '', '', ''],
-    ['21h', '', '', '', '', '', ''],
-    ['22h', '', '', '', '', '', ''],
+    ['7', '', '', '', '', '', ''],
+    ['8', '', '', '', '', '', ''],
+    ['9', '', '', '', '', '', ''],
+    ['10', '', '', '', '', '', ''],
+    ['11', '', '', '', '', '', ''],
+    ['12', '', '', '', '', '', ''],
+    ['13', '', '', '', '', '', ''],
+    ['14', '', '', '', '', '', ''],
+    ['15', '', '', '', '', '', ''],
+    ['16', '', '', '', '', '', ''],
+    ['17', '', '', '', '', '', ''],
+    ['18', '', '', '', '', '', ''],
+    ['19', '', '', '', '', '', ''],
+    ['20', '', '', '', '', '', ''],
+    ['21', '', '', '', '', '', ''],
+    ['22', '', '', '', '', '', ''],
   ]
 
   const getHorario = async () => {
@@ -32,46 +34,18 @@ export function Horario() {
     if (!token) {
       return
     }
-    console.log(token)
 
     const response = await getHorarioRequest(token)
     if (response === -1) {
       showToast('Houve um erro ao carregar os seus horários', false)
       return
     }
-    console.log('chegou em Horario', response)
+    delete response.dom
+    setHorarioPessoa(response)
   }
 
   useEffect(() => {
-    // getHorario()
-    setHorario({
-      seg: {
-        '8': 'Programação Concorrente Distribuída',
-        '9': 'Programação Concorrente Distribuída',
-        '10': 'Análise e Projetos de Sistemas',
-        '11': 'Análise e Projetos de Sistemas',
-      },
-      ter: {
-        '8': 'Sistemas de Informação',
-        '9': 'Sistemas de Informação',
-        '10': 'Análise e Projetos de Sistemas',
-        '11': 'Análise e Projetos de Sistemas',
-      },
-      qua: {
-        '10': 'Programação Concorrente Distribuída',
-        '11': 'Programação Concorrente Distribuída',
-        '8': 'Análise e Projetos de Sistemas',
-        '9': 'Análise e Projetos de Sistemas',
-      },
-      qui: {
-        '10': 'Sistemas de Informação',
-        '11': 'Sistemas de Informação',
-        '8': 'Análise e Projetos de Sistemas',
-        '9': 'Análise e Projetos de Sistemas',
-      },
-      sex: {},
-      sab: {},
-    })
+    getHorario()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -110,17 +84,42 @@ export function Horario() {
           return (
             <tr key={idx}>
               {horario.map((value, idx3) => {
+                const dia = matrizHorario[0][idx3]
+                const hora = matrizHorario[idx][0]
+                const temCadeira =
+                  value === '' &&
+                  horarioPessoa !== undefined &&
+                  dia in horarioPessoa &&
+                  hora in horarioPessoa[dia]
+                let nomeCadeira = ''
+                if (temCadeira) {
+                  nomeCadeira = horarioPessoa[dia][hora]
+                  if (!listaCadeiras.includes(nomeCadeira)) {
+                    listaCadeiras.push(nomeCadeira)
+                  }
+                }
                 return (
                   <>
-                    {value === '' && (
-                      <td key={idx3}>
+                    {temCadeira ? (
+                      <td
+                        key={idx3}
+                        className={
+                          styles['cadeira' + listaCadeiras.indexOf(nomeCadeira)]
+                        }
+                      >
                         <div className={styles.horarioCard}>
-                          <strong>Programação concorrente e distribuída</strong>
-                          <span>horario tal</span>
+                          <strong>{nomeCadeira}</strong>
+                          <span>
+                            {hora}h - {hora}h50
+                          </span>
                         </div>
                       </td>
-                    )}
-                    {value !== '' && <td key={idx3}>{value}</td>}
+                    ) : value === '' ? (
+                      <td key={idx3}>
+                        <div className={styles.horarioCard}></div>
+                      </td>
+                    ) : null}
+                    {value !== '' && <td key={idx3}>{value}h</td>}
                   </>
                 )
               })}

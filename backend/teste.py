@@ -8,7 +8,6 @@ data = {'email': 'baws@cin.ufpe.br', 'senha': 123456}
 payload = json.dumps(data)
 response = requests.post(BASE + 'login', headers=headers, data=payload)
 token = response.json().get('idToken')
-print(response.json())
 headers = {'Content-Type': 'application/json', 'token': token}
 
 # data = {'nome': 'Cadeira', 'horario': {'seg': [8, 9]}, 'centro_universitario': 'CIn'}
