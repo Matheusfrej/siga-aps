@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, FormEvent, useState, useContext } from 'react'
 import styles from './styles.module.css'
 import '../../global.css'

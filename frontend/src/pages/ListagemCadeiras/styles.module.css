@@ -31,6 +31,10 @@ table.customTable td, table.customTable th {
   height: 3rem;
 }
 
+table.customTable td:last-child {
+  width: 1rem;
+}
+
 table.customTable thead {
   background-color: #7EA8F8;
 }
@@ -38,4 +42,10 @@ table.customTable thead {
 .linkContainer {
   color: var(--white);
   text-decoration: none;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
 }

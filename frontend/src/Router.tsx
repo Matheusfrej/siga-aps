@@ -4,6 +4,7 @@ import { Login } from './pages/Login'
 import { Horarios } from './pages/Horarios'
 import { CadastrarCadeira } from './pages/CadastrarCadeira'
 import { ListagemCadeiras } from './pages/ListagemCadeiras'
+import { Matricula } from './pages/Matricula'
 
 export function Router() {
   return (
@@ -16,6 +17,7 @@ export function Router() {
         element={<ListagemCadeiras />}
       />
       <Route path="/cadastrar-cadeira" element={<CadastrarCadeira />} />
+      <Route path="/matricula" element={<Matricula />} />
     </Routes>
   )
 }

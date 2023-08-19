@@ -3,8 +3,14 @@ import { getHorarioRequest } from '../../services/horarioService'
 import styles from './styles.module.css'
 import { useEffect, useState, useContext } from 'react'
 
-export function Horario() {
+interface HorarioProps {
+  isMatricula?: boolean
+  horarioMatricula?: object
+}
+
+export function Horario({ isMatricula, horarioMatricula }: HorarioProps) {
   const { showToast } = useContext(SigabContext)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [horarioPessoa, setHorarioPessoa] = useState<any>()
 
   const listaCadeiras: string[] = []
@@ -41,11 +47,17 @@ export function Horario() {
       return
     }
     delete response.dom
+    console.log(response)
+
     setHorarioPessoa(response)
   }
 
   useEffect(() => {
-    getHorario()
+    if (isMatricula) {
+      setHorarioPessoa(horarioMatricula)
+    } else {
+      getHorario()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -55,282 +67,84 @@ export function Horario() {
         {matrizHorario.map((horario, idx) => {
           if (idx === 0) {
             return (
-              <tr key={idx}>
-                {horario.map((value, idx2) => {
+              <thead key={idx}>
+                <tr>
+                  {horario.map((value, idx2) => {
+                    return (
+                      <>
+                        {value !== 'vazio' && (
+                          <th key={`${idx}${idx2}`}>
+                            {value === 'seg'
+                              ? 'Segunda'
+                              : value === 'ter'
+                              ? 'Terça'
+                              : value === 'qua'
+                              ? 'Quarta'
+                              : value === 'qui'
+                              ? 'Quinta'
+                              : value === 'sex'
+                              ? 'Sexta'
+                              : 'Sábado'}
+                          </th>
+                        )}
+                        {value === 'vazio' && <th key={`${idx}${idx2}`}></th>}
+                      </>
+                    )
+                  })}
+                </tr>
+              </thead>
+            )
+          }
+          return (
+            <tbody key={idx}>
+              <tr>
+                {horario.map((value, idx3) => {
+                  const dia = matrizHorario[0][idx3]
+                  const hora = matrizHorario[idx][0]
+                  const temCadeira =
+                    value === '' &&
+                    horarioPessoa !== undefined &&
+                    dia in horarioPessoa &&
+                    hora in horarioPessoa[dia]
+                  let nomeCadeira = ''
+                  if (temCadeira) {
+                    nomeCadeira = horarioPessoa[dia][hora]
+                    if (!listaCadeiras.includes(nomeCadeira)) {
+                      listaCadeiras.push(nomeCadeira)
+                    }
+                  }
                   return (
                     <>
-                      {value !== 'vazio' && (
-                        <th key={idx2}>
-                          {value === 'seg'
-                            ? 'Segunda'
-                            : value === 'ter'
-                            ? 'Terça'
-                            : value === 'qua'
-                            ? 'Quarta'
-                            : value === 'qui'
-                            ? 'Quinta'
-                            : value === 'sex'
-                            ? 'Sexta'
-                            : 'Sábado'}
-                        </th>
-                      )}
-                      {value === 'vazio' && <th key={idx2}></th>}
+                      {temCadeira ? (
+                        <td
+                          key={`${idx}${idx3}`}
+                          className={
+                            styles[
+                              'cadeira' + listaCadeiras.indexOf(nomeCadeira)
+                            ]
+                          }
+                        >
+                          <div className={styles.horarioCard}>
+                            <strong>{nomeCadeira}</strong>
+                            <span>
+                              {hora}h - {hora}h50
+                            </span>
+                          </div>
+                        </td>
+                      ) : value === '' ? (
+                        <td key={`${idx}${idx3}`}>
+                          <div className={styles.horarioCard}></div>
+                        </td>
+                      ) : null}
+                      {value !== '' && <td key={`${idx}${idx3}`}>{value}h</td>}
                     </>
                   )
                 })}
               </tr>
-            )
-          }
-          return (
-            <tr key={idx}>
-              {horario.map((value, idx3) => {
-                const dia = matrizHorario[0][idx3]
-                const hora = matrizHorario[idx][0]
-                const temCadeira =
-                  value === '' &&
-                  horarioPessoa !== undefined &&
-                  dia in horarioPessoa &&
-                  hora in horarioPessoa[dia]
-                let nomeCadeira = ''
-                if (temCadeira) {
-                  nomeCadeira = horarioPessoa[dia][hora]
-                  if (!listaCadeiras.includes(nomeCadeira)) {
-                    listaCadeiras.push(nomeCadeira)
-                  }
-                }
-                return (
-                  <>
-                    {temCadeira ? (
-                      <td
-                        key={idx3}
-                        className={
-                          styles['cadeira' + listaCadeiras.indexOf(nomeCadeira)]
-                        }
-                      >
-                        <div className={styles.horarioCard}>
-                          <strong>{nomeCadeira}</strong>
-                          <span>
-                            {hora}h - {hora}h50
-                          </span>
-                        </div>
-                      </td>
-                    ) : value === '' ? (
-                      <td key={idx3}>
-                        <div className={styles.horarioCard}></div>
-                      </td>
-                    ) : null}
-                    {value !== '' && <td key={idx3}>{value}h</td>}
-                  </>
-                )
-              })}
-            </tr>
+            </tbody>
           )
         })}
       </table>
-      {/* 
-      <table>
-        <tr>
-          <th></th>
-          <th>Segunda</th>
-          <th>Terça</th>
-          <th>Quarta</th>
-          <th>Quinta</th>
-          <th>Sexta</th>
-          <th>Sábado</th>
-        </tr>
-        <tr>
-          <td>7h</td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>8h</td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>9h</td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>10h</td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-          <td>
-            <div className={styles.horarioCard}>
-              <strong>Programação concorrente e distribuída</strong>
-              <span>horario tal</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>11h</td>
-        </tr>
-        <tr>
-          <td>12h</td>
-        </tr>
-        <tr>
-          <td>13h</td>
-        </tr>
-        <tr>
-          <td>14h</td>
-        </tr>
-        <tr>
-          <td>15h</td>
-        </tr>
-        <tr>
-          <td>16h</td>
-        </tr>
-        <tr>
-          <td>17h</td>
-        </tr>
-        <tr>
-          <td>18h</td>
-        </tr>
-        <tr>
-          <td>19h</td>
-        </tr>
-        <tr>
-          <td>20h</td>
-        </tr>
-        <tr>
-          <td>21h</td>
-        </tr>
-        <tr>
-          <td>22h</td>
-        </tr>
-      </table> */}
     </div>
   )
 }

@@ -15,6 +15,7 @@ export function Horarios() {
     if (!logged) {
       navigate('/login')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
