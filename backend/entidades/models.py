@@ -188,7 +188,7 @@ class Matricula(Base):
     periodo = Column(String)
 
     aluno = relationship('ContaAluno')
-    oferta_cadeiras = relationship('OfertaCadeira', secondary=matricula_oferta_cadeira_association)
+    ofertas_cadeiras = relationship('OfertaCadeira', secondary=matricula_oferta_cadeira_association)
 
     def __init__(
             self,

@@ -4,12 +4,14 @@ from negocio import Fachada
 
 fachada: Fachada = Fachada()
 
+
 class LoginPresenter(Resource):
     def post(self):
         args = request.get_json()
         email = args['email']
         senha = args['senha']
         return fachada.efetuarLogin(email=email, senha=senha)
+
 
 class UserInfoPresenter(Resource):
     def get(self):
@@ -18,6 +20,7 @@ class UserInfoPresenter(Resource):
         }
         return fachada.getUserInfo(data)
 
+
 class CadastrarCadeiraPresenter(Resource):
     def post(self):
         data = request.get_json()
@@ -25,11 +28,13 @@ class CadastrarCadeiraPresenter(Resource):
         data['token'] = request.headers.get('token')
         return fachada.cadastrarCadeira(data)
 
+
 class EditarCadeiraPresenter(Resource):
     def put(self):
         data = request.get_json()
         data['token'] = request.headers.get('token')
         return fachada.editarCadeira(data)
+
 
 class DeletarCadeiraPresenter(Resource):
     def delete(self):
@@ -37,18 +42,43 @@ class DeletarCadeiraPresenter(Resource):
         data['token'] = request.headers.get('token')
         return fachada.deletarCadeira(data)
 
-class GetCadeirasProfessorPresenter(Resource):
+
+class CadastrarOfertaCadeiraPresenter(Resource):
+    def post(self):
+        data = request.get_json()
+        print("Cadastrar cadeira resource ", data)
+        data['token'] = request.headers.get('token')
+        return fachada.cadastrarOfertaCadeira(data)
+
+
+class EditarOfertaCadeiraPresenter(Resource):
+    def put(self):
+        data = request.get_json()
+        data['token'] = request.headers.get('token')
+        return fachada.editarOfertaCadeira(data)
+
+
+class DeletarOfertaCadeiraPresenter(Resource):
+    def delete(self):
+        data = request.get_json()
+        data['token'] = request.headers.get('token')
+        return fachada.deletarOfertaCadeira(data)
+
+
+class GetOfertasCadeirasProfessorPresenter(Resource):
     def get(self):
         data = {
             'token': request.headers.get('token')
         }
-        return fachada.getCadeirasProfessor(data)
+        return fachada.getOfertaCadeirasProfessor(data)
+
 
 class MatriculaPresenter(Resource):
     def post(self):
         data = request.get_json()
         data['token'] = request.headers.get('token')
         return fachada.realizarMatriculaCadeira(data)
+
 
 class VerHorarioPresenter(Resource):
     def get(self):

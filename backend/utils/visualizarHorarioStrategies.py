@@ -13,7 +13,7 @@ class ProfessorStrategy(IStrategy):
         self.cadastro_cadeiras = cadastro_cadeiras
 
     def get_horario(self, user_id):
-        cadeiras = self.cadastro_cadeiras.get_cadeiras_by_professor(user_id)
+        cadeiras = self.cadastro_cadeiras.get_ofertas_cadeiras_by_professor(user_id)
         return cadeiras
 
 class AlunoStrategy(IStrategy):
@@ -22,5 +22,5 @@ class AlunoStrategy(IStrategy):
 
     def get_horario(self, user_id):
         matricula = self.cadastro_matricula.get_current_by_aluno(user_id)
-        return matricula.cadeiras
+        return matricula.ofertas_cadeiras
         

@@ -13,7 +13,9 @@ class CadastroCadeira(metaclass=SingletonMetaclass):
             return cadeira
 
     def editar_cadeira(self, data):
-        cadeira = self.repositorio_cadeira.update(data)
+        valida = self.validar_cadeira(data)
+        if valida:
+            cadeira = self.repositorio_cadeira.update(data)
         return cadeira
     
     def deletar_cadeira(self, data):

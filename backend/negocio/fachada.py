@@ -49,7 +49,7 @@ class Fachada(metaclass=SingletonMetaclass):
         )
         # TODO passar a strategy quando chamar o método e não inicialmente
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
-            strategy=ProfessorStrategy(cadastro_cadeira)
+            strategy=ProfessorStrategy(cadastro_oferta_cadeira)
         )
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
             strategy=AlunoStrategy(cadastro_matricula)

@@ -5,5 +5,5 @@ class ControladorVisualizarHorario:
         self.strategy = strategy
 
     def get_horario(self, user_id):
-        cadeiras = self.strategy.get_horario(user_id)
-        return Horario(cadeiras)
+        ofertas_cadeiras = self.strategy.get_horario(user_id)
+        return Horario(ofertas_cadeiras)

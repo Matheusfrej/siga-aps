@@ -54,10 +54,10 @@ def test_create_and_save():
     conta_prof.ofertas_cadeiras.append(oferta_cadeira4)
 
     conta_aluno.matriculas.append(matricula)
-    matricula.cadeiras.append(oferta_cadeira1)
-    matricula.cadeiras.append(oferta_cadeira2)
-    matricula.cadeiras.append(oferta_cadeira3)
-    matricula.cadeiras.append(oferta_cadeira4)
+    matricula.ofertas_cadeiras.append(oferta_cadeira1)
+    matricula.ofertas_cadeiras.append(oferta_cadeira2)
+    matricula.ofertas_cadeiras.append(oferta_cadeira3)
+    matricula.ofertas_cadeiras.append(oferta_cadeira4)
 
 
     # Add the instances to the session and commit
@@ -79,7 +79,7 @@ def test_create_and_save():
     print('ContaProfessor:', conta_prof.nome)
     print('ContaAluno:', conta_aluno.nome)
     for i in range(4):
-        print(f'Cadeira {i+1}:', matricula.cadeiras[i].cadeira.nome)
+        print(f'Cadeira {i+1}:', matricula.ofertas_cadeiras[i].cadeira.nome)
 
     print('Matricula:', matricula.periodo)
     cadeira = session.query(OfertaCadeira).first()
