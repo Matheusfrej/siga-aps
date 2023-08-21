@@ -7,7 +7,7 @@ class IRepositorioMatricula(ABC):
         pass
     
     @abstractmethod
-    def read(self, id):
+    def get_by_id(self, id):
         pass
     
     @abstractmethod

@@ -9,3 +9,27 @@ class CadastroMatricula(metaclass=SingletonMetaclass):
     def get_current_by_aluno(self, aluno_id):
         matricula = self.repositorio_matricula.get_current_by_aluno(aluno_id)
         return matricula
+    
+    def cadastrar_matricula(self, data):
+        valida = self.validar_matricula(data)
+        if valida:
+            matricula = self.repositorio_matricula.create(data)
+            return matricula
+    
+    def atualizar_matricula(self, data):
+        valida = self.validar_matricula(data)
+        if valida:
+            matricula = self.repositorio_matricula.update(data)
+            return matricula
+
+    def get_matricula(self, data):
+        matricula = self.repositorio_matricula.get_by_id(data)
+        return matricula
+    
+    def deletar_matricula(self, data):
+        matricula = self.repositorio_matricula.delete(data)
+        return matricula
+    
+    def get_matriculas_aluno(self, data):
+        matriculas = self.repositorio_matricula.get_by_aluno(data)
+        return matriculas
