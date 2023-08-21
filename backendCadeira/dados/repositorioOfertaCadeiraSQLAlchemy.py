@@ -1,6 +1,7 @@
 
 from .iRepositorioOfertaCadeira import IRepositorioOfertaCadeira
 from entidades import OfertaCadeira
+from entidades import Cadeira
 from sqlalchemy.orm import joinedload
 
 
@@ -15,13 +16,20 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
             session.commit()
             nova_oferta_cadeira = session.query(
                 OfertaCadeira).filter_by(
-                    id=nova_oferta_cadeira.id).options(joinedload(OfertaCadeira.cadeira)).first()
+                    id=nova_oferta_cadeira.id).options(
+                        joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.corequisitos),
+                        joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.prerequisitos),
+                        joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.equivalencias)).first()
             print(nova_oferta_cadeira.cadeira)
             return nova_oferta_cadeira
 
     def read(self, id):
         with self.Session() as session:
-            return session.query(OfertaCadeira).filter_by(id=id).options(joinedload(OfertaCadeira.cadeira)).first()
+            return session.query(OfertaCadeira).filter_by(id=id).options(
+                joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.corequisitos),
+                joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.prerequisitos),
+                joinedload(OfertaCadeira.cadeira).joinedload(Cadeira.equivalencias)
+            ).first()
 
     def update(self, id, data):
         with self.Session() as session:
