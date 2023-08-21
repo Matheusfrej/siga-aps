@@ -8,6 +8,7 @@ from .repositorioOfertaCadeiraSQLAlchemy import RepositorioOfertaCadeiraSQLAlche
 from .repositorioContaLocal import RepositorioContaLocal
 from .repositorioCadeiraLocal import RepositorioCadeiraLocal
 from .repositorioMatriculaLocal import RepositorioMatriculaLocal
+from .repositorioOfertaCadeiraLocal import RepositorioOfertaCadeiraLocal
 
 from abc import ABC, abstractmethod
 
@@ -57,4 +58,4 @@ class ListRepositorioFactory:
         return RepositorioMatriculaLocal()
 
     def criar_repositorio_oferta_cadeira(self):
-        pass
+        return RepositorioOfertaCadeiraLocal()
