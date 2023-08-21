@@ -1,5 +1,4 @@
 from .iRepositorioMatricula import IRepositorioMatricula
-from entidades import OfertaCadeira
 from sqlalchemy.orm import joinedload
 from entidades import Matricula
 
@@ -51,9 +50,7 @@ class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
     def get_current_by_aluno(self, id_aluno):
         with self.Session() as session:
             matriculas = session.query(
-                Matricula).options(
-                    joinedload(Matricula.ofertas_cadeiras).joinedload(OfertaCadeira.cadeira)
-                ).filter_by(aluno_id=id_aluno)
+                Matricula).filter_by(aluno_id=id_aluno)
             curr_date = datetime.now()
             year = curr_date.year
             month = curr_date.month

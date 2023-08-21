@@ -1,12 +1,27 @@
 from .iRepositorioMatricula import IRepositorioMatricula
-from entidades import ContaAluno, Matricula
+from entidades import Matricula
 
 from datetime import date
 
 class RepositorioMatriculaLocal(IRepositorioMatricula):
     def __init__(self):
-        self._matriculas = [Matricula(id=1, aluno=1, cadeiras=[1], periodo="2023.1")]
+        self._matriculas = [Matricula(aluno=1, cadeiras=[1], periodo="2023.1")]
         self._count = len(self._matriculas)
+
+    def create(self, data):
+        pass
+    
+    def get_by_id(self, id):
+        pass
+    
+    def update(self, id, data):
+        pass
+    
+    def delete(self, id):
+        pass
+
+    def get_current_by_aluno(self, id_aluno):
+        pass
 
     def get_by_id(self, id: int):
         return list(filter(lambda x: x.id == id, self._matriculas))[0]

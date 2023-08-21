@@ -1,4 +1,4 @@
-from entidades import Cadeira, ContaBase, ContaAluno, ContaProfessor, OfertaCadeira, Matricula
+from entidades import Matricula
 
 class BaseSerializer:
     def __init__(self, content, many=False) -> None:
@@ -38,59 +38,6 @@ class BaseSerializer:
         else:
             return self.to_representation(self.content)
 
-class ContaSerializer(BaseSerializer):
-    class Meta:
-        model = ContaBase
-        fields = (
-            'id',
-            'email',
-            'cpf',
-            'nome',
-            'ano_entrada',
-            'discriminator'
-        )
-
-
-class CadeiraSimpleSerializer(BaseSerializer):
-    class Meta:
-        model = Cadeira
-        fields = (
-            'id',
-            'nome',
-            'ementa',
-        )
-
-
-class CadeiraSerializer(BaseSerializer):
-    class Meta:
-        model = Cadeira
-        fields = (
-            'id',
-            'nome',
-            'ementa',
-        )
-        many_sub_serializers = {
-            'prerequisitos': CadeiraSimpleSerializer,
-            'corequisitos': CadeiraSimpleSerializer,
-            'equivalencias': CadeiraSimpleSerializer
-        }
-
-
-class OfertaCadeiraSerializer(BaseSerializer):
-    class Meta:
-        model = OfertaCadeira
-        fields = (
-            'ementa',
-            'horario',
-            'plano_ensino',
-            'centro_universitario',
-            'periodo'
-        )
-        sub_serializer = {
-            'cadeira': CadeiraSimpleSerializer,
-            'professor': ContaSerializer
-        }
-        
 
 class MatriculaSerializer(BaseSerializer):
     class Meta:

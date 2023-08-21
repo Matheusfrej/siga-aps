@@ -32,21 +32,18 @@ controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
 class MatriculaPresenter(Resource):
     def post(self):
         data = request.get_json()
-        data['token'] = request.headers.get('token')
-        return controladorMatricula.realizarMatriculaCadeira(data)
+        return controladorMatricula.cadastrar_matricula(data)
 
 
 class DeletarMatriculaPresenter(Resource):
     def delete(self):
         data = request.get_json()
-        data['token'] = request.headers.get('token')
         return controladorMatricula.deletarMatriculaCadeira(data)
 
 
 class EditarMatriculaPresenter(Resource):
     def put(self):
         data = request.get_json()
-        data['token'] = request.headers.get('token')
         return controladorMatricula.editarMatriculaCadeira(data)
 
 
