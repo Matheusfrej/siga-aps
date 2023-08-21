@@ -75,5 +75,5 @@ class OfertaCadeiraSerializer(BaseSerializer):
             'professor_id'
         )
         sub_serializers = {
-            'cadeira': CadeiraSimpleSerializer,
+            'cadeira': CadeiraSerializer,
         }
