@@ -32,3 +32,6 @@ class CadastroCadeira(metaclass=SingletonMetaclass):
             raise CamposVaziosError(campos_vazios)
         else:
             return True
+
+    def read_id_in_list(self, id_list):
+        return self.repositorio_cadeira.read_id_in_list(id_list)

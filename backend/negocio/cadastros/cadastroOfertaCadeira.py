@@ -47,3 +47,6 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
                     if h in horario.get(k, []):
                         raise ConflitoDeHorarioError(data['nome'], cadeira.nome)
         return True
+
+    def read_id_in_list(self, id_list):
+        return self.repositorio_oferta_cadeira.read_id_in_list(id_list)

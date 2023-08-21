@@ -15,7 +15,8 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
             session.commit()
             nova_oferta_cadeira = session.query(
                 OfertaCadeira).filter_by(
-                    id=nova_oferta_cadeira.id).options(joinedload('*')).first()
+                    id=nova_oferta_cadeira.id).options(joinedload(OfertaCadeira.cadeira)).first()
+            print(nova_oferta_cadeira.cadeira)
             return nova_oferta_cadeira
 
     def read(self, id):
@@ -24,17 +25,33 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
 
     def update(self, id, data):
         with self.Session() as session:
-            oferta_cadeira = session.query(OfertaCadeira).filter_by(id=id).first()
+            oferta_cadeira = session.query(OfertaCadeira).filter_by(id=id).options(joinedload(OfertaCadeira.cadeira)).first()
             if oferta_cadeira:
-                for key, value in data.items():
-                    setattr(oferta_cadeira, key, value)
+                if 'horario' in data:
+                    oferta_cadeira.horario = data.get('horario')
+                if 'plano_ensino' in data:
+                    oferta_cadeira.plano_ensino = data.get('plano_ensino')
+                if 'centro_universitario' in data:
+                    oferta_cadeira.centro_universitario = data.get('centro_universitario')
+                if 'professor_id' in data:
+                    oferta_cadeira.professor_id = data.get('professor_id')
+                if 'professor' in data:
+                    oferta_cadeira.professor_id = data.get('professor')
+                if 'cadeira_id' in data:
+                    oferta_cadeira.cadeira_id = data.get('cadeira_id')
+                if 'cadeira' in data:
+                    oferta_cadeira.cadeira_id = data.get('cadeira')
+                if 'periodo' in data:
+                    oferta_cadeira.periodo = data.get('periodo')
                 session.commit()
-                pass
+                oferta_cadeira = session.query(OfertaCadeira).filter_by(id=id).options(joinedload(OfertaCadeira.cadeira)).first()
+                return oferta_cadeira
             else:
                 #TODO lembrar de levantar um erro caso a cadeira não exista
                 pass
 
     def delete(self, id):
+        print(id)
         with self.Session() as session:
             oferta_cadeira = session.query(
                 OfertaCadeira).filter_by(id=id).first()
@@ -49,7 +66,7 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
     def get_by_professor(self, professor_id):
         with self.Session() as session:
             ofertas_cadeiras = session.query(
-                OfertaCadeira).options(joinedload(OfertaCadeira.cadeira)).filter_by(professor_id=professor_id)
+                OfertaCadeira).options(joinedload(OfertaCadeira.cadeira)).filter_by(professor_id=int(professor_id))
             return list(ofertas_cadeiras)
         
     def get_by_periodo(self, periodo):

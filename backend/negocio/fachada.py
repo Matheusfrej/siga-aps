@@ -49,16 +49,15 @@ class Fachada(metaclass=SingletonMetaclass):
         )
         # TODO passar a strategy quando chamar o método e não inicialmente
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
-            strategy=ProfessorStrategy(cadastro_oferta_cadeira)
+            strategy=ProfessorStrategy(cadastro_oferta_cadeira, cadastro_cadeira)
         )
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
-            strategy=AlunoStrategy(cadastro_matricula)
+            strategy=AlunoStrategy(cadastro_matricula, cadastro_cadeira, cadastro_oferta_cadeira)
         )
 
     def get_curr_user_decorator(func):
         ''' usar em métodos que precisam do usuário '''
         def wrapper(self, data):
-            print('aqui',data)
             token = data.pop('token')
             user_info = self.__subsistemaFirebase.getInfoConta(token=token)
             email = user_info['users'][0]['email']
@@ -168,7 +167,6 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def getOfertaCadeirasPeriodo(self, data) -> Response:
         try:
-            print('aaaaaa', data)
             ofertas_cadeiras = self.__controladorOfertaCadeira.get_ofertas_cadeiras_by_periodo(data['periodo'])
             return OfertaCadeiraSerializer(ofertas_cadeiras, many=True).get_data()
         except Exception as e:

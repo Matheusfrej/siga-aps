@@ -39,3 +39,7 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
             else:
                 # TODO fazer um raise
                 return False
+
+    def read_id_in_list(self, id_list):
+        with self.Session() as session:
+            return {cadeira.id: cadeira for cadeira in session.query(Cadeira).filter(Cadeira.id.in_(id_list)).all()}

@@ -4,11 +4,11 @@ import json
 BASE = "http://127.0.0.1:5000/"
 
 headers = {'Content-Type': 'application/json'}
-data = {'email': 'baws@cin.ufpe.br', 'senha': 123456}
+data = {'email': 'fgm3@cin.ufpe.br', 'senha': 123456}
 payload = json.dumps(data)
 response = requests.post(BASE + "login", headers=headers, data=payload)
 token = response.json().get('idToken')
-headers = {'Content-Type': 'application/json', 'token': token, 'periodo': '2023.1'}
+headers = {'Content-Type': 'application/json', 'token': token, 'periodo': '2023.2'}
 
 # data = {'nome': 'Cadeira 5'}
 # payload = json.dumps(data)

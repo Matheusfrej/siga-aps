@@ -1,6 +1,5 @@
 from utils import SingletonMetaclass
 from negocio.cadastros.cadastroOfertaCadeira import CadastroOfertaCadeira
-from negocio.cadastros.cadastroConta import CadastroConta
 
 
 class ControladorOfertaCadeira(metaclass=SingletonMetaclass):
@@ -19,7 +18,7 @@ class ControladorOfertaCadeira(metaclass=SingletonMetaclass):
         return nova_oferta_cadeira
 
     def deletar_oferta_cadeira(self, data):
-        deleted = self.cadastro_oferta_cadeira.deletar_oferta_cadeira(data)
+        deleted = self.cadastro_oferta_cadeira.deletar_oferta_cadeira(data.get('id'))
         return deleted
     
     def get_ofertas_cadeiras_by_professor(self, professor_id):

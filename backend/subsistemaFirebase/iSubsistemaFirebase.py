@@ -1,7 +1,10 @@
 from subsistemaFirebase.fachadaComunicacaoFirebase import Firebase
 from dotenv import load_dotenv
 from utils import SingletonMetaclass
+
+import traceback
 import os
+
 
 class iSubsistemaFirebase(metaclass=SingletonMetaclass):
     def __init__(self):
@@ -23,5 +26,9 @@ class iSubsistemaFirebase(metaclass=SingletonMetaclass):
         return token
     
     def criarConta(self, email, senha):
-        conta = self.__fachadaFirebase.criarConta(email,senha)
-        return conta
+        try:
+            conta = self.__fachadaFirebase.criarConta(email,senha)
+            return conta
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
