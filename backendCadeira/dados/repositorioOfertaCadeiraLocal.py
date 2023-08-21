@@ -59,4 +59,3 @@ class RepositorioOfertaCadeiraLocal(IRepositorioOfertaCadeira):
             if item.id in id_list:
                 response[i] = item
         return response
-

@@ -49,3 +49,11 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
                     if h in horario.get(k, []):
                         raise ConflitoDeHorarioError(data['cadeira'], cadeira.cadeira_id)
         return True
+
+    def get_oferta_cadeira_by_id(self, id):
+        oferta_cadeira = self.repositorio_oferta_cadeira.read(id)
+        return oferta_cadeira
+
+    def get_oferta_cadeira_list_by_id(self, id_list):
+        oferta_cadeira = list(self.repositorio_oferta_cadeira.read_id_in_list(id_list).values())
+        return oferta_cadeira

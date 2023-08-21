@@ -21,7 +21,7 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
 
     def read(self, id):
         with self.Session() as session:
-            return session.query(OfertaCadeira).filter_by(id=id).first()
+            return session.query(OfertaCadeira).filter_by(id=id).options(joinedload(OfertaCadeira.cadeira)).first()
 
     def update(self, id, data):
         with self.Session() as session:
@@ -80,4 +80,4 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
             return {
                 cadeira.id: cadeira
                     for cadeira in
-                        session.query(OfertaCadeira).filter(OfertaCadeira.id.in_(id_list)).all()}
+                        session.query(OfertaCadeira).options(joinedload(OfertaCadeira.cadeira)).filter(OfertaCadeira.id.in_(id_list)).all()}

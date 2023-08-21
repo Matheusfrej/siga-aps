@@ -3,7 +3,6 @@ from flask import request
 
 from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
-from flask_restful import Resource
 
 from negocio.controladores import ControladorCadastroCadeira, ControladorOfertaCadeira
 
@@ -40,6 +39,8 @@ cadastro_oferta_cadeira = CadastroOfertaCadeira(repo_oferta_cadeira)
 controlador_cadastrar_cadeira = ControladorCadastroCadeira(cadastro_cadeira)
 controlador_oferta_cadeira = ControladorOfertaCadeira(cadastro_oferta_cadeira)
 
+parser = reqparse.RequestParser()
+parser.add_argument('ids', type=int, action='append', required=True)
 
 class CadastrarCadeiraPresenter(Resource):
     def post(self):
@@ -160,10 +161,10 @@ class GetOfertasCadeirasPeriodoPresenter(Resource):
 
 
 class GetOfertaCadeiraById(Resource):
-    def get(self):
+    def get(self, oferta_id):
         try:
-            data = request.get_json()
-            result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(data.get('id'))
+            result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(oferta_id)
+            print(result)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()
             elif result == []:
@@ -178,10 +179,11 @@ class GetOfertaCadeiraById(Resource):
 class GetOfertaCadeiraListById(Resource):
     def get(self):
         try:
-            data = request.get_json()
-            result = controlador_oferta_cadeira.get_ofertas_cadeiras_list_by_id(data.get('id'))
+            ids = request.args.getlist('ids')
+            result = controlador_oferta_cadeira.get_oferta_cadeira_list_by_id(ids)
+            print(result)
             if result:
-                return OfertaCadeiraSerializer(result).get_data()
+                return OfertaCadeiraSerializer(result, many=True).get_data()
             elif result == []:
                 return result
             else:
@@ -198,8 +200,8 @@ api.add_resource(EditarOfertaCadeiraPresenter, '/editar-oferta-cadeira')
 api.add_resource(DeletarOfertaCadeiraPresenter, '/deletar-oferta-cadeira')
 api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor')
 api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
-api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira')
-api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira-list')
+api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira/<int:oferta_id>')
+api.add_resource(GetOfertaCadeiraListById, '/get-oferta-cadeira-list')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -24,3 +24,7 @@ class IRepositorioOfertaCadeira(ABC):
     @abstractmethod
     def get_by_periodo(self, periodo):
         pass
+
+    @abstractmethod
+    def read_id_in_list(self, id_list):
+        pass
