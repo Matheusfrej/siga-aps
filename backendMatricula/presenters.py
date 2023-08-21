@@ -4,7 +4,7 @@ from flask import request
 from negocio.controladores import *
 from negocio.cadastros import CadastroMatricula
 
-from utils import AlunoStrategy
+from utils import AlunoStrategy, MatriculaSerializer
 
 from dados import SQLAlchemyRepositorioFactory, ListRepositorioFactory
 
@@ -32,41 +32,31 @@ controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
 class MatriculaPresenter(Resource):
     def post(self):
         data = request.get_json()
-        return controladorMatricula.cadastrar_matricula(data)
+        return MatriculaSerializer(controladorMatricula.cadastrar_matricula(data))
 
 
 class DeletarMatriculaPresenter(Resource):
-    def delete(self):
-        data = request.get_json()
-        return controladorMatricula.deletarMatriculaCadeira(data)
+    def delete(self, matricula_id):
+        return controladorMatricula.deletarMatriculaCadeira(matricula_id)
 
 
 class EditarMatriculaPresenter(Resource):
-    def put(self):
+    def put(self, matricula_id):
         data = request.get_json()
-        return controladorMatricula.editarMatriculaCadeira(data)
+        data['id'] = matricula_id
+        return MatriculaSerializer(controladorMatricula.editarMatriculaCadeira(data))
 
 
 class GetMatriculaPeriodoPresenter(Resource):
-    def get(self):
-        data = {
-            'token': request.headers.get('token'),
-            'periodo': request.headers.get('periodo')
-        }
-        return controladorMatricula.getMatriculaCadeira(data)
+    def get(self, aluno_id):
+        return MatriculaSerializer(controladorMatricula.getMatriculaCadeira(aluno_id))
     
     
 class GetMatriculasAlunoPresenter(Resource):
-    def get(self):
-        data = {
-            'token': request.headers.get('token')
-        }
-        return controladorMatricula.getMatriculasAluno(data)
+    def get(self, aluno_id):
+        return MatriculaSerializer(controladorMatricula.getMatriculasAluno(aluno_id))
 
 
 class VerHorarioPresenter(Resource):
-    def get(self):
-        data = {
-            'token': request.headers.get('token')
-        }
-        return controladorVisualizarHorarioCursadas.visualizarHorario(data)
+    def get(self, aluno_id):
+        return controladorVisualizarHorarioCursadas.visualizarHorario(aluno_id)

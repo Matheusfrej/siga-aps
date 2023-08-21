@@ -40,6 +40,7 @@ class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
                 session.delete(matricula)
                 session.commit()
             else:
+                #TODO lembrar de levantar um erro caso a matricula não exista
                 pass
 
     def get_by_aluno(self, id_aluno):

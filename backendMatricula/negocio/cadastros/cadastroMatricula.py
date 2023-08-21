@@ -1,5 +1,5 @@
 from dados import IRepositorioMatricula
-from utils import CamposVaziosError, ConflitoDeHorarioError, SingletonMetaclass
+from utils import SingletonMetaclass
 
 
 class CadastroMatricula(metaclass=SingletonMetaclass):
@@ -11,16 +11,12 @@ class CadastroMatricula(metaclass=SingletonMetaclass):
         return matricula
     
     def cadastrar_matricula(self, data):
-        valida = self.validar_matricula(data)
-        if valida:
-            matricula = self.repositorio_matricula.create(data)
-            return matricula
+        matricula = self.repositorio_matricula.create(data)
+        return matricula
     
     def atualizar_matricula(self, data):
-        valida = self.validar_matricula(data)
-        if valida:
-            matricula = self.repositorio_matricula.update(data)
-            return matricula
+        matricula = self.repositorio_matricula.update(data['id'], data)
+        return matricula
 
     def get_matricula(self, data):
         matricula = self.repositorio_matricula.get_by_id(data)
@@ -33,24 +29,3 @@ class CadastroMatricula(metaclass=SingletonMetaclass):
     def get_matriculas_aluno(self, data):
         matriculas = self.repositorio_matricula.get_by_aluno(data)
         return matriculas
-
-    def validar_matricula(self, data):
-        campos_vazios = []
-        campos_obg = ['periodo', 'aluno', 'cadeiras']
-        for campo in campos_obg:
-            if campo not in data.keys():
-                campos_vazios.append(campo)
-        if campos_vazios:
-            raise CamposVaziosError(campos_vazios)
-
-        cadeiras = data['cadeiras']
-        
-        for cadeira in cadeiras:
-            cadeiras_aux = cadeiras.copy()
-            cadeiras_aux.pop(cadeira.index())
-            for c in cadeiras_aux:
-                for k, v in c.horario.items():
-                    for hora in v:
-                        if hora in cadeira.horario.get(k, []):
-                            raise ConflitoDeHorarioError(c.nome, cadeira.nome)
-        return True
