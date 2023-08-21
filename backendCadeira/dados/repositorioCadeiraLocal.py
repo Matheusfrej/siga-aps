@@ -36,3 +36,11 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
                 return True
         # TODO Levantar erro de objeto não encontrado
         return False
+
+    def read_id_in_list(self, id_list):
+        response = dict()
+        for i, item in enumerate(self._cadeiras):
+            if item.id in id_list:
+                response[i] = item
+        return response
+

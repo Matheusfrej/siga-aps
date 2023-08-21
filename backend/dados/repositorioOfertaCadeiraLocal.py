@@ -1,14 +1,16 @@
-from .iRepositorioCadeira import IRepositorioCadeira
-from entidades import Cadeira
+
+from .iRepositorioOfertaCadeira import IRepositorioOfertaCadeira
+from entidades import OfertaCadeira
+from sqlalchemy.orm import joinedload
 
 
-class RepositorioCadeiraLocal(IRepositorioCadeira):
+class RepositorioOfertaCadeiraLocal(IRepositorioOfertaCadeira):
     def __init__(self):
         self._cadeiras = []
         self._count = len(self._cadeiras) + 1
 
     def create(self, data):
-        cadeira = Cadeira(**data)
+        cadeira = OfertaCadeira(**data)
         cadeira.id = self._count
         self._count += 1
         self._cadeiras.append(cadeira)
@@ -36,3 +38,18 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
                 return True
         # TODO Levantar erro de objeto não encontrado
         return False
+
+    def get_by_professor(self, professor_id):
+        for i, item in enumerate(self._cadeiras):
+            if item.professor_id == professor_id:
+                return self._cadeiras[i]
+        # TODO Levantar erro de objeto não encontrado
+        return False
+        
+    def get_by_periodo(self, periodo):
+        for i, item in enumerate(self._cadeiras):
+            if item.periodo == periodo:
+                return self._cadeiras[i]
+        # TODO Levantar erro de objeto não encontrado
+        return False
+

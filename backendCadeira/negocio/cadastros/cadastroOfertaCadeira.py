@@ -15,11 +15,13 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
     def editar_oferta_cadeira(self, data):
         valida = self.validar_oferta_cadeira(data)
         if valida:
-            oferta_cadeira = self.repositorio_oferta_cadeira.update(data)
-        return oferta_cadeira
+            oferta_id = data.pop('id', None)
+            oferta_cadeira = self.repositorio_oferta_cadeira.update(oferta_id, data)
+            return oferta_cadeira
+        return None
     
-    def deletar_oferta_cadeira(self, data):
-        deleted = self.repositorio_oferta_cadeira.delete(data)
+    def deletar_oferta_cadeira(self, id):
+        deleted = self.repositorio_oferta_cadeira.delete(id)
         return deleted
 
     def get_ofertas_cadeiras_by_professor(self, professor_id):
@@ -45,8 +47,5 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
             for k, v in cadeira.horario.items():
                 for h in v:
                     if h in horario.get(k, []):
-                        raise ConflitoDeHorarioError(data['nome'], cadeira.nome)
+                        raise ConflitoDeHorarioError(data['cadeira'], cadeira.cadeira_id)
         return True
-
-    def read_id_in_list(self, id_list):
-        return self.repositorio_oferta_cadeira.read_id_in_list(id_list)
