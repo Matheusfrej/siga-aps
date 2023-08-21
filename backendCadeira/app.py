@@ -40,6 +40,7 @@ cadastro_oferta_cadeira = CadastroOfertaCadeira(repo_oferta_cadeira)
 controlador_cadastrar_cadeira = ControladorCadastroCadeira(cadastro_cadeira)
 controlador_oferta_cadeira = ControladorOfertaCadeira(cadastro_oferta_cadeira)
 
+
 class CadastrarCadeiraPresenter(Resource):
     def post(self):
         try:
@@ -52,6 +53,7 @@ class CadastrarCadeiraPresenter(Resource):
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
+
 
 class EditarCadeiraPresenter(Resource):
     def put(self):
@@ -157,6 +159,37 @@ class GetOfertasCadeirasPeriodoPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
+class GetOfertaCadeiraById(Resource):
+    def get(self):
+        try:
+            data = request.get_json()
+            result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(data.get('id'))
+            if result:
+                return OfertaCadeiraSerializer(result).get_data()
+            elif result == []:
+                return result
+            else:
+                return {'Error': 'Erro ao ler as cadeiras'}, 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+
+class GetOfertaCadeiraListById(Resource):
+    def get(self):
+        try:
+            data = request.get_json()
+            result = controlador_oferta_cadeira.get_ofertas_cadeiras_list_by_id(data.get('id'))
+            if result:
+                return OfertaCadeiraSerializer(result).get_data()
+            elif result == []:
+                return result
+            else:
+                return {'Error': 'Erro ao ler as cadeiras'}, 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
 api.add_resource(CadastrarCadeiraPresenter, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraPresenter, '/editar-cadeira')
 api.add_resource(DeletarCadeiraPresenter, '/deletar-cadeira')
@@ -165,6 +198,8 @@ api.add_resource(EditarOfertaCadeiraPresenter, '/editar-oferta-cadeira')
 api.add_resource(DeletarOfertaCadeiraPresenter, '/deletar-oferta-cadeira')
 api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor')
 api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
+api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira')
+api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira-list')
 
 if __name__ == '__main__':
     app.run(debug=True)
