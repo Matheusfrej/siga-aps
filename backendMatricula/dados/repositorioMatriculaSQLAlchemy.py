@@ -14,6 +14,8 @@ class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
             nova_matricula = Matricula(**data)
             session.add(nova_matricula)
             session.commit()
+            nova_matricula = session.query(Matricula).filter_by(
+                id=nova_matricula.id).first()
             return nova_matricula
     
     def get_by_id(self, id):

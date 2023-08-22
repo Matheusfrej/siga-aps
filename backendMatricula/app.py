@@ -15,4 +15,4 @@ api.add_resource(GetMatriculaPeriodoPresenter, '/get-matricula/<int:aluno_id>')
 api.add_resource(GetMatriculasAlunoPresenter, '/get-matriculas-aluno/<int:aluno_id>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=9090, debug=True)

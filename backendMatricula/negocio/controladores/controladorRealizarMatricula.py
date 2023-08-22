@@ -1,4 +1,4 @@
-from utils import SingletonMetaclass, CamposVaziosError, ConflitoDeHorarioError, ConflitoDeEquivalencia, ConflitoDePreRequisito, ConflitoDeCoRequisito, CadeiraJaCursada
+from utils import SingletonMetaclass, CamposVaziosError, ConflitoDeHorarioError, ConflitoDeEquivalencia, ConflitoDePreRequisito, ConflitoDeCoRequisito, CadeiraJaCursada, MatriculaJaRealizada
 from negocio.cadastros.cadastroMatricula import CadastroMatricula
 from comunicacao.CadeiraServiceApi import CadeiraServiceApi
 from functools import reduce
@@ -10,8 +10,7 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
 
     def cadastrar_matricula(self, data):
         cadeiras_entities = self.cadeira_service.get_oferta_cadeira_by_id(data['cadeiras'])
-        data['cadeiras_entities'] = cadeiras_entities
-        valida = self.validar_matricula(data)
+        valida = self.validar_matricula(data, cadeiras_entities)
         if valida:
             nova_matricula = self.cadastro_matricula.cadastrar_matricula(data)
             if nova_matricula:
@@ -21,8 +20,7 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
 
     def editar_matricula(self, data):
         cadeiras_entities = self.cadeira_service.get_oferta_cadeira_by_id(data['cadeiras'])
-        data['cadeiras_entities'] = cadeiras_entities
-        valida = self.validar_matricula(data)
+        valida = self.validar_matricula(data, cadeiras_entities)
         if valida:
             matricula = self.cadastro_matricula.atualizar_matricula(data)
             return matricula
@@ -44,49 +42,53 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
         matricula['cadeiras'] = cadeiras_entities
         return matricula
     
-    def validar_matricula(self, data):
+    def validar_matricula(self, data, cadeira_entities):
         campos_vazios = []
-        campos_obg = ['periodo', 'aluno', 'cadeiras']
+        campos_obg = ['periodo', 'aluno_id', 'cadeiras']
+        # matricula_atual = self.cadastro_matricula.get_current_by_aluno(data['aluno_id'])
+        # if matricula_atual:
+        #     raise MatriculaJaRealizada()
         for campo in campos_obg:
             if campo not in data.keys():
                 campos_vazios.append(campo)
         if campos_vazios:
             raise CamposVaziosError(campos_vazios)
+        
 
         matriculas_anteriores = self.cadastro_matricula.get_matriculas_aluno(data['aluno_id'])
-        ofertas_cadeiras_cursadas = map(lambda x: x['cadeiras'], matriculas_anteriores)
-        cadeiras_cursadas = reduce(lambda x,y: x+y, map(lambda x: x['cadeira'], ofertas_cadeiras_cursadas), [])
-        ids_cadeiras_cursadas = map(lambda x: x['id'], cadeiras_cursadas)
-        cadeiras = data['cadeiras_entities']
+        ofertas_cadeiras_cursadas = map(lambda x: x.cadeiras, matriculas_anteriores)
+        ids_cadeiras_cursadas = reduce(lambda x,y: x+y, ofertas_cadeiras_cursadas, [])
+        cadeiras = cadeira_entities
+        print(cadeiras)
+        print(ids_cadeiras_cursadas)
+        for cadeira in cadeiras:
+            for c in cadeira['cadeira'].get('prerequisitos', []):
+                if str(c['id']) not in ids_cadeiras_cursadas:
+                    raise ConflitoDePreRequisito(cadeira['cadeira']['nome'])
         
         for cadeira in cadeiras:
-            for c in cadeira['cadeira']['prerequisitos']:
-                if c['id'] not in ids_cadeiras_cursadas:
-                    raise ConflitoDePreRequisito(cadeira['nome'])
-        
-        for cadeira in cadeiras:
-            for c in cadeira['cadeira']['equivalencias']:
-                if c['id'] in ids_cadeiras_cursadas:
-                    raise ConflitoDeEquivalencia(cadeira['nome'], c['nome'])
+            for c in cadeira['cadeira'].get('equivalencias', []):
+                print(str(c['id']))
+                if str(c['id']) in ids_cadeiras_cursadas:
+                    raise ConflitoDeEquivalencia(cadeira['cadeira']['nome'], c['nome'])
         
         ids_cadeiras_matricular = map(lambda x: x['cadeira']['id'], cadeiras)
         for cadeira in cadeiras:
-            for c in cadeira['cadeira']['corequisitos']:
-                if c['id'] not in ids_cadeiras_matricular:
-                    raise ConflitoDeCoRequisito(cadeira['nome'])
+            for c in cadeira['cadeira'].get('corequisitos', []):
+                if str(c['id']) not in ids_cadeiras_matricular:
+                    raise ConflitoDeCoRequisito(cadeira['cadeira']['nome'])
                 
         for cadeira in cadeiras:
-            if cadeira['id'] in ids_cadeiras_cursadas:
-                raise CadeiraJaCursada(cadeira['nome'])
+            if str(cadeira['cadeira']['id']) in ids_cadeiras_cursadas:
+                raise CadeiraJaCursada(cadeira['cadeira']['nome'])
         
         for cadeira in cadeiras:
             cadeiras_aux = cadeiras.copy()
-            cadeiras_aux.pop(cadeira.index())
+            cadeiras_aux.pop(cadeiras.index(cadeira))
             for c in cadeiras_aux:
                 for k, v in c['horario'].items():
                     for hora in v:
                         if hora in cadeira['horario'].get(k, []):
-                            raise ConflitoDeHorarioError(c['nome'], cadeira['nome'])
-        
-        
+                            raise ConflitoDeHorarioError(c['cadeira']['nome'], cadeira['cadeira']['nome'])
+
         return True

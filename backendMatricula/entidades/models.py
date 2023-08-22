@@ -15,9 +15,9 @@ class Matricula(Base):
 
     def __init__(
             self,
-            aluno: int,
+            aluno_id: int,
             cadeiras: list[int],
             periodo: str):
-        self.aluno_id = aluno
+        self.aluno_id = aluno_id
         self.cadeiras = cadeiras
         self.periodo = periodo

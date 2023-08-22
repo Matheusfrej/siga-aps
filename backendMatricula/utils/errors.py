@@ -12,7 +12,7 @@ class CamposVaziosError(Exception):
 
     def __str__(self):
         return f'Existem campos não preenchidos: {", ".join(self.campos)}.'
-    
+   
     
 class ConflitoDeEquivalencia(Exception):
     def __init__(self, nova_cadeira, cadeira_conflito):
@@ -45,3 +45,9 @@ class CadeiraJaCursada(Exception):
 
     def __str__(self):
         return f'Conflito: Não foi possível se matricular em {self.nova_cadeira} porque você já cursou essa cadeira.'
+
+
+
+class MatriculaJaRealizada(Exception):
+    def __str__(self):
+        return f'Você já fez matricula nesse período letivo.'

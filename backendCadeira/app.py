@@ -204,4 +204,4 @@ api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira/<int:oferta_id>')
 api.add_resource(GetOfertaCadeiraListById, '/get-oferta-cadeira-list')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

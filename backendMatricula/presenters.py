@@ -32,7 +32,12 @@ controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
 class MatriculaPresenter(Resource):
     def post(self):
         data = request.get_json()
-        return MatriculaSerializer(controladorMatricula.cadastrar_matricula(data))
+        try:
+            result = controladorMatricula.cadastrar_matricula(data)
+            return MatriculaSerializer(result).get_data()
+        except Exception as e:
+            print(traceback.format_exc())
+            return e.__str__(), 500
 
 
 class DeletarMatriculaPresenter(Resource):

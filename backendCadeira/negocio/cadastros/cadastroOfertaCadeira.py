@@ -24,8 +24,8 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
         deleted = self.repositorio_oferta_cadeira.delete(id)
         return deleted
 
-    def get_ofertas_cadeiras_by_professor(self, professor_id):
-        ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_professor(professor_id)
+    def get_ofertas_cadeiras_by_professor(self, professor_id, periodo):
+        ofertas_cadeiras = self.repositorio_oferta_cadeira.get_current_by_professor(professor_id, periodo)
         return ofertas_cadeiras
     
     def get_ofertas_cadeiras_by_periodo(self, periodo):
@@ -42,7 +42,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
             raise CamposVaziosError(campos_vazios)
 
         horario = data['horario']
-        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor'])
+        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor'], data['periodo'])
         for cadeira in cadeiras:
             for k, v in cadeira.horario.items():
                 for h in v:
