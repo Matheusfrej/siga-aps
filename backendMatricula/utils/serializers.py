@@ -1,11 +1,11 @@
-from entidades import Cadeira, OfertaCadeira
+from entidades import Matricula
 
 class BaseSerializer:
     def __init__(self, content, many=False) -> None:
         self.content = content
         self.many = many
 
-    def _to_representation(self, instance):
+    def to_representation(self, instance):
         data = dict()
         for field in self.Meta.fields:
             if hasattr(instance, field):
@@ -33,47 +33,17 @@ class BaseSerializer:
         if self.many == True:
             obj_list = []
             for instance in self.content:
-                obj_list.append(self._to_representation(instance))
+                obj_list.append(self.to_representation(instance))
             return obj_list
         else:
-            return self._to_representation(self.content)
+            return self.to_representation(self.content)
 
-class CadeiraSimpleSerializer(BaseSerializer):
+
+class MatriculaSerializer(BaseSerializer):
     class Meta:
-        model = Cadeira
+        model = Matricula
         fields = (
-            'id',
-            'nome',
-            'ementa',
-        )
-
-class CadeiraSerializer(BaseSerializer):
-    class Meta:
-        model = Cadeira
-        fields = (
-            'id',
-            'nome',
-            'ementa',
-        )
-        many_sub_serializers = {
-            'prerequisitos': CadeiraSimpleSerializer,
-            'corequisitos': CadeiraSimpleSerializer,
-            'equivalencias': CadeiraSimpleSerializer
-        }
-
-
-class OfertaCadeiraSerializer(BaseSerializer):
-    class Meta:
-        medel = OfertaCadeira
-        fields = (
-            'id',
-            'ementa',
-            'horario',
-            'plano_ensino',
-            'centro_universitario',
+            'aluno_id',
             'periodo',
-            'professor_id'
+            'cadeiras'
         )
-        sub_serializers = {
-            'cadeira': CadeiraSerializer,
-        }

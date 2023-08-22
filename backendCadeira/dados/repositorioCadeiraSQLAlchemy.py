@@ -8,8 +8,26 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
 
     def create(self, data):
         with self.Session() as session:
+            equivalencias = data.pop('equivalencias', None)
+            prerequisitos = data.pop('prerequisitos', None)
+            corequisitos = data.pop('corequisitos', None)
             nova_cadeira = Cadeira(**data)
             session.add(nova_cadeira)
+            if prerequisitos:
+                lista_ids = prerequisitos
+                novos_prerequisitos = list(session.query(Cadeira).filter(Cadeira.id.in_(lista_ids)).all())
+                nova_cadeira.prerequisitos.clear()
+                nova_cadeira.prerequisitos.extend(novos_prerequisitos)
+            if corequisitos:
+                lista_ids = corequisitos
+                novos_corequisitos = list(session.query(Cadeira).filter(Cadeira.id.in_(lista_ids)).all())
+                nova_cadeira.corequisitos.clear()
+                nova_cadeira.corequisitos.extend(novos_corequisitos)
+            if equivalencias:
+                lista_ids = equivalencias
+                novos_equivalencias = list(session.query(Cadeira).filter(Cadeira.id.in_(lista_ids)).all())
+                nova_cadeira.equivalencias.clear()
+                nova_cadeira.equivalencias.extend(novos_equivalencias)
             session.commit()
             nova_cadeira = session.query(Cadeira).filter_by(
                 id=nova_cadeira.id).options(

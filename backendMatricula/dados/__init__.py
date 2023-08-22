@@ -1,0 +1,3 @@
+from .iRepositorioMatricula import IRepositorioMatricula
+
+from .factories import SQLAlchemyRepositorioFactory, ListRepositorioFactory

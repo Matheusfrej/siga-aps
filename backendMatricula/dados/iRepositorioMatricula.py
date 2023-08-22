@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 
-class IRepositorioCadeira(ABC):
+
+class IRepositorioMatricula(ABC):
     @abstractmethod
     def create(self, data):
         pass
     
     @abstractmethod
-    def read(self, id):
+    def get_by_id(self, id):
         pass
     
     @abstractmethod
@@ -16,11 +17,11 @@ class IRepositorioCadeira(ABC):
     @abstractmethod
     def delete(self, id):
         pass
-    
+
     @abstractmethod
-    def read_id_in_list(self, id_list):
+    def get_by_aluno(self, id_aluno):
         pass
 
     @abstractmethod
-    def read_id_in_list(self, id_list):
+    def get_current_by_aluno(self, id_aluno):
         pass

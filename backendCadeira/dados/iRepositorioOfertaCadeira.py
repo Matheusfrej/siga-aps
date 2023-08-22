@@ -20,7 +20,15 @@ class IRepositorioOfertaCadeira(ABC):
     @abstractmethod
     def get_by_professor(self, professor_id):
         pass
+
+    @abstractmethod
+    def get_current_by_professor(self, professor_id, periodo):
+        pass
     
     @abstractmethod
     def get_by_periodo(self, periodo):
+        pass
+
+    @abstractmethod
+    def read_id_in_list(self, id_list):
         pass

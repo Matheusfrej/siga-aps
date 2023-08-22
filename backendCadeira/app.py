@@ -3,7 +3,6 @@ from flask import request
 
 from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
-from flask_restful import Resource
 
 from negocio.controladores import ControladorCadastroCadeira, ControladorOfertaCadeira
 
@@ -40,6 +39,9 @@ cadastro_oferta_cadeira = CadastroOfertaCadeira(repo_oferta_cadeira)
 controlador_cadastrar_cadeira = ControladorCadastroCadeira(cadastro_cadeira)
 controlador_oferta_cadeira = ControladorOfertaCadeira(cadastro_oferta_cadeira)
 
+parser = reqparse.RequestParser()
+parser.add_argument('ids', type=int, action='append', required=True)
+
 class CadastrarCadeiraPresenter(Resource):
     def post(self):
         try:
@@ -52,6 +54,7 @@ class CadastrarCadeiraPresenter(Resource):
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
+
 
 class EditarCadeiraPresenter(Resource):
     def put(self):
@@ -157,6 +160,38 @@ class GetOfertasCadeirasPeriodoPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
+class GetOfertaCadeiraById(Resource):
+    def get(self, oferta_id):
+        try:
+            result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(oferta_id)
+            print(result)
+            if result:
+                return OfertaCadeiraSerializer(result).get_data()
+            elif result == []:
+                return result
+            else:
+                return {'Error': 'Erro ao ler as cadeiras'}, 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+
+class GetOfertaCadeiraListById(Resource):
+    def get(self):
+        try:
+            ids = request.args.getlist('ids')
+            result = controlador_oferta_cadeira.get_oferta_cadeira_list_by_id(ids)
+            print(result)
+            if result:
+                return OfertaCadeiraSerializer(result, many=True).get_data()
+            elif result == []:
+                return result
+            else:
+                return {'Error': 'Erro ao ler as cadeiras'}, 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
 api.add_resource(CadastrarCadeiraPresenter, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraPresenter, '/editar-cadeira')
 api.add_resource(DeletarCadeiraPresenter, '/deletar-cadeira')
@@ -165,6 +200,8 @@ api.add_resource(EditarOfertaCadeiraPresenter, '/editar-oferta-cadeira')
 api.add_resource(DeletarOfertaCadeiraPresenter, '/deletar-oferta-cadeira')
 api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor')
 api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
+api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira/<int:oferta_id>')
+api.add_resource(GetOfertaCadeiraListById, '/get-oferta-cadeira-list')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
