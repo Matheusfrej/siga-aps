@@ -16,6 +16,8 @@ from negocio.cadastros import CadastroCadeira, CadastroOfertaCadeira
 
 from utils import ConflitoDeHorarioError
 
+from comunicacao import ContaServiceAPI
+
 import os
 import traceback
 
@@ -42,7 +44,15 @@ controlador_oferta_cadeira = ControladorOfertaCadeira(cadastro_oferta_cadeira)
 parser = reqparse.RequestParser()
 parser.add_argument('ids', type=int, action='append', required=True)
 
-class CadastrarCadeiraPresenter(Resource):
+conta_service_api = ContaServiceAPI()
+
+class LoginRequiredMixin(Resource):
+    def dispatch_request(self, *args, **kwargs):
+        self.current_user = conta_service_api.get_user_info(headers=request.headers)
+        return super().dispatch_request(*args, **kwargs)
+
+
+class CadastrarCadeiraPresenter(LoginRequiredMixin):
     def post(self):
         try:
             data = request.get_json()

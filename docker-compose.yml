@@ -12,13 +12,13 @@ services:
     ports:
       - "5002:5002"  # Map the container's port 5002 to the host for MatriculaService
 
-  gateway-app:
+  gatewayservice:
     build:
       context: ./backendGateway
     ports:
       - "5000:5000"
 
-  conta-app:
+  contaservice:
     build:
       context: ./backendConta
     ports:
