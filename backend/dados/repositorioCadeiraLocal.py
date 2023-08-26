@@ -4,7 +4,7 @@ from entidades import Cadeira
 
 class RepositorioCadeiraLocal(IRepositorioCadeira):
     def __init__(self):
-        self._cadeiras = [Cadeira(nome="Introdução à Programação", horario={"segunda":"8", "quarta":"10", "sexta": "8"}, centro_universitario="Centro de Informática", professor=1)]
+        self._cadeiras = []
         self._count = len(self._cadeiras) + 1
 
     def create(self, data):
@@ -36,16 +36,3 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
                 return True
         # TODO Levantar erro de objeto não encontrado
         return False
-
-    def validar_cadeira(self, data):
-        for cadeira in self._cadeiras:
-            if cadeira.nome == data['nome']:
-                return False
-        return True
-
-    def get_by_professor(self, professor_id):
-        found_cadeiras = []
-        for cadeira in self._cadeiras:
-            if cadeira.professor == professor_id:
-                found_cadeiras.append(cadeira)
-        return found_cadeiras

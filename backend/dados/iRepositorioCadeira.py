@@ -16,7 +16,7 @@ class IRepositorioCadeira(ABC):
     @abstractmethod
     def delete(self, id):
         pass
-
+    
     @abstractmethod
-    def get_by_professor(self, professor_id):
+    def read_id_in_list(self, id_list):
         pass

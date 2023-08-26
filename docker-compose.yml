@@ -1,0 +1,16 @@
+version: '3'
+services:
+  cadeiraservice:
+    build:
+      context: ./backendCadeira
+    ports:
+      - "5001:5001"  # Map the container's port 5001 to the host for CadeiraService
+
+  matriculaservice:
+    build:
+      context: ./backendMatricula
+    ports:
+      - "5002:5002"  # Map the container's port 5002 to the host for MatriculaService
+
+networks:
+  mynetwork:

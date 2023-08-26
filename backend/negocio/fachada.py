@@ -2,43 +2,57 @@ from flask import jsonify, Response
 from utils import SingletonMetaclass
 
 from negocio.controladores import *
-from entidades import ContaProfessor, ContaAluno
+from entidades import ContaProfessor
 from negocio.cadastros import CadastroConta
 from negocio.cadastros import CadastroCadeira
 from negocio.cadastros import CadastroMatricula
+from negocio.cadastros import CadastroOfertaCadeira
 from subsistemaFirebase.iSubsistemaFirebase import iSubsistemaFirebase
 
 from utils import ProfessorStrategy, AlunoStrategy
 
-from utils import CadeiraSerializer, ContaSerializer
+from utils import CadeiraSerializer, ContaSerializer, OfertaCadeiraSerializer
 
 from utils import ConflitoDeHorarioError, CamposVaziosError
 
-from dados import SQLAlchemyRepositorioFactory
+from dados import SQLAlchemyRepositorioFactory, ListRepositorioFactory
+
+from dotenv import load_dotenv
 
 import traceback
+import os
 
 class Fachada(metaclass=SingletonMetaclass):
     def __init__(self) -> None:
-        repo_factory = SQLAlchemyRepositorioFactory()
+        load_dotenv('config.env')
+        db_type = os.getenv('DB_TYPE')
+        if db_type == 'sqlalchemy':
+            repo_factory = SQLAlchemyRepositorioFactory()
+        else:
+            repo_factory = ListRepositorioFactory()
         repo_conta = repo_factory.criar_repositorio_conta()
         repo_cadeira = repo_factory.criar_repositorio_cadeira()
         repo_matricula = repo_factory.criar_repositorio_matricula()
+        repo_oferta_cadeira = repo_factory.criar_repositorio_oferta_cadeira()
         cadastro_conta = CadastroConta(repo_conta)
         cadastro_cadeira = CadastroCadeira(repo_cadeira)
         cadastro_matricula = CadastroMatricula(repo_matricula)
+        cadastro_oferta_cadeira = CadastroOfertaCadeira(repo_oferta_cadeira)
         subsistemaFirebase = iSubsistemaFirebase()
         self.__subsistemaFirebase = subsistemaFirebase
         self.__controladorConta = ControladorConta(cadastro_conta,subsistemaFirebase)
         self.__controladorCadastroCadeira: ControladorCadastroCadeira = ControladorCadastroCadeira(
-            cadastro_cadeira=cadastro_cadeira,
-            cadastro_conta=cadastro_conta)
+            cadastro_cadeira=cadastro_cadeira)
         self.__controladorRealizarMatricula = ControladorRealizarMatricula()
+        self.__controladorOfertaCadeira: ControladorOfertaCadeira = ControladorOfertaCadeira(
+            cadastro_oferta_cadeira=cadastro_oferta_cadeira
+        )
+        # TODO passar a strategy quando chamar o método e não inicialmente
         self.__controladorVisualizarHorarioLecionadas = ControladorVisualizarHorario(
-            strategy=ProfessorStrategy(cadastro_cadeira)
+            strategy=ProfessorStrategy(cadastro_oferta_cadeira, cadastro_cadeira)
         )
         self.__controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
-            strategy=AlunoStrategy(cadastro_matricula)
+            strategy=AlunoStrategy(cadastro_matricula, cadastro_cadeira, cadastro_oferta_cadeira)
         )
 
     def get_curr_user_decorator(func):
@@ -46,7 +60,7 @@ class Fachada(metaclass=SingletonMetaclass):
         def wrapper(self, data):
             token = data.pop('token')
             user_info = self.__subsistemaFirebase.getInfoConta(token=token)
-            email = user_info["users"][0]["email"]
+            email = user_info['users'][0]['email']
             data['user'] = self.__controladorConta.get_user_by_email(email=email)
             result = func(self, data)
             return result
@@ -73,7 +87,6 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def getUserInfo(self, data) -> Response:
         try:
-            # TODO colocar o serializador
             return ContaSerializer(data['user']).get_data()
         except Exception as e:
             print(traceback.format_exc())
@@ -82,21 +95,18 @@ class Fachada(metaclass=SingletonMetaclass):
     @get_curr_user_decorator
     def cadastrarCadeira(self, data) -> Response:
         try:
-            data['professor'] = data.pop('user').id
+            data.pop('user')
             cadeira = self.__controladorCadastroCadeira.cadastrar_cadeira(data)
             return CadeiraSerializer(cadeira).get_data()
         except CamposVaziosError as e:
             return e.__str__(), 400
-        except ConflitoDeHorarioError as e:
-            return e.__str__(), 500
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
-    
+
     @get_curr_user_decorator
     def editarCadeira(self, data) -> Response:
         try:
-            data['professor'] = data.pop('user')
             cadeira = self.__controladorCadastroCadeira.editar_cadeira(data)
             return CadeiraSerializer(cadeira).get_data()
         except Exception as e:
@@ -113,10 +123,52 @@ class Fachada(metaclass=SingletonMetaclass):
             return 'Erro interno do servidor', 500
 
     @get_curr_user_decorator
-    def getCadeirasProfessor(self, data) -> Response:
+    def cadastrarOfertaCadeira(self, data) -> Response:
         try:
-            cadeiras = self.__controladorCadastroCadeira.get_cadeiras_by_professor(data['user'].id)
-            return CadeiraSerializer(cadeiras, many=True).get_data()
+            data['professor'] = data.pop('user').id
+            cadeira = self.__controladorOfertaCadeira.cadastrar_oferta_cadeira(data)
+            return OfertaCadeiraSerializer(cadeira).get_data()
+        except CamposVaziosError as e:
+            return e.__str__(), 400
+        except ConflitoDeHorarioError as e:
+            return e.__str__(), 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+    @get_curr_user_decorator
+    def editarOfertaCadeira(self, data) -> Response:
+        try:
+            data['professor'] = data.pop('user')
+            cadeira = self.__controladorOfertaCadeira.editar_oferta_cadeira(data)
+            return OfertaCadeiraSerializer(cadeira).get_data()
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+    @get_curr_user_decorator
+    def deletarOfertaCadeira(self, data) -> Response:
+        try:
+            deleted = self.__controladorOfertaCadeira.deletar_oferta_cadeira(data)
+            return {'success': deleted}
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+    @get_curr_user_decorator
+    def getOfertaCadeirasProfessor(self, data) -> Response:
+        try:
+            ofertas_cadeiras = self.__controladorOfertaCadeira.get_ofertas_cadeiras_by_professor(data['user'].id)
+            return OfertaCadeiraSerializer(ofertas_cadeiras, many=True).get_data()
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+    
+    @get_curr_user_decorator
+    def getOfertaCadeirasPeriodo(self, data) -> Response:
+        try:
+            ofertas_cadeiras = self.__controladorOfertaCadeira.get_ofertas_cadeiras_by_periodo(data['periodo'])
+            return OfertaCadeiraSerializer(ofertas_cadeiras, many=True).get_data()
         except Exception as e:
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500

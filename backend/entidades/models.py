@@ -50,7 +50,7 @@ class ContaAluno(ContaBase):
     __mapper_args__ = {
         'polymorphic_identity': 'conta_aluno',
     }
-    matriculas = relationship("Matricula", back_populates="aluno")
+    matriculas = relationship('Matricula', back_populates='aluno')
 
     def __init__(self, curso: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -67,7 +67,7 @@ class ContaProfessor(ContaBase):
     __mapper_args__ = {
         'polymorphic_identity': 'conta_professor',
     }
-    cadeiras = relationship("Cadeira", back_populates="professor")
+    ofertas_cadeiras = relationship('OfertaCadeira', back_populates='professor')
 
     def __init__(self, siape: str, formacao: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,52 +102,75 @@ class Cadeira(Base):
 
     id = Column(Integer, primary_key=True)
     nome = Column(String)
-    horario = Column(JSON)
-    plano_ensino = Column(String, default='')
-    centro_universitario = Column(String)
+    ementa = Column(String, default='')
 
-    prerequisitos = relationship("Cadeira", secondary=cadeira_prerequisito_association,
-                                 primaryjoin="Cadeira.id==cadeira_prerequisito.c.cadeira_id",
-                                 secondaryjoin="Cadeira.id==cadeira_prerequisito.c.prerequisito_id",
-                                 backref="prerequisito_de")
-    corequisitos = relationship("Cadeira", secondary=cadeira_corequisito_association,
-                                primaryjoin="Cadeira.id==cadeira_corequisito.c.cadeira_id",
-                                secondaryjoin="Cadeira.id==cadeira_corequisito.c.corequisito_id",
-                                backref="corequisito_de")
-    equivalencias = relationship("Cadeira", secondary=cadeira_equivalencia_association,
-                                 primaryjoin="Cadeira.id==cadeira_equivalencia.c.cadeira_id",
-                                 secondaryjoin="Cadeira.id==cadeira_equivalencia.c.equivalencia_id",
-                                 backref="equivalencia_de")
+    prerequisitos = relationship('Cadeira', secondary=cadeira_prerequisito_association,
+                                 primaryjoin='Cadeira.id==cadeira_prerequisito.c.cadeira_id',
+                                 secondaryjoin='Cadeira.id==cadeira_prerequisito.c.prerequisito_id',
+                                 backref='prerequisito_de')
+    corequisitos = relationship('Cadeira', secondary=cadeira_corequisito_association,
+                                primaryjoin='Cadeira.id==cadeira_corequisito.c.cadeira_id',
+                                secondaryjoin='Cadeira.id==cadeira_corequisito.c.corequisito_id',
+                                backref='corequisito_de')
+    equivalencias = relationship('Cadeira', secondary=cadeira_equivalencia_association,
+                                 primaryjoin='Cadeira.id==cadeira_equivalencia.c.cadeira_id',
+                                 secondaryjoin='Cadeira.id==cadeira_equivalencia.c.equivalencia_id',
+                                 backref='equivalencia_de')
 
-    professor_id = Column(Integer, ForeignKey('conta_professor.id'))
-    professor = relationship("ContaProfessor", back_populates="cadeiras")
+    ofertas_cadeiras = relationship('OfertaCadeira', back_populates='cadeira')
 
     def __init__(
             self,
             nome: str,
-            horario: str,
-            centro_universitario: str,
-            professor: int,
-            plano_ensino: str = '',
+            ementa: str = '',
             prerequisitos: list[int] = [],
             corequisitos: list[int] = [],
             equivalencias: list[int] = []):
         self.nome = nome
-        self.horario = horario
+        self.ementa = ementa
         self.prerequisitos = prerequisitos
         self.corequisitos = corequisitos
         self.equivalencias = equivalencias
+
+
+class OfertaCadeira(Base):
+    __tablename__ = 'oferta_cadeira'
+
+    id = Column(Integer, primary_key=True)
+
+    horario = Column(JSON)
+    plano_ensino = Column(String, default='')
+    
+    centro_universitario = Column(String)
+
+    professor_id = Column(Integer, ForeignKey('conta_professor.id'))
+    professor = relationship('ContaProfessor', back_populates='ofertas_cadeiras')
+
+    cadeira_id = Column(Integer, ForeignKey('cadeira.id'))
+    cadeira = relationship('Cadeira', back_populates='ofertas_cadeiras')
+
+    periodo = Column(String)
+
+    def __init__(
+            self,
+            cadeira: int,
+            horario: str,
+            centro_universitario: str,
+            professor: int,
+            periodo: str,
+            plano_ensino: str = ''):
+        self.cadeira_id = cadeira
+        self.horario = horario
         self.plano_ensino = plano_ensino
         self.centro_universitario = centro_universitario
         self.professor_id = professor
+        self.periodo = periodo
 
-
-
-matricula_cadeira_association = Table(
-    'matricula_cadeira_association',
+matricula_oferta_cadeira_association = Table(
+    'matricula_oferta_cadeira_association',
     Base.metadata,
     Column('matricula_id', Integer, ForeignKey('matricula.id')),
-    Column('cadeira_id', Integer, ForeignKey('cadeira.id'))
+    Column('oferta_cadeira_id', Integer, ForeignKey('oferta_cadeira.id'))
 )
 
 
@@ -158,8 +181,8 @@ class Matricula(Base):
     aluno_id = Column(Integer, ForeignKey('conta_aluno.id'))
     periodo = Column(String)
 
-    aluno = relationship("ContaAluno")
-    cadeiras = relationship("Cadeira", secondary=matricula_cadeira_association)
+    aluno = relationship('ContaAluno')
+    ofertas_cadeiras = relationship('OfertaCadeira', secondary=matricula_oferta_cadeira_association)
 
     def __init__(
             self,
