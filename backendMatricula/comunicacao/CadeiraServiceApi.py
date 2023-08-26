@@ -4,7 +4,7 @@ import json
 
 class CadeiraServiceApi(ICadeiraService):
     def __init__(self):
-        self.baseUrl = 'http://127.0.0.1:8080/'
+        self.baseUrl = 'http://cadeiraservice:5001/'
     
     def get_ofertas_cadeiras_periodo(self, data):
         headers = {'Content-Type': 'application/json'}

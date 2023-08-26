@@ -1,7 +1,7 @@
 import requests
 import json
 
-BASE = 'http://127.0.0.1:8080/'
+BASE = 'http://localhost:5001/'
 
 headers = {'Content-Type': 'application/json'}
 data = {'nome': 'Cadeira 1'}
