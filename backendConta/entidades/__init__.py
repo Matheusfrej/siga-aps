@@ -1,0 +1,1 @@
+from .models import ContaBase, ContaAluno, ContaProfessor, Base

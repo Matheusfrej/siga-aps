@@ -12,3 +12,7 @@ class CamposVaziosError(Exception):
 
     def __str__(self):
         return f'Existem campos não preenchidos: {", ".join(self.campos)}.'
+
+class EmailSenhaInvalidosException(Exception):
+    def __str__(self) -> str:
+        return f'Email ou senha inválidos'

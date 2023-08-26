@@ -1,7 +1,7 @@
 import requests
 import json
 
-BASE = 'http://localhost:5001/'
+BASE = 'http://localhost:5000/cadeira/'
 
 headers = {'Content-Type': 'application/json'}
 data = {'nome': 'Cadeira 1'}
