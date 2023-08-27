@@ -8,11 +8,12 @@ from utils import AlunoStrategy, MatriculaSerializer
 
 from dados import SQLAlchemyRepositorioFactory, ListRepositorioFactory
 
+from comunicacao.contaService import ContaServiceAPI
+
 from dotenv import load_dotenv
 
 import traceback
 import os
-
 
 load_dotenv('config.env')
 db_type = os.getenv('DB_TYPE')
@@ -28,10 +29,17 @@ controladorMatricula = ControladorRealizarMatricula(cadastro_matricula)
 controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
     strategy=AlunoStrategy(cadastro_matricula))
 
+conta_service_api = ContaServiceAPI()
 
-class MatriculaPresenter(Resource):
+class LoginRequiredMixin(Resource):
+    def dispatch_request(self, *args, **kwargs):
+        self.current_user = conta_service_api.get_user_info(headers=request.headers)
+        return super().dispatch_request(*args, **kwargs)
+
+class MatriculaPresenter(LoginRequiredMixin):
     def post(self):
         data = request.get_json()
+        data['aluno_id'] = self.current_user['id']
         try:
             result = controladorMatricula.cadastrar_matricula(data)
             return MatriculaSerializer(result).get_data()
@@ -45,23 +53,24 @@ class DeletarMatriculaPresenter(Resource):
         return controladorMatricula.deletarMatriculaCadeira(matricula_id)
 
 
-class EditarMatriculaPresenter(Resource):
+class EditarMatriculaPresenter(LoginRequiredMixin):
     def put(self, matricula_id):
         data = request.get_json()
+        data['aluno_id'] = self.current_user['id']
         data['id'] = matricula_id
         return MatriculaSerializer(controladorMatricula.editarMatriculaCadeira(data))
 
 
-class GetMatriculaPeriodoPresenter(Resource):
-    def get(self, aluno_id):
-        return MatriculaSerializer(controladorMatricula.getMatriculaCadeira(aluno_id))
+class GetMatriculaPeriodoPresenter(LoginRequiredMixin):
+    def get(self):
+        return MatriculaSerializer(controladorMatricula.getMatriculaCadeira(self.current_user['id']))
     
     
-class GetMatriculasAlunoPresenter(Resource):
-    def get(self, aluno_id):
-        return MatriculaSerializer(controladorMatricula.getMatriculasAluno(aluno_id))
+class GetMatriculasAlunoPresenter(LoginRequiredMixin):
+    def get(self):
+        return MatriculaSerializer(controladorMatricula.getMatriculasAluno(self.current_user['id']))
 
 
-class VerHorarioPresenter(Resource):
-    def get(self, aluno_id):
-        return controladorVisualizarHorarioCursadas.visualizarHorario(aluno_id)
+class VerHorarioPresenter(LoginRequiredMixin):
+    def get(self):
+        return controladorVisualizarHorarioCursadas.visualizarHorario(self.current_user['id'])

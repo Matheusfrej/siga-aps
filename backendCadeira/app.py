@@ -66,7 +66,7 @@ class CadastrarCadeiraPresenter(LoginRequiredMixin):
             return 'Erro interno do servidor', 500
 
 
-class EditarCadeiraPresenter(Resource):
+class EditarCadeiraPresenter(LoginRequiredMixin):
     def put(self):
         try:
             data = request.get_json()
@@ -80,7 +80,7 @@ class EditarCadeiraPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class DeletarCadeiraPresenter(Resource):
+class DeletarCadeiraPresenter(LoginRequiredMixin):
     def delete(self):
         try:
             data = request.get_json()
@@ -94,10 +94,11 @@ class DeletarCadeiraPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class CadastrarOfertaCadeiraPresenter(Resource):
+class CadastrarOfertaCadeiraPresenter(LoginRequiredMixin):
     def post(self):
         try:
             data = request.get_json()
+            data['professor_id'] = self.current_user['id']
             result = controlador_oferta_cadeira.cadastrar_oferta_cadeira(data)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()
@@ -110,10 +111,11 @@ class CadastrarOfertaCadeiraPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class EditarOfertaCadeiraPresenter(Resource):
+class EditarOfertaCadeiraPresenter(LoginRequiredMixin):
     def put(self):
         try:
             data = request.get_json()
+            data['professor_id'] = self.current_user['id']
             result = controlador_oferta_cadeira.editar_oferta_cadeira(data)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()
@@ -124,7 +126,7 @@ class EditarOfertaCadeiraPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class DeletarOfertaCadeiraPresenter(Resource):
+class DeletarOfertaCadeiraPresenter(LoginRequiredMixin):
     def delete(self):
         try:
             data = request.get_json()
@@ -138,11 +140,11 @@ class DeletarOfertaCadeiraPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class GetOfertasCadeirasProfessorPresenter(Resource):
+class GetOfertasCadeirasProfessorPresenter(LoginRequiredMixin):
     def get(self):
         try:
             data = request.get_json()
-            result = controlador_oferta_cadeira.get_ofertas_cadeiras_by_professor(data.get('professor_id'))
+            result = controlador_oferta_cadeira.get_ofertas_cadeiras_by_professor(self.current_user['id'])
             if result:
                 return OfertaCadeiraSerializer(result, many=True).get_data()
             elif result == []:
@@ -154,7 +156,7 @@ class GetOfertasCadeirasProfessorPresenter(Resource):
             return 'Erro interno do servidor', 500
     
 
-class GetOfertasCadeirasPeriodoPresenter(Resource):
+class GetOfertasCadeirasPeriodoPresenter(LoginRequiredMixin):
     def get(self):
         try:
             data = request.get_json()
@@ -170,7 +172,7 @@ class GetOfertasCadeirasPeriodoPresenter(Resource):
             return 'Erro interno do servidor', 500
 
 
-class GetOfertaCadeiraById(Resource):
+class GetOfertaCadeiraById(LoginRequiredMixin):
     def get(self, oferta_id):
         try:
             result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(oferta_id)
@@ -186,7 +188,7 @@ class GetOfertaCadeiraById(Resource):
             return 'Erro interno do servidor', 500
 
 
-class GetOfertaCadeiraListById(Resource):
+class GetOfertaCadeiraListById(LoginRequiredMixin):
     def get(self):
         try:
             ids = request.args.getlist('ids')
