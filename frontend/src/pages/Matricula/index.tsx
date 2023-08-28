@@ -5,6 +5,8 @@ import Select from 'react-select'
 import styles from './styles.module.css'
 import { getOfertasCadeiraPeriodo } from '../../services/cadeiraService'
 import { matriculaRequest } from '../../services/matriculaService'
+import { invokeToast } from '../../services/toastService'
+import { useNavigate } from 'react-router-dom'
 
 interface CadeirasOfertadasSelectInterface {
   value: number
@@ -50,6 +52,8 @@ export function Matricula() {
       (cadeiraOfertada) => id === cadeiraOfertada.id,
     )[0]
   }
+
+  const navigate = useNavigate()
 
   const handleCadeiraChange = (
     selectedOptions: CadeirasOfertadasSelectInterface[],
@@ -99,9 +103,18 @@ export function Matricula() {
     setCadeirasOfertadas(cadeiras)
   }
 
-  const fazMatricula = () => {
+  const fazMatricula = async () => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    matriculaRequest(cadeirasSelecionadas!)
+    const token = localStorage.getItem('token')
+    const response = await matriculaRequest(cadeirasSelecionadas!, token!)
+    if (response !== -1) {
+      invokeToast('Matrícula realizada com sucesso', true)
+      // setInterval(() => {
+      //   navigate('/')
+      // }, 3000)
+    } else {
+      invokeToast('Houve um erro ao realizar a matrícula', false)
+    }
   }
 
   useEffect(() => {

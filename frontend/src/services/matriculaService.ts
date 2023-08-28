@@ -1,12 +1,18 @@
 import api from '../libs/api'
 
-export const matriculaRequest = async (ofertasCadeirasIDs: number[]) => {
+export const matriculaRequest = async (
+  ofertasCadeirasIDs: number[],
+  token: string,
+) => {
   const headers = {
     'Content-Type': 'application/json',
+    token,
   }
 
   const data = {
-    ofertasCadeirasIDs,
+    cadeiras: ofertasCadeirasIDs.map((ofertaCadeiraID) =>
+      ofertaCadeiraID.toString(),
+    ),
   }
   try {
     const response = await api.post('/matricula/fazer-matricula', data, {
