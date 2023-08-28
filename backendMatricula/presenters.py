@@ -39,6 +39,7 @@ class LoginRequiredMixin(Resource):
 class MatriculaPresenter(LoginRequiredMixin):
     def post(self):
         data = request.get_json()
+        print(data)
         data['aluno_id'] = self.current_user['id']
         try:
             result = controladorMatricula.cadastrar_matricula(data)
@@ -73,4 +74,4 @@ class GetMatriculasAlunoPresenter(LoginRequiredMixin):
 
 class VerHorarioPresenter(LoginRequiredMixin):
     def get(self):
-        return controladorVisualizarHorarioCursadas.visualizarHorario(self.current_user['id'])
+        return controladorVisualizarHorarioCursadas.get_horario(self.current_user['id']).data

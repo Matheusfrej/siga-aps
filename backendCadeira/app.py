@@ -4,7 +4,7 @@ from flask import request
 from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
 
-from negocio.controladores import ControladorCadastroCadeira, ControladorOfertaCadeira
+from negocio.controladores import ControladorCadastroCadeira, ControladorOfertaCadeira, ControladorVisualizarHorario
 
 from dotenv import load_dotenv
 
@@ -14,7 +14,7 @@ from utils import CadeiraSerializer, OfertaCadeiraSerializer
 
 from negocio.cadastros import CadastroCadeira, CadastroOfertaCadeira
 
-from utils import ConflitoDeHorarioError
+from utils import ConflitoDeHorarioError, ProfessorStrategy
 
 from comunicacao import ContaServiceAPI
 
@@ -40,6 +40,9 @@ cadastro_oferta_cadeira = CadastroOfertaCadeira(repo_oferta_cadeira)
 
 controlador_cadastrar_cadeira = ControladorCadastroCadeira(cadastro_cadeira)
 controlador_oferta_cadeira = ControladorOfertaCadeira(cadastro_oferta_cadeira)
+
+controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
+    strategy=ProfessorStrategy(cadastro_oferta_cadeira, cadastro_cadeira))
 
 parser = reqparse.RequestParser()
 parser.add_argument('ids', type=int, action='append', required=True)
@@ -156,7 +159,7 @@ class GetOfertasCadeirasProfessorPresenter(LoginRequiredMixin):
             return 'Erro interno do servidor', 500
     
 
-class GetOfertasCadeirasPeriodoPresenter(LoginRequiredMixin):
+class GetOfertasCadeirasPeriodoPresenter(Resource):
     def get(self):
         try:
             data = request.get_json()
@@ -172,11 +175,10 @@ class GetOfertasCadeirasPeriodoPresenter(LoginRequiredMixin):
             return 'Erro interno do servidor', 500
 
 
-class GetOfertaCadeiraById(LoginRequiredMixin):
+class GetOfertaCadeiraById(Resource):
     def get(self, oferta_id):
         try:
             result = controlador_oferta_cadeira.get_oferta_cadeira_by_id(oferta_id)
-            print(result)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()
             elif result == []:
@@ -188,12 +190,11 @@ class GetOfertaCadeiraById(LoginRequiredMixin):
             return 'Erro interno do servidor', 500
 
 
-class GetOfertaCadeiraListById(LoginRequiredMixin):
+class GetOfertaCadeiraListById(Resource):
     def get(self):
         try:
             ids = request.args.getlist('ids')
             result = controlador_oferta_cadeira.get_oferta_cadeira_list_by_id(ids)
-            print(result)
             if result:
                 return OfertaCadeiraSerializer(result, many=True).get_data()
             elif result == []:
@@ -204,6 +205,13 @@ class GetOfertaCadeiraListById(LoginRequiredMixin):
             print(traceback.format_exc())
             return 'Erro interno do servidor', 500
 
+
+class VerHorarioPresenter(LoginRequiredMixin):
+    def get(self):
+        return controladorVisualizarHorarioCursadas.get_horario(self.current_user['id']).data
+
+
+api.add_resource(VerHorarioPresenter, '/ver-horario')
 api.add_resource(CadastrarCadeiraPresenter, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraPresenter, '/editar-cadeira')
 api.add_resource(DeletarCadeiraPresenter, '/deletar-cadeira')

@@ -1,16 +1,15 @@
 import api from '../libs/api'
 
-export const loginRequest = async (email: string, senha: string) => {
+export const matriculaRequest = async (ofertasCadeirasIDs: number[]) => {
   const headers = {
     'Content-Type': 'application/json',
   }
 
   const data = {
-    email,
-    senha,
+    ofertasCadeirasIDs,
   }
   try {
-    const response = await api.post('/conta/login', data, {
+    const response = await api.post('/matricula/fazer-matricula', data, {
       withCredentials: false,
       headers,
     })

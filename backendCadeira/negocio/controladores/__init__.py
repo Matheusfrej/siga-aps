@@ -1,2 +1,3 @@
 from .controladorCadastroCadeira import ControladorCadastroCadeira
 from .controladorOfertaCadeira import ControladorOfertaCadeira
+from .controladorVisualizarHorario import ControladorVisualizarHorario

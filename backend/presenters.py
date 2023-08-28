@@ -24,7 +24,6 @@ class UserInfoPresenter(Resource):
 class CadastrarCadeiraPresenter(Resource):
     def post(self):
         data = request.get_json()
-        print("Cadastrar cadeira resource ", data)
         data['token'] = request.headers.get('token')
         return fachada.cadastrarCadeira(data)
 
@@ -46,7 +45,6 @@ class DeletarCadeiraPresenter(Resource):
 class CadastrarOfertaCadeiraPresenter(Resource):
     def post(self):
         data = request.get_json()
-        print("Cadastrar cadeira resource ", data)
         data['token'] = request.headers.get('token')
         return fachada.cadastrarOfertaCadeira(data)
 

@@ -25,6 +25,10 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
         return deleted
 
     def get_ofertas_cadeiras_by_professor(self, professor_id):
+        ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_professor(professor_id)
+        return ofertas_cadeiras
+
+    def get_current_ofertas_by_professor_periodo(self, professor_id):
         ofertas_cadeiras = self.repositorio_oferta_cadeira.get_current_by_professor(professor_id)
         return ofertas_cadeiras
     

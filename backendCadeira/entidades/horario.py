@@ -1,5 +1,5 @@
 class Horario:
-    def __init__(self, ofertas_cadeiras_dicio):
+    def __init__(self, ofertas_cadeiras, dicio_cadeiras):
         dicio = {
             'seg': dict(),
             'ter': dict(),
@@ -9,11 +9,10 @@ class Horario:
             'sab': dict(),
             'dom': dict()
         }
-
-        for c in ofertas_cadeiras_dicio:
-            for k, v in c.get('horario').items():
+        for c in ofertas_cadeiras:
+            for k, v in c.horario.items():
                 for h in v:
-                    dicio[k][h] = c.get('cadeira').get('nome')
+                    dicio[k][h] = dicio_cadeiras.get(c.cadeira_id).nome
 
-        self.ofertas_cadeiras = ofertas_cadeiras_dicio
+        self.ofertas_cadeiras = ofertas_cadeiras
         self.data = dicio

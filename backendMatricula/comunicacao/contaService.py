@@ -1,4 +1,4 @@
-from . import IContaService
+from .iContaService import IContaService
 
 import requests
 
@@ -10,4 +10,3 @@ class ContaServiceAPI(IContaService):
         response = requests.get(self.baseUrl + 'get-user-info', headers=headers)
         user = response.json()
         return user
-        

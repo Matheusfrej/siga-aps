@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect
 from flask import request
+from flask_cors import CORS
 
 from flask_cors import CORS
 from flask_restful import Api
@@ -9,6 +10,7 @@ from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 CADEIRA_SERVICE_URL = 'http://cadeiraservice:5001/'
 MATRICULA_SERVICE_URL = 'http://matriculaservice:5002/'
@@ -52,6 +54,21 @@ def conta_service(path):
     elif request.method == 'DELETE':
         response = requests.delete(CONTA_SERVICE_URL + path, data=request.data, headers=request.headers)
     return response.content, response.status_code
+
+
+@app.route('/ver-horario', methods=['GET'])
+def horario_presenter():
+    response = requests.get(CONTA_SERVICE_URL + 'get-user-info', data=request.data, headers=request.headers)
+    if response.status_code == 200:
+        user = response.json()
+        if user.get('discriminator') == 'conta_professor':
+            response = requests.get(CADEIRA_SERVICE_URL + 'ver-horario', data=request.data, headers=request.headers)
+        else:
+            response = requests.get(MATRICULA_SERVICE_URL + 'ver-horario', data=request.data, headers=request.headers)
+        return response.content, response.status_code
+    else:
+        return response.content, response.status_code
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
