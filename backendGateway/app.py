@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect
 from flask import request
+from flask_cors import CORS
 
 from flask_cors import CORS
 from flask_restful import Api
@@ -9,6 +10,7 @@ from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 CADEIRA_SERVICE_URL = 'http://cadeiraservice:5001/'
 MATRICULA_SERVICE_URL = 'http://matriculaservice:5002/'

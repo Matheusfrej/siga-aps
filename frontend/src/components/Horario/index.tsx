@@ -59,7 +59,7 @@ export function Horario({ isMatricula, horarioMatricula }: HorarioProps) {
       getHorario()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [horarioMatricula])
 
   return (
     <div className={styles.horarioContainer}>

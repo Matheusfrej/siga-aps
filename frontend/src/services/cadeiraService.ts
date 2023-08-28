@@ -47,7 +47,7 @@ export const cadastrarCadeiraRequest = async (
 }
 
 export const getCadeiras = async () => {
-  const response = await api.get('/get-cadeiras-professor', {
+  const response = await api.get('/cadeira/get-cadeiras-professor', {
     headers: {
       'Content-Type': 'application/json',
       token,
@@ -57,6 +57,20 @@ export const getCadeiras = async () => {
     ...cadeira,
   }))
   return formattedCadeiras
+}
+
+export const getOfertasCadeiraPeriodo = async () => {
+  try {
+    const response = await api.get('/cadeira/get-cadeiras-periodo', {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const deletarCadeiraRequest = async (cadeiraId: number) => {

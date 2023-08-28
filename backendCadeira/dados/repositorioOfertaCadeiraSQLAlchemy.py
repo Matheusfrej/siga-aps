@@ -1,5 +1,5 @@
 
-import datetime
+from datetime import datetime
 from .iRepositorioOfertaCadeira import IRepositorioOfertaCadeira
 from entidades import OfertaCadeira
 from entidades import Cadeira
