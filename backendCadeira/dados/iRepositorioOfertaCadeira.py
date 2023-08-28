@@ -22,11 +22,11 @@ class IRepositorioOfertaCadeira(ABC):
         pass
 
     @abstractmethod
-    def get_current_by_professor(self, professor_id, periodo):
+    def get_current_by_professor(self, professor_id):
         pass
     
     @abstractmethod
-    def get_by_periodo(self, periodo):
+    def get_by_periodo(self):
         pass
 
     @abstractmethod

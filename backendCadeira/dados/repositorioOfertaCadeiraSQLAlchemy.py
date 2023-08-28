@@ -1,4 +1,5 @@
 
+import datetime
 from .iRepositorioOfertaCadeira import IRepositorioOfertaCadeira
 from entidades import OfertaCadeira
 from entidades import Cadeira
@@ -80,6 +81,10 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
 
     def get_current_by_professor(self, professor_id):
         with self.Session() as session:
+            curr_date = datetime.now()
+            year = curr_date.year
+            month = curr_date.month
+            periodo = f'{year}.{1 if month <= 6 else 2}'
             ofertas_cadeiras = session.query(
                 OfertaCadeira).options(joinedload(OfertaCadeira.cadeira)
             ).filter_by(professor_id=int(professor_id), periodo=periodo)
@@ -90,8 +95,12 @@ class RepositorioOfertaCadeiraSQLAlchemy(IRepositorioOfertaCadeira):
             ofertas_cadeiras = ofertas_cadeiras.filter_by(periodo=periodo).first()
             return list(ofertas_cadeiras)
         
-    def get_by_periodo(self, periodo):
+    def get_by_periodo(self):
         with self.Session() as session:
+            curr_date = datetime.now()
+            year = curr_date.year
+            month = curr_date.month
+            periodo = f'{year}.{1 if month <= 6 else 2}'
             ofertas_cadeiras = session.query(
                 OfertaCadeira).options(joinedload(OfertaCadeira.cadeira)).filter_by(periodo=periodo)
             return list(ofertas_cadeiras)

@@ -163,7 +163,7 @@ class GetOfertasCadeirasPeriodoPresenter(Resource):
     def get(self):
         try:
             data = request.get_json()
-            result = controlador_oferta_cadeira.get_ofertas_cadeiras_by_periodo(data.get('periodo'))
+            result = controlador_oferta_cadeira.get_ofertas_cadeiras_by_periodo()
             if result:
                 return OfertaCadeiraSerializer(result, many=True).get_data()
             elif result == []:
