@@ -1,4 +1,4 @@
-from . import IContaService
+from .iContaService import IContaService
 
 import requests
 

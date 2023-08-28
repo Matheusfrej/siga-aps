@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-api.add_resource(VerHorarioPresenter, '/ver-horario/')
+api.add_resource(VerHorarioPresenter, '/ver-horario')
 api.add_resource(MatriculaPresenter, '/fazer-matricula')
 api.add_resource(EditarMatriculaPresenter, '/editar-matricula/<int:matricula_id>')
 api.add_resource(DeletarMatriculaPresenter, '/deletar-matricula/<int:matricula_id>')

@@ -48,7 +48,6 @@ class LoginPresenter(Resource):
             args = request.get_json()
             email = args['email']
             senha = args['senha']
-            print(email, senha)
             response = controlador_conta.efetuarLogin(email=email, senha=senha)
             if response:
                 response['user'] = ContaSerializer(controlador_conta.get_user_by_email(email=email)).get_data()

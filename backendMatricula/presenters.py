@@ -73,4 +73,4 @@ class GetMatriculasAlunoPresenter(LoginRequiredMixin):
 
 class VerHorarioPresenter(LoginRequiredMixin):
     def get(self):
-        return controladorVisualizarHorarioCursadas.visualizarHorario(self.current_user['id'])
+        return controladorVisualizarHorarioCursadas.get_horario(self.current_user['id']).data

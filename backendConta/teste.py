@@ -1,19 +1,26 @@
 import requests
 import json
 
-BASE_CONTA = "http://localhost:5000/conta/"
-BASE_CADEIRA = "http://localhost:5000/cadeira/"
+BASE = "http://localhost:5000/"
+BASE_CONTA = BASE + "conta/"
+BASE_CADEIRA = BASE + "cadeira/"
+BASE_MATRICULA = BASE + "matricula/"
 
 headers = {'Content-Type': 'application/json'}
-data = {'email': 'fgm3@cin.ufpe.br', 'senha': 123456}
+data = {'email': 'baws@cin.ufpe.br', 'senha': 123456}
 payload = json.dumps(data)
 response = requests.post(BASE_CONTA + "login", headers=headers, data=payload)
 token = response.json().get('idToken')
 print(token)
 
-headers = {'Content-Type': 'application/json', 'token': token, 'periodo': '2023.2'}
-data = {'nome': 'Cadeira 14'}
+headers = {'Content-Type': 'application/json', 'token': token}
+
+data = {'periodo': '2023.2', 'cadeiras': ['2']}
 payload = json.dumps(data)
-response = requests.post(BASE_CADEIRA + 'cadastrar-cadeira', headers=headers, data=payload)
+response = requests.post(BASE_MATRICULA + 'fazer-matricula', headers=headers, data=payload)
+print(response.json())
+
+payload = json.dumps(data)
+response = requests.get(BASE + 'ver-horario', headers=headers)
 cadeira2 = response.json()
-print('A', cadeira2)
+print(cadeira2)

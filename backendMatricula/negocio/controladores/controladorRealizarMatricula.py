@@ -59,8 +59,6 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
         ofertas_cadeiras_cursadas = map(lambda x: x.cadeiras, matriculas_anteriores)
         ids_cadeiras_cursadas = reduce(lambda x,y: x+y, ofertas_cadeiras_cursadas, [])
         cadeiras = cadeira_entities
-        print(cadeiras)
-        print(ids_cadeiras_cursadas)
         for cadeira in cadeiras:
             for c in cadeira['cadeira'].get('prerequisitos', []):
                 if str(c['id']) not in ids_cadeiras_cursadas:
@@ -68,7 +66,6 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
         
         for cadeira in cadeiras:
             for c in cadeira['cadeira'].get('equivalencias', []):
-                print(str(c['id']))
                 if str(c['id']) in ids_cadeiras_cursadas:
                     raise ConflitoDeEquivalencia(cadeira['cadeira']['nome'], c['nome'])
         
