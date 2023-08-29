@@ -4,13 +4,21 @@ services:
     build:
       context: ./backendCadeira
     ports:
-      - "5001:5001"  # Map the container's port 5001 to the host for CadeiraService
+      - "5001:5001"
+    volumes:
+      - ./backendCadeira:/app
+    environment:
+      - AUTO_UPDATE=true
 
   matriculaservice:
     build:
       context: ./backendMatricula
     ports:
-      - "5002:5002"  # Map the container's port 5002 to the host for MatriculaService
+      - "5002:5002"
+    volumes:
+      - ./backendMatricula:/app
+    environment:
+      - AUTO_UPDATE=true
 
   gatewayservice:
     build:
@@ -23,6 +31,10 @@ services:
       context: ./backendConta
     ports:
       - "5003:5003"
+    volumes:
+      - ./backendConta:/app
+    environment:
+      - AUTO_UPDATE=true
 
 networks:
   mynetwork:
