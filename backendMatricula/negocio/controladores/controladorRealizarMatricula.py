@@ -2,6 +2,7 @@ from utils import SingletonMetaclass, CamposVaziosError, ConflitoDeHorarioError,
 from negocio.cadastros.cadastroMatricula import CadastroMatricula
 from comunicacao.CadeiraServiceApi import CadeiraServiceApi
 from functools import reduce
+from datetime import datetime
 
 class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
     def __init__(self, cadastro_matricula: CadastroMatricula) -> None:
@@ -10,6 +11,11 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
 
     def cadastrar_matricula(self, data):
         cadeiras_entities = self.cadeira_service.get_oferta_cadeira_by_id(data['cadeiras'])
+        curr_date = datetime.now()
+        year = curr_date.year
+        month = curr_date.month
+        periodo = f'{year}.{1 if month <= 6 else 2}'
+        data['periodo'] = periodo
         valida = self.validar_matricula(data, cadeiras_entities)
         if valida:
             nova_matricula = self.cadastro_matricula.cadastrar_matricula(data)
@@ -45,7 +51,7 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
     def validar_matricula(self, data, cadeira_entities):
         campos_vazios = []
         campos_obg = ['periodo', 'aluno_id', 'cadeiras']
-        # matricula_atual = self.cadastro_matricula.get_current_by_aluno(data['aluno_id'])
+        # matricula_atual = self.cadastro_matricula.get_current_by_aluno(data['aluno_id']) TODO APAGAR ISSO
         # if matricula_atual:
         #     raise MatriculaJaRealizada()
         for campo in campos_obg:
