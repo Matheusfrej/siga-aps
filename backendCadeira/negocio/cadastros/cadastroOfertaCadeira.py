@@ -27,6 +27,10 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
     def get_ofertas_cadeiras_by_professor(self, professor_id):
         ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_professor(professor_id)
         return ofertas_cadeiras
+    
+    def get_ofertas_cadeiras_by_professor_periodo(self, professor_id, periodo):
+        ofertas_cadeiras = self.repositorio_oferta_cadeira.get_by_professor_periodo(professor_id, periodo)
+        return ofertas_cadeiras
 
     def get_current_ofertas_by_professor_periodo(self, professor_id):
         ofertas_cadeiras = self.repositorio_oferta_cadeira.get_current_by_professor(professor_id)
@@ -38,7 +42,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
 
     def validar_oferta_cadeira(self, data):
         horario = data['horario']
-        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor_id'])
+        cadeiras = self.get_ofertas_cadeiras_by_professor_periodo(data['professor_id'], data['periodo'])
         for cadeira in cadeiras:
             for k, v in cadeira.horario.items():
                 for h in v:

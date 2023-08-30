@@ -13,6 +13,7 @@ export const cadastrarOfertaCadeiraRequest = async (
   // eslint-disable-next-line camelcase
   centro_universitario: string,
   formattedHorarios: object,
+  periodo: string,
 ) => {
   try {
     const data = {
@@ -20,7 +21,7 @@ export const cadastrarOfertaCadeiraRequest = async (
       horario: formattedHorarios,
       // eslint-disable-next-line camelcase
       centro_universitario,
-      periodo: '2023.1',
+      periodo,
     }
     console.log(data)
 
