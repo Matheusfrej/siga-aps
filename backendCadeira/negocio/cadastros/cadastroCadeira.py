@@ -37,3 +37,6 @@ class CadastroCadeira(metaclass=SingletonMetaclass):
 
     def read_id_in_list(self, id_list):
         return self.repositorio_cadeira.read_id_in_list(id_list)
+
+    def get_all_cadeiras(self):
+        return self.repositorio_cadeira.get_all()
