@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from backendMatricula.utils.errors import CamposVaziosError
+from utils import CamposVaziosError
 
 from negocio.controladores import *
 from negocio.cadastros import CadastroMatricula

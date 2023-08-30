@@ -3,15 +3,13 @@ from flask_restful import Resource
 from flask import request
 
 import traceback
-from backendCadeira.comunicacao.contaService import ContaServiceAPI
-from backendCadeira.negocio.controladores.controladorVisualizarHorario import ControladorVisualizarHorario
-from backendCadeira.utils.visualizarHorarioStrategies import ProfessorStrategy
+from comunicacao.contaService import ContaServiceAPI
+from negocio.controladores.controladorVisualizarHorario import ControladorVisualizarHorario
+from utils.visualizarHorarioStrategies import ProfessorStrategy
 
 from utils.errors import CamposVaziosError
 from utils import CadeiraSerializer, OfertaCadeiraSerializer
 from utils import ConflitoDeHorarioError
-
-from app import *
 
 from negocio.controladores import ControladorCadastroCadeira, ControladorOfertaCadeira
 
