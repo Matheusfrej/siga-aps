@@ -14,7 +14,7 @@
 }
 
 .selectContainer {
-  width: 400px !important;
+  width: 400px;
   max-width: 500px;
   padding-top: 2rem;
   padding-bottom: 2rem;

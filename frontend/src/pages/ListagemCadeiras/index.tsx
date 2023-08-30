@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import {
   deletarCadeiraRequest,
-  getCadeiras,
+  getCadeirasProfessor,
 } from '../../services/cadeiraService'
 import { Header } from '../../components/Header'
 import styles from './styles.module.css'
@@ -20,7 +20,7 @@ export function ListagemCadeiras() {
     try {
       const token = localStorage.getItem('token')
       if (token) {
-        const response = await getCadeiras(token)
+        const response = await getCadeirasProfessor(token)
         console.log(response)
 
         setCadeiras(response)

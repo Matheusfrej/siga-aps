@@ -38,7 +38,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
 
     def validar_oferta_cadeira(self, data):
         campos_vazios = []
-        campos_obg = ['centro_universitario', 'professor', 'periodo', 'horario']
+        campos_obg = ['centro_universitario', 'professor_id', 'periodo', 'horario']
         for campo in campos_obg:
             if campo not in data.keys():
                 campos_vazios.append(campo)
@@ -46,7 +46,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
             raise CamposVaziosError(campos_vazios)
 
         horario = data['horario']
-        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor'], data['periodo'])
+        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor_id'])
         for cadeira in cadeiras:
             for k, v in cadeira.horario.items():
                 for h in v:

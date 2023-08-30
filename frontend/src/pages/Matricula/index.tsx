@@ -8,7 +8,7 @@ import { matriculaRequest } from '../../services/matriculaService'
 import { invokeToast } from '../../services/toastService'
 import { useNavigate } from 'react-router-dom'
 
-interface CadeirasOfertadasSelectInterface {
+export interface CadeirasOfertadasSelectInterface {
   value: number
   label: string
 }
@@ -109,6 +109,7 @@ export function Matricula() {
     const response = await matriculaRequest(cadeirasSelecionadas!, token!)
     if (response !== -1) {
       invokeToast('Matrícula realizada com sucesso', true)
+      navigate('/horarios')
       // setInterval(() => {
       //   navigate('/')
       // }, 3000)

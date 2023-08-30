@@ -47,3 +47,7 @@ form .formGroup input {
   width: 100%;
   border: 0.5px solid var(--gray-600);
 }
+
+.selectContainer {
+  width: 100%;
+}
