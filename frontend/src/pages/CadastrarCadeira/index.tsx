@@ -11,8 +11,7 @@ import { useNavigate } from 'react-router'
 export function CadastrarCadeira() {
   const { showToast } = useContext(SigabContext)
   const [nome, setNome] = useState('')
-  const [planoEnsino, setPlanoEnsino] = useState('')
-  const [centroUniversitario, setCentroUniversitario] = useState('')
+  const [centroUniversitario, setcentroUniversitario] = useState('')
   const [formattedHorarios, setFormattedHorarios] = useState<any[]>([])
   const navigate = useNavigate()
 
@@ -22,15 +21,14 @@ export function CadastrarCadeira() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+
     const formData = {
       nome,
-      plano_ensino: planoEnsino,
       centro_universitario: centroUniversitario,
     }
 
     cadastrarCadeiraRequest(
       formData.nome,
-      formData.plano_ensino,
       formData.centro_universitario,
       formattedHorarios,
     )
@@ -51,12 +49,8 @@ export function CadastrarCadeira() {
     setNome(event.target.value)
   }
 
-  const handlePlanoEnsinoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPlanoEnsino(event.target.value)
-  }
-
   const handleCentroChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCentroUniversitario(event.target.value)
+    setcentroUniversitario(event.target.value)
   }
 
   return (
@@ -72,14 +66,6 @@ export function CadastrarCadeira() {
                 type="text"
                 value={nome}
                 onChange={(e) => handleNomeChange(e)}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Plano de Ensino</label>
-              <input
-                type="text"
-                value={planoEnsino}
-                onChange={(e) => handlePlanoEnsinoChange(e)}
               />
             </div>
             <div className={styles.formGroup}>

@@ -4,15 +4,13 @@ const token = localStorage.getItem('token')
 
 interface Cadeira {
   nome: string
-  plano_ensino: string
   cento_universitario: string
   horarios: typeof HorarioInterface
 }
 
 export const cadastrarCadeiraRequest = async (
   nome: string,
-  planoEnsino: string,
-  centroUniversitario: string,
+  centro_universitario: string,
   formattedHorarios: object,
 ) => {
   try {
@@ -28,8 +26,7 @@ export const cadastrarCadeiraRequest = async (
     const data = {
       nome,
       horario: formattedHorarios,
-      planoEnsino,
-      centroUniversitario,
+      centro_universitario,
       professor: userInfo,
     }
 

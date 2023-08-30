@@ -1,0 +1,163 @@
+[1mdiff --git a/backend/negocio/cadastros/cadastroCadeira.py b/backend/negocio/cadastros/cadastroCadeira.py[m
+[1mindex 022a5ae..6edcd78 100644[m
+[1m--- a/backend/negocio/cadastros/cadastroCadeira.py[m
+[1m+++ b/backend/negocio/cadastros/cadastroCadeira.py[m
+[36m@@ -25,6 +25,7 @@[m [mclass CadastroCadeira(metaclass=SingletonMetaclass):[m
+         return cadeiras[m
+ [m
+     def validar_cadeira(self, data):[m
+[32m+[m[32m        print(data, "Validar")[m
+         horario = data['horario'][m
+         cadeiras = self.get_cadeiras_by_professor(data['professor'])[m
+         for cadeira in cadeiras:[m
+[1mdiff --git a/backend/presenters.py b/backend/presenters.py[m
+[1mindex 21aa34d..e181854 100644[m
+[1m--- a/backend/presenters.py[m
+[1m+++ b/backend/presenters.py[m
+[36m@@ -21,7 +21,6 @@[m [mclass UserInfoPresenter(Resource):[m
+ class CadastrarCadeiraPresenter(Resource):[m
+     def post(self):[m
+         data = request.get_json()[m
+[31m-        print("Cadastrar cadeira resource ", data)[m
+         data['token'] = request.headers.get('token')[m
+         return fachada.cadastrarCadeira(data)[m
+ [m
+[1mdiff --git a/frontend/src/components/HorarioCadeira/index.tsx b/frontend/src/components/HorarioCadeira/index.tsx[m
+[1mindex faa10b4..49ffe14 100644[m
+[1m--- a/frontend/src/components/HorarioCadeira/index.tsx[m
+[1m+++ b/frontend/src/components/HorarioCadeira/index.tsx[m
+[36m@@ -64,6 +64,11 @@[m [mfunction HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {[m
+     setHorariosCadeira(updatedHorarios)[m
+   }[m
+ [m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    formatHorarios();[m
+[32m+[m[32m    onSaveHorarios(horariosCadeira);[m
+[32m+[m[32m  }, [horariosCadeira]);[m
+[32m+[m
+   const formatHorarios = () => {[m
+     const formattedHorarios = horariosCadeira[m
+       .filter((horario) => horario.horarios.length > 0)[m
+[1mdiff --git a/frontend/src/pages/CadastrarCadeira/index.tsx b/frontend/src/pages/CadastrarCadeira/index.tsx[m
+[1mindex 94f11f1..cfe4d78 100644[m
+[1m--- a/frontend/src/pages/CadastrarCadeira/index.tsx[m
+[1m+++ b/frontend/src/pages/CadastrarCadeira/index.tsx[m
+[36m@@ -11,8 +11,7 @@[m [mimport { useNavigate } from 'react-router'[m
+ export function CadastrarCadeira() {[m
+   const { showToast } = useContext(SigabContext)[m
+   const [nome, setNome] = useState('')[m
+[31m-  const [planoEnsino, setPlanoEnsino] = useState('')[m
+[31m-  const [centroUniversitario, setCentroUniversitario] = useState('')[m
+[32m+[m[32m  const [centro_universitario, setcentro_universitario] = useState('')[m
+   const [formattedHorarios, setFormattedHorarios] = useState<any[]>([])[m
+   const navigate = useNavigate()[m
+ [m
+[36m@@ -22,15 +21,14 @@[m [mexport function CadastrarCadeira() {[m
+ [m
+   const handleSubmit = (e: FormEvent) => {[m
+     e.preventDefault()[m
+[32m+[m
+     const formData = {[m
+       nome,[m
+[31m-      plano_ensino: planoEnsino,[m
+[31m-      centro_universitario: centroUniversitario,[m
+[32m+[m[32m      centro_universitario: centro_universitario,[m
+     }[m
+ [m
+     cadastrarCadeiraRequest([m
+       formData.nome,[m
+[31m-      formData.plano_ensino,[m
+       formData.centro_universitario,[m
+       formattedHorarios,[m
+     )[m
+[36m@@ -51,12 +49,8 @@[m [mexport function CadastrarCadeira() {[m
+     setNome(event.target.value)[m
+   }[m
+ [m
+[31m-  const handlePlanoEnsinoChange = (event: ChangeEvent<HTMLInputElement>) => {[m
+[31m-    setPlanoEnsino(event.target.value)[m
+[31m-  }[m
+[31m-[m
+   const handleCentroChange = (event: ChangeEvent<HTMLInputElement>) => {[m
+[31m-    setCentroUniversitario(event.target.value)[m
+[32m+[m[32m    setcentro_universitario(event.target.value)[m
+   }[m
+ [m
+   return ([m
+[36m@@ -74,14 +68,6 @@[m [mexport function CadastrarCadeira() {[m
+                 onChange={(e) => handleNomeChange(e)}[m
+               />[m
+             </div>[m
+[31m-            <div className={styles.formGroup}>[m
+[31m-              <label>Plano de Ensino</label>[m
+[31m-              <input[m
+[31m-                type="text"[m
+[31m-                value={planoEnsino}[m
+[31m-                onChange={(e) => handlePlanoEnsinoChange(e)}[m
+[31m-              />[m
+[31m-            </div>[m
+             <div className={styles.formGroup}>[m
+               <HorarioCadeira onSaveHorarios={handleSaveHorarios} />[m
+             </div>[m
+[36m@@ -89,7 +75,7 @@[m [mexport function CadastrarCadeira() {[m
+               <label>Centro universitário</label>[m
+               <input[m
+                 type="text"[m
+[31m-                value={centroUniversitario}[m
+[32m+[m[32m                value={centro_universitario}[m
+                 onChange={(e) => handleCentroChange(e)}[m
+               />[m
+             </div>[m
+[1mdiff --git a/frontend/src/services/cadeiraService.ts b/frontend/src/services/cadeiraService.ts[m
+[1mindex 50669cf..232ba8b 100644[m
+[1m--- a/frontend/src/services/cadeiraService.ts[m
+[1m+++ b/frontend/src/services/cadeiraService.ts[m
+[36m@@ -3,16 +3,15 @@[m [mimport HorarioInterface from '../components/HorarioCadeira'[m
+ const token = localStorage.getItem('token')[m
+ [m
+ interface Cadeira {[m
+[32m+[m[32m  id?: string[m
+   nome: string[m
+[31m-  plano_ensino: string[m
+   cento_universitario: string[m
+[31m-  horarios: typeof HorarioInterface[m
+[32m+[m[32m  horario: typeof HorarioInterface[m
+ }[m
+ [m
+ export const cadastrarCadeiraRequest = async ([m
+   nome: string,[m
+[31m-  planoEnsino: string,[m
+[31m-  centroUniversitario: string,[m
+[32m+[m[32m  centro_universitario: string,[m
+   formattedHorarios: object,[m
+ ) => {[m
+   try {[m
+[36m@@ -28,19 +27,18 @@[m [mexport const cadastrarCadeiraRequest = async ([m
+     const data = {[m
+       nome,[m
+       horario: formattedHorarios,[m
+[31m-      planoEnsino,[m
+[31m-      centroUniversitario,[m
+[32m+[m[32m      centro_universitario,[m
+       professor: userInfo,[m
+     }[m
+[32m+[m[32m    console.log(data)[m
+[32m+[m[32m    // const response = await api.post('/cadastrar-cadeira', data, {[m
+[32m+[m[32m    //   headers: {[m
+[32m+[m[32m    //     'Content-Type': 'application/json',[m
+[32m+[m[32m    //     token,[m
+[32m+[m[32m    //   },[m
+[32m+[m[32m    // })[m
+ [m
+[31m-    const response = await api.post('/cadastrar-cadeira', data, {[m
+[31m-      headers: {[m
+[31m-        'Content-Type': 'application/json',[m
+[31m-        token,[m
+[31m-      },[m
+[31m-    })[m
+[31m-[m
+[31m-    return response.data[m
+[32m+[m[32m    // return response.data[m
+   } catch (error) {[m
+     return -1[m
+   }[m

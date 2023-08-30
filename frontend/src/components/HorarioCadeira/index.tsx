@@ -3,8 +3,7 @@ import Select from 'react-select'
 import styles from './styles.module.css'
 
 export interface HorarioInterface {
-  dia: string
-  horarios: string[]
+  dia: string[]
 }
 
 const diasDaSemana = [
@@ -38,46 +37,34 @@ interface HorarioCadeiraProps {
   onSaveHorarios: (formattedHorarios: any) => void
 }
 
-function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
-  const [horariosCadeira, setHorariosCadeira] = useState<HorarioInterface[]>([])
+interface HorarioCadeiraProps {
+  onSaveHorarios: (formattedHorarios: any) => void;
+}
 
-  useEffect(() => {
-    formatHorarios()
-  }, [horariosCadeira])
+function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
+  const [horariosCadeira, setHorariosCadeira] = useState<any>({})
 
   const handleDiaChange = (selectedOption: any) => {
     const dia = selectedOption.value
-    const isDiaAlreadySelected = horariosCadeira.some(
-      (horario) => horario.dia === dia,
-    )
-
-    if (!isDiaAlreadySelected) {
-      setHorariosCadeira([...horariosCadeira, { dia, horarios: [] }])
+    if (!(dia in horariosCadeira)) {
+      setHorariosCadeira((prevHorarios: any) => ({
+        ...prevHorarios,
+        [dia]: [],
+      }))
     }
   }
 
   const handleHorarioChange = (selectedOptions: any, dia: string) => {
     const horarios = selectedOptions.map((option: any) => option.value)
-    const updatedHorarios = horariosCadeira.map((horario) =>
-      horario.dia === dia ? { ...horario, horarios } : horario,
-    )
-    setHorariosCadeira(updatedHorarios)
+    setHorariosCadeira((prevHorarios: any) => ({
+      ...prevHorarios,
+      [dia]: horarios,
+    }))
   }
 
-  const formatHorarios = () => {
-    const formattedHorarios = horariosCadeira
-      .filter((horario) => horario.horarios.length > 0)
-      .map((horario) => {
-        const horarios = horario.horarios.map((h) => {
-          if (typeof h === 'string') {
-            return Number(h.split(':')[0])
-          }
-          return h
-        })
-        return { [horario.dia]: horarios }
-      })
-    onSaveHorarios(formattedHorarios[0])
-  }
+  useEffect(() => {
+    onSaveHorarios(horariosCadeira);
+  }, [horariosCadeira]);
 
   return (
     <div className={styles.CampoForms}>
@@ -90,16 +77,16 @@ function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
         />
       </div>
       <div>
-        {horariosCadeira.map((horario) => (
-          <div key={horario.dia} style={{ margin: '1rem 0' }}>
+        {Object.keys(horariosCadeira).map((dia) => (
+          <div key={dia} style={{ margin: '1rem 0' }}>
             <p>{`Horários para ${
-              horario.dia === 'seg'
+              dia === 'seg'
                 ? 'segunda'
-                : horario.dia === 'ter'
+                : dia === 'ter'
                 ? 'terça'
-                : horario.dia === 'qua'
+                : dia === 'qua'
                 ? 'quarta'
-                : horario.dia === 'qui'
+                : dia === 'qui'
                 ? 'quinta'
                 : 'sexta'
             }`}</p>
@@ -107,7 +94,7 @@ function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
               options={horariosDisponiveis}
               isMulti
               onChange={(selectedOptions) =>
-                handleHorarioChange(selectedOptions, horario.dia)
+                handleHorarioChange(selectedOptions, dia)
               }
               placeholder="Selecione os horários"
             />
