@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Select from 'react-select'
 import styles from './styles.module.css'
+import { formatWeekday } from '../../utils/format'
 
 export interface HorarioInterface {
   dia: string[]
@@ -38,7 +39,7 @@ interface HorarioCadeiraProps {
 }
 
 interface HorarioCadeiraProps {
-  onSaveHorarios: (formattedHorarios: any) => void;
+  onSaveHorarios: (formattedHorarios: any) => void
 }
 
 function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
@@ -63,8 +64,8 @@ function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
   }
 
   useEffect(() => {
-    onSaveHorarios(horariosCadeira);
-  }, [horariosCadeira]);
+    onSaveHorarios(horariosCadeira)
+  }, [horariosCadeira])
 
   return (
     <div className={styles.CampoForms}>
@@ -79,17 +80,7 @@ function HorarioCadeira({ onSaveHorarios }: HorarioCadeiraProps) {
       <div>
         {Object.keys(horariosCadeira).map((dia) => (
           <div key={dia} style={{ margin: '1rem 0' }}>
-            <p>{`Horários para ${
-              dia === 'seg'
-                ? 'segunda'
-                : dia === 'ter'
-                ? 'terça'
-                : dia === 'qua'
-                ? 'quarta'
-                : dia === 'qui'
-                ? 'quinta'
-                : 'sexta'
-            }`}</p>
+            <p>{`Horários para ${formatWeekday(dia)}`}</p>
             <Select
               options={horariosDisponiveis}
               isMulti

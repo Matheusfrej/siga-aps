@@ -43,7 +43,7 @@ export const cadastrarCadeiraRequest = async (
   }
 }
 
-export const getCadeiras = async () => {
+export const getCadeiras = async (token: string) => {
   const response = await api.get('/cadeira/get-cadeiras-professor', {
     headers: {
       'Content-Type': 'application/json',
@@ -70,13 +70,19 @@ export const getOfertasCadeiraPeriodo = async () => {
   }
 }
 
-export const deletarCadeiraRequest = async (cadeiraId: number) => {
+export const deletarCadeiraRequest = async (
+  cadeiraId: number,
+  token: string,
+) => {
   const headers = {
     'Content-Type': 'application/json',
     token,
   }
 
   const data = { id: cadeiraId }
-  const response = await api.delete('/deletar-cadeira', { headers, data })
+  const response = await api.delete('/cadeira/deletar-oferta-cadeira', {
+    headers,
+    data,
+  })
   return response.data
 }

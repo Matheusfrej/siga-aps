@@ -5,27 +5,26 @@ import {
 } from '../../services/cadeiraService'
 import { Header } from '../../components/Header'
 import styles from './styles.module.css'
-import { Trash, Pencil } from '@phosphor-icons/react'
+import { Trash } from '@phosphor-icons/react'
 import { useNavigate } from 'react-router-dom'
 import { SigabContext } from '../../contexts/sigabContext'
-
-interface CadeiraInterface {
-  id: number
-  nome: string
-  centro_universitario: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  horarios: any[]
-}
+import { OfertaCadeiraInterface } from '../Matricula'
+import { formatWeekday } from '../../utils/format'
 
 export function ListagemCadeiras() {
   const { showToast } = useContext(SigabContext)
-  const [cadeiras, setCadeiras] = useState<CadeiraInterface[]>([])
+  const [cadeiras, setCadeiras] = useState<OfertaCadeiraInterface[]>([])
   const navigate = useNavigate()
 
   const fetchCadeiras = async () => {
     try {
-      const response = await getCadeiras()
-      setCadeiras(response)
+      const token = localStorage.getItem('token')
+      if (token) {
+        const response = await getCadeiras(token)
+        console.log(response)
+
+        setCadeiras(response)
+      }
     } catch (error) {}
   }
 
@@ -33,18 +32,31 @@ export function ListagemCadeiras() {
     fetchCadeiras()
   }, [])
 
-  const handleEditCadeira = async (cadeiraId: number) => {
-    console.log('editou cadeira', cadeiraId)
-  }
+  // const handleEditCadeira = async (cadeiraId: number) => {
+  //   console.log('editou cadeira', cadeiraId)
+  // }
 
   const handleDeleteCadeira = async (cadeiraId: number) => {
     try {
-      await deletarCadeiraRequest(cadeiraId)
+      const token = localStorage.getItem('token')
+      await deletarCadeiraRequest(cadeiraId, token!)
       fetchCadeiras()
       showToast('Cadeira deletada com sucesso', true)
     } catch (error) {
       showToast('Houve um erro ao deletar uma cadeira', false)
     }
+  }
+
+  const formatHorarioToString = (horario: any) => {
+    const teste = {
+      sex: [15, 16],
+      seg: [12, 13],
+    }
+    return Object.entries(teste).map((h: any[], idx: number) => {
+      return `${formatWeekday(h[0])}: ${h[1]
+        .map((hora: number) => hora + ' - ' + hora + 'h50')
+        .join(', ')}${idx !== Object.entries(teste).length - 1 ? ' | ' : ''}`
+    })
   }
 
   return (
@@ -73,14 +85,16 @@ export function ListagemCadeiras() {
               <tr>
                 <th>Nome</th>
                 <th>Centro Universitário</th>
+                <th>Horário</th>
                 <th>Ação</th>
               </tr>
             </thead>
             <tbody>
               {cadeiras.map((cadeira) => (
                 <tr key={cadeira.id}>
-                  <td>{cadeira.nome}</td>
+                  <td>{cadeira.cadeira.nome}</td>
                   <td>{cadeira.centro_universitario}</td>
+                  <td>{formatHorarioToString(cadeira.horario)}</td>
                   <td>
                     <div className={styles.actionsContainer}>
                       <button
@@ -89,12 +103,12 @@ export function ListagemCadeiras() {
                       >
                         <Trash />
                       </button>
-                      <button
+                      {/* <button
                         className="btn"
                         onClick={() => handleEditCadeira(cadeira.id)}
                       >
                         <Pencil />
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>

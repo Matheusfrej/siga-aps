@@ -13,9 +13,9 @@ interface CadeirasOfertadasSelectInterface {
   label: string
 }
 
-interface OfertaCadeiraInterface {
+export interface OfertaCadeiraInterface {
   id: number
-  horario: object
+  horario: any
   periodo: string
   plano_ensino: string
   professor_id: number
@@ -27,7 +27,7 @@ interface OfertaCadeiraInterface {
   }
 }
 
-interface Dicio {
+export interface Dicio {
   seg: Record<string, string>
   ter: Record<string, string>
   qua: Record<string, string>
