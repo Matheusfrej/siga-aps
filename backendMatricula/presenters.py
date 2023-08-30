@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import request
+from backendMatricula.utils.errors import CamposVaziosError
 
 from negocio.controladores import *
 from negocio.cadastros import CadastroMatricula
@@ -30,8 +31,21 @@ controladorVisualizarHorarioCursadas = ControladorVisualizarHorario(
 
 
 class MatriculaPresenter(Resource):
+    def validar_matricula(self, data):
+        campos_vazios = []
+        campos_obg = ['periodo', 'aluno_id', 'cadeiras']
+        for campo in campos_obg:
+            if campo not in data.keys():
+                campos_vazios.append(campo)
+        if campos_vazios:
+            raise CamposVaziosError(campos_vazios)
+
     def post(self):
         data = request.get_json()
+        try:
+            self.validar_matricula(data)
+        except:
+            return "Erro interno no servidor", 500
         try:
             result = controladorMatricula.cadastrar_matricula(data)
             return MatriculaSerializer(result).get_data()
@@ -46,8 +60,21 @@ class DeletarMatriculaPresenter(Resource):
 
 
 class EditarMatriculaPresenter(Resource):
+    def validar_matricula(self, data):
+        campos_vazios = []
+        campos_obg = ['periodo', 'aluno_id', 'cadeiras']
+        for campo in campos_obg:
+            if campo not in data.keys():
+                campos_vazios.append(campo)
+        if campos_vazios:
+            raise CamposVaziosError(campos_vazios)
+    
     def put(self, matricula_id):
         data = request.get_json()
+        try:
+            self.validar_matricula(data)
+        except:
+            return "Erro interno no servidor", 500
         data['id'] = matricula_id
         return MatriculaSerializer(controladorMatricula.editarMatriculaCadeira(data))
 

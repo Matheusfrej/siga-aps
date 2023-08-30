@@ -42,25 +42,16 @@ class ControladorRealizarMatricula(metaclass=SingletonMetaclass):
         matricula['cadeiras'] = cadeiras_entities
         return matricula
     
-    def validar_matricula(self, data, cadeira_entities):
-        campos_vazios = []
-        campos_obg = ['periodo', 'aluno_id', 'cadeiras']
-        # matricula_atual = self.cadastro_matricula.get_current_by_aluno(data['aluno_id'])
-        # if matricula_atual:
-        #     raise MatriculaJaRealizada()
-        for campo in campos_obg:
-            if campo not in data.keys():
-                campos_vazios.append(campo)
-        if campos_vazios:
-            raise CamposVaziosError(campos_vazios)
-        
+    def validar_matricula(self, data, cadeira_entities):        
+        matricula_atual = self.cadastro_matricula.get_current_by_aluno(data['aluno_id'])
+        if matricula_atual:
+            raise MatriculaJaRealizada()
 
         matriculas_anteriores = self.cadastro_matricula.get_matriculas_aluno(data['aluno_id'])
         ofertas_cadeiras_cursadas = map(lambda x: x.cadeiras, matriculas_anteriores)
         ids_cadeiras_cursadas = reduce(lambda x,y: x+y, ofertas_cadeiras_cursadas, [])
         cadeiras = cadeira_entities
-        print(cadeiras)
-        print(ids_cadeiras_cursadas)
+
         for cadeira in cadeiras:
             for c in cadeira['cadeira'].get('prerequisitos', []):
                 if str(c['id']) not in ids_cadeiras_cursadas:
