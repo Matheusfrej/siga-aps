@@ -24,3 +24,7 @@ payload = json.dumps(data)
 response = requests.get(BASE + 'ver-horario', headers=headers)
 cadeira2 = response.json()
 print(cadeira2)
+
+response = requests.get(BASE_CADEIRA + 'get-cadeiras', headers=headers)
+cadeira2 = response.json()
+print(cadeira2)

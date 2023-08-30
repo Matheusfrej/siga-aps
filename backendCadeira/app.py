@@ -211,6 +211,21 @@ class VerHorarioPresenter(LoginRequiredMixin):
         return controladorVisualizarHorarioCursadas.get_horario(self.current_user['id']).data
 
 
+class GetCadeirasPresenter(LoginRequiredMixin):
+    def get(self):
+        try:
+            result = controlador_cadastrar_cadeira.get_all_cadeiras()
+            if result:
+                return CadeiraSerializer(result, many=True).get_data()
+            elif result == []:
+                return result
+            else:
+                return {'Error': 'Erro ao ler as cadeiras'}, 500
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
+
+
 api.add_resource(VerHorarioPresenter, '/ver-horario')
 api.add_resource(CadastrarCadeiraPresenter, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraPresenter, '/editar-cadeira')
@@ -222,6 +237,7 @@ api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor'
 api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
 api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira/<int:oferta_id>')
 api.add_resource(GetOfertaCadeiraListById, '/get-oferta-cadeira-list')
+api.add_resource(GetCadeirasPresenter, '/get-cadeiras')
 
 @app.route('/')
 def greetings():
