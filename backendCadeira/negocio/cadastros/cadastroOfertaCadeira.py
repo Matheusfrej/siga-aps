@@ -38,7 +38,7 @@ class CadastroOfertaCadeira(metaclass=SingletonMetaclass):
 
     def validar_oferta_cadeira(self, data):
         horario = data['horario']
-        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor'], data['periodo'])
+        cadeiras = self.get_ofertas_cadeiras_by_professor(data['professor_id'])
         for cadeira in cadeiras:
             for k, v in cadeira.horario.items():
                 for h in v:

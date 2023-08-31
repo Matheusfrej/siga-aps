@@ -86,12 +86,12 @@ class OfertaCadeira(Base):
             cadeira: int,
             horario: str,
             centro_universitario: str,
-            professor: int,
+            professor_id: int,
             periodo: str,
             plano_ensino: str = ''):
         self.cadeira_id = cadeira
         self.horario = horario
         self.plano_ensino = plano_ensino
         self.centro_universitario = centro_universitario
-        self.professor_id = professor
+        self.professor_id = professor_id
         self.periodo = periodo

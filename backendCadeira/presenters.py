@@ -92,10 +92,23 @@ class DeletarCadeiraPresenter(LoginRequiredMixin):
 
 
 class CadastrarOfertaCadeiraPresenter(LoginRequiredMixin):
+    def validar_oferta_cadeira(self, data):
+        campos_vazios = []
+        campos_obg = ['centro_universitario', 'professor_id', 'periodo', 'horario']
+        for campo in campos_obg:
+            if campo not in data.keys():
+                campos_vazios.append(campo)
+        if campos_vazios:
+            raise CamposVaziosError(campos_vazios)
+    
     def post(self):
         try:
             data = request.get_json()
             data['professor_id'] = self.current_user['id']
+            try:
+                self.validar_oferta_cadeira(data)
+            except:
+                return 'Erro interno do servidor', 500
             result = controlador_oferta_cadeira.cadastrar_oferta_cadeira(data)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()
@@ -109,10 +122,23 @@ class CadastrarOfertaCadeiraPresenter(LoginRequiredMixin):
 
 
 class EditarOfertaCadeiraPresenter(LoginRequiredMixin):
+    def validar_oferta_cadeira(self, data):
+        campos_vazios = []
+        campos_obg = ['centro_universitario', 'professor_id', 'periodo', 'horario']
+        for campo in campos_obg:
+            if campo not in data.keys():
+                campos_vazios.append(campo)
+        if campos_vazios:
+            raise CamposVaziosError(campos_vazios)
+        
     def put(self):
         try:
             data = request.get_json()
             data['professor_id'] = self.current_user['id']
+            try:
+                self.validar_oferta_cadeira(data)
+            except:
+                return 'Erro interno do servidor', 500
             result = controlador_oferta_cadeira.editar_oferta_cadeira(data)
             if result:
                 return OfertaCadeiraSerializer(result).get_data()

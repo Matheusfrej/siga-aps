@@ -8,9 +8,38 @@ interface Cadeira {
   horarios: typeof HorarioInterface
 }
 
+export const cadastrarOfertaCadeiraRequest = async (
+  cadeiraID: number,
+  // eslint-disable-next-line camelcase
+  centro_universitario: string,
+  formattedHorarios: object,
+) => {
+  try {
+    const data = {
+      cadeira: cadeiraID.toString(),
+      horario: formattedHorarios,
+      // eslint-disable-next-line camelcase
+      centro_universitario,
+      periodo: '2023.1',
+    }
+    console.log(data)
+
+    const response = await api.post('/cadeira/cadastrar-oferta-cadeira', data, {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    })
+
+    return response.data
+  } catch (error) {
+    return -1
+  }
+}
+
 export const cadastrarCadeiraRequest = async (
   nome: string,
-  centro_universitario: string,
+  centroUniversitario: string,
   formattedHorarios: object,
 ) => {
   try {
@@ -43,7 +72,21 @@ export const cadastrarCadeiraRequest = async (
   }
 }
 
-export const getCadeiras = async () => {
+export const getCadeirasRequest = async (token: string) => {
+  try {
+    const response = await api.get('/cadeira/get-cadeiras', {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    })
+    return response.data
+  } catch (error) {
+    return -1
+  }
+}
+
+export const getCadeirasProfessor = async (token: string) => {
   const response = await api.get('/cadeira/get-cadeiras-professor', {
     headers: {
       'Content-Type': 'application/json',
@@ -70,13 +113,19 @@ export const getOfertasCadeiraPeriodo = async () => {
   }
 }
 
-export const deletarCadeiraRequest = async (cadeiraId: number) => {
+export const deletarCadeiraRequest = async (
+  cadeiraId: number,
+  token: string,
+) => {
   const headers = {
     'Content-Type': 'application/json',
     token,
   }
 
   const data = { id: cadeiraId }
-  const response = await api.delete('/deletar-cadeira', { headers, data })
+  const response = await api.delete('/cadeira/deletar-oferta-cadeira', {
+    headers,
+    data,
+  })
   return response.data
 }

@@ -1,5 +1,6 @@
 import { SigabContext } from '../../contexts/sigabContext'
 import { getHorarioRequest } from '../../services/horarioService'
+import { formatWeekday } from '../../utils/format'
 import styles from './styles.module.css'
 import { useEffect, useState, useContext } from 'react'
 
@@ -73,19 +74,7 @@ export function Horario({ isMatricula, horarioMatricula }: HorarioProps) {
                     return (
                       <>
                         {value !== 'vazio' && (
-                          <th key={`${idx}${idx2}`}>
-                            {value === 'seg'
-                              ? 'Segunda'
-                              : value === 'ter'
-                              ? 'Terça'
-                              : value === 'qua'
-                              ? 'Quarta'
-                              : value === 'qui'
-                              ? 'Quinta'
-                              : value === 'sex'
-                              ? 'Sexta'
-                              : 'Sábado'}
-                          </th>
+                          <th key={`${idx}${idx2}`}>{formatWeekday(value)}</th>
                         )}
                         {value === 'vazio' && <th key={`${idx}${idx2}`}></th>}
                       </>

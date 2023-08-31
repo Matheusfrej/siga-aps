@@ -1,19 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeEvent, FormEvent, useState, useContext } from 'react'
+import { ChangeEvent, FormEvent, useState, useContext, useEffect } from 'react'
 import styles from './styles.module.css'
 import '../../global.css'
 import { SigabContext } from '../../contexts/sigabContext'
-import { cadastrarCadeiraRequest } from '../../services/cadeiraService'
+import {
+  cadastrarOfertaCadeiraRequest,
+  getCadeirasRequest,
+} from '../../services/cadeiraService'
 import { Header } from '../../components/Header'
+import Select from 'react-select'
 import HorarioCadeira from '../../components/HorarioCadeira'
 import { useNavigate } from 'react-router'
+import { CadeirasOfertadasSelectInterface } from '../Matricula'
 
 export function CadastrarCadeira() {
   const { showToast } = useContext(SigabContext)
-  const [nome, setNome] = useState('')
+  const [cadeiraID, setCadeiraID] = useState<number>(0)
   const [centroUniversitario, setcentroUniversitario] = useState('')
+  const [cadeirasDisponiveis, setCadeirasDisponiveis] = useState<any[]>()
   const [formattedHorarios, setFormattedHorarios] = useState<any[]>([])
   const navigate = useNavigate()
+
+  const cadeirasSelect = cadeirasDisponiveis?.map((cadeira) => {
+    return { value: cadeira.id, label: cadeira.nome }
+  })
 
   const handleSaveHorarios = (formattedHorarios: any) => {
     setFormattedHorarios(formattedHorarios)
@@ -23,12 +33,13 @@ export function CadastrarCadeira() {
     e.preventDefault()
 
     const formData = {
-      nome,
+      cadeira: cadeiraID,
       centro_universitario: centroUniversitario,
     }
+    console.log(formData)
 
-    cadastrarCadeiraRequest(
-      formData.nome,
+    cadastrarOfertaCadeiraRequest(
+      formData.cadeira,
       formData.centro_universitario,
       formattedHorarios,
     )
@@ -45,13 +56,26 @@ export function CadastrarCadeira() {
       })
   }
 
-  const handleNomeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNome(event.target.value)
-  }
-
   const handleCentroChange = (event: ChangeEvent<HTMLInputElement>) => {
     setcentroUniversitario(event.target.value)
   }
+
+  const handleCadeiraChange = (
+    selectedOptions: CadeirasOfertadasSelectInterface,
+  ) => {
+    setCadeiraID(selectedOptions.value)
+    // console.log(cadeirasSelecionadas)
+  }
+
+  const getCadeirasDisponiveis = async () => {
+    const token = localStorage.getItem('token')
+    const response = await getCadeirasRequest(token!)
+    setCadeirasDisponiveis(response)
+  }
+
+  useEffect(() => {
+    getCadeirasDisponiveis()
+  }, [])
 
   return (
     <>
@@ -59,13 +83,15 @@ export function CadastrarCadeira() {
       <div className={styles.cadastroContainer}>
         <div className={styles.cadastroContent}>
           <form onSubmit={handleSubmit}>
-            <h1>Cadastro Cadeira</h1>
-            <div className={styles.formGroup}>
-              <label>Nome</label>
-              <input
-                type="text"
-                value={nome}
-                onChange={(e) => handleNomeChange(e)}
+            <h1>Cadastrar oferta de cadeira</h1>
+            <div className={`${styles.formGroup} ${styles.selectContainer}`}>
+              <label>Cadeira</label>
+              <Select
+                options={cadeirasSelect}
+                onChange={handleCadeiraChange}
+                placeholder="Selecione uma cadeira"
+                hideSelectedOptions
+                className={styles.selectContainer}
               />
             </div>
             <div className={styles.formGroup}>
