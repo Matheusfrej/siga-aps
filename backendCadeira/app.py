@@ -12,6 +12,7 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('ids', type=int, action='append', required=True)
 
+api.add_resource(VerHorarioPresenter, '/ver-horario')
 api.add_resource(CadastrarCadeiraPresenter, '/cadastrar-cadeira')
 api.add_resource(EditarCadeiraPresenter, '/editar-cadeira')
 api.add_resource(DeletarCadeiraPresenter, '/deletar-cadeira')
