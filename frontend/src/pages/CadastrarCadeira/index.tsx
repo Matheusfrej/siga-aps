@@ -18,6 +18,7 @@ export function CadastrarCadeira() {
   const [cadeiraID, setCadeiraID] = useState<number>(0)
   const [centroUniversitario, setcentroUniversitario] = useState('')
   const [cadeirasDisponiveis, setCadeirasDisponiveis] = useState<any[]>()
+  const [periodo, setPeriodo] = useState('')
   const [formattedHorarios, setFormattedHorarios] = useState<any[]>([])
   const navigate = useNavigate()
 
@@ -35,6 +36,7 @@ export function CadastrarCadeira() {
     const formData = {
       cadeira: cadeiraID,
       centro_universitario: centroUniversitario,
+      periodo,
     }
     console.log(formData)
 
@@ -42,6 +44,7 @@ export function CadastrarCadeira() {
       formData.cadeira,
       formData.centro_universitario,
       formattedHorarios,
+      periodo,
     )
       .then((response) => {
         if (response === -1) {
@@ -54,6 +57,10 @@ export function CadastrarCadeira() {
       .catch((error) => {
         showToast(`Erro ao cadastrar a cadeira! ${error}`, false)
       })
+  }
+
+  const handlePeriodoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPeriodo(event.target.value)
   }
 
   const handleCentroChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +91,14 @@ export function CadastrarCadeira() {
         <div className={styles.cadastroContent}>
           <form onSubmit={handleSubmit}>
             <h1>Cadastrar oferta de cadeira</h1>
+            <div className={styles.formGroup}>
+              <label>Periodo</label>
+              <input
+                type="text"
+                value={periodo}
+                onChange={(e) => handlePeriodoChange(e)}
+              />
+            </div>
             <div className={`${styles.formGroup} ${styles.selectContainer}`}>
               <label>Cadeira</label>
               <Select

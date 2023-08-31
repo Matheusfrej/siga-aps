@@ -86,6 +86,7 @@ export function ListagemCadeiras() {
                 <th>Nome</th>
                 <th>Centro Universitário</th>
                 <th>Horário</th>
+                <th>Período</th>
                 <th>Ação</th>
               </tr>
             </thead>
@@ -95,6 +96,7 @@ export function ListagemCadeiras() {
                   <td>{cadeira.cadeira.nome}</td>
                   <td>{cadeira.centro_universitario}</td>
                   <td>{formatHorarioToString(cadeira.horario)}</td>
+                  <td>{cadeira.periodo}</td>
                   <td>
                     <div className={styles.actionsContainer}>
                       <button
