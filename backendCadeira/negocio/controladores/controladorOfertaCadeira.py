@@ -24,9 +24,13 @@ class ControladorOfertaCadeira(metaclass=SingletonMetaclass):
     def get_ofertas_cadeiras_by_professor(self, professor_id):
         ofertas_cadeiras = self.cadastro_oferta_cadeira.get_ofertas_cadeiras_by_professor(professor_id)
         return ofertas_cadeiras
-    
-    def get_ofertas_cadeiras_by_periodo(self, periodo):
-        ofertas_cadeiras = self.cadastro_oferta_cadeira.get_ofertas_cadeiras_by_periodo(periodo)
+        
+    def get_ofertas_cadeiras_by_professor_periodo(self, professor_id):
+        ofertas_cadeiras = self.cadastro_oferta_cadeira.get_ofertas_cadeiras_by_professor_periodo(professor_id)
+        return ofertas_cadeiras
+
+    def get_ofertas_cadeiras_by_periodo(self):
+        ofertas_cadeiras = self.cadastro_oferta_cadeira.get_ofertas_cadeiras_by_periodo()
         return ofertas_cadeiras
 
     def get_oferta_cadeira_by_id(self, id):

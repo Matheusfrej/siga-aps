@@ -4,15 +4,13 @@ const token = localStorage.getItem('token')
 
 interface Cadeira {
   nome: string
-  plano_ensino: string
   cento_universitario: string
   horarios: typeof HorarioInterface
 }
 
 export const cadastrarCadeiraRequest = async (
   nome: string,
-  planoEnsino: string,
-  centroUniversitario: string,
+  centro_universitario: string,
   formattedHorarios: object,
 ) => {
   try {
@@ -28,8 +26,7 @@ export const cadastrarCadeiraRequest = async (
     const data = {
       nome,
       horario: formattedHorarios,
-      planoEnsino,
-      centroUniversitario,
+      centro_universitario,
       professor: userInfo,
     }
 
@@ -47,7 +44,7 @@ export const cadastrarCadeiraRequest = async (
 }
 
 export const getCadeiras = async () => {
-  const response = await api.get('/get-cadeiras-professor', {
+  const response = await api.get('/cadeira/get-cadeiras-professor', {
     headers: {
       'Content-Type': 'application/json',
       token,
@@ -57,6 +54,20 @@ export const getCadeiras = async () => {
     ...cadeira,
   }))
   return formattedCadeiras
+}
+
+export const getOfertasCadeiraPeriodo = async () => {
+  try {
+    const response = await api.get('/cadeira/get-cadeiras-periodo', {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const deletarCadeiraRequest = async (cadeiraId: number) => {

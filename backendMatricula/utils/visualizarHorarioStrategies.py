@@ -16,9 +16,11 @@ class AlunoStrategy(IStrategy):
 
     def get_horario(self, user_id):
         matricula = self.cadastro_matricula.get_current_by_aluno(user_id)
-        cadeiras_entities = []
-        for id in matricula.cadeiras:
-            cadeira = self.cadeira_service.get_oferta_cadeira_by_id(id)
-            cadeiras_entities.append(cadeira)
-        return cadeiras_entities
-        
+        if matricula:
+            oferta_cadeiras_entities = []
+            for id in matricula.cadeiras:
+                cadeira = self.cadeira_service.get_oferta_cadeira_by_id(id)
+                oferta_cadeiras_entities.extend(cadeira)
+            return oferta_cadeiras_entities
+        else:
+            return []

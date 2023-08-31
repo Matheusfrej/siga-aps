@@ -12,7 +12,6 @@ import { SigabContext } from '../../contexts/sigabContext'
 interface CadeiraInterface {
   id: number
   nome: string
-  plano_ensino: string
   centro_universitario: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   horarios: any[]
@@ -73,7 +72,6 @@ export function ListagemCadeiras() {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Plano de Ensino</th>
                 <th>Centro Universitário</th>
                 <th>Ação</th>
               </tr>
@@ -82,7 +80,6 @@ export function ListagemCadeiras() {
               {cadeiras.map((cadeira) => (
                 <tr key={cadeira.id}>
                   <td>{cadeira.nome}</td>
-                  <td>{cadeira.plano_ensino}</td>
                   <td>{cadeira.centro_universitario}</td>
                   <td>
                     <div className={styles.actionsContainer}>

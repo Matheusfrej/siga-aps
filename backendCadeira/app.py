@@ -22,6 +22,7 @@ api.add_resource(GetOfertasCadeirasProfessorPresenter, '/get-cadeiras-professor'
 api.add_resource(GetOfertasCadeirasPeriodoPresenter, '/get-cadeiras-periodo')
 api.add_resource(GetOfertaCadeiraById, '/get-oferta-cadeira/<int:oferta_id>')
 api.add_resource(GetOfertaCadeiraListById, '/get-oferta-cadeira-list')
+api.add_resource(GetCadeirasPresenter, '/get-cadeiras')
 
 @app.route('/')
 def greetings():

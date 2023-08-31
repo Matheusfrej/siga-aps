@@ -12,3 +12,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.selectContainer {
+  width: 400px !important;
+  max-width: 500px;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.confirmButton {
+  margin-top: -3rem;
+  margin-bottom: 2rem;
+}

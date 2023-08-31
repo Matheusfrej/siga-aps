@@ -44,3 +44,5 @@ class RepositorioCadeiraLocal(IRepositorioCadeira):
                 response[i] = item
         return response
 
+    def get_all(self):
+        return self._cadeiras.copy()

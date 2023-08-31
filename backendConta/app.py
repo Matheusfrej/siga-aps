@@ -48,7 +48,6 @@ class LoginPresenter(Resource):
             args = request.get_json()
             email = args['email']
             senha = args['senha']
-            print(email, senha)
             response = controlador_conta.efetuarLogin(email=email, senha=senha)
             if response:
                 response['user'] = ContaSerializer(controlador_conta.get_user_by_email(email=email)).get_data()
@@ -63,16 +62,25 @@ class LoginPresenter(Resource):
 
 class UserInfoPresenter(Resource):
     def get(self):
-        data = {
-            'token': request.headers.get('token')
-        }
-        return controlador_conta.getUserInfo(data)
+        try:
+            data = {
+                'token': request.headers.get('token')
+            }
+            user = controlador_conta.get_curr_user_by_token(data)
+            if user:
+                return ContaSerializer(user).get_data()
+            else:
+                return 'Usuário não encontrado', 404
+        except Exception as e:
+            print(traceback.format_exc())
+            return 'Erro interno do servidor', 500
 
 @app.route('/')
 def greetings():
     return 'Greetings from contaservice!'
 
 api.add_resource(LoginPresenter, '/login')
+api.add_resource(UserInfoPresenter, '/get-user-info')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)

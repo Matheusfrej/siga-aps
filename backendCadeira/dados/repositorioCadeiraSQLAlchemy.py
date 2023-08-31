@@ -96,3 +96,10 @@ class RepositorioCadeiraSQLAlchemy(IRepositorioCadeira):
                         joinedload(Cadeira.equivalencias),
                         joinedload(Cadeira.prerequisitos),
                         joinedload(Cadeira.corequisitos)).filter(Cadeira.id.in_(id_list)).all()}
+
+    def get_all(self):
+        with self.Session() as session:
+            return session.query(Cadeira).options(
+                joinedload(Cadeira.equivalencias),
+                joinedload(Cadeira.prerequisitos),
+                joinedload(Cadeira.corequisitos)).all()

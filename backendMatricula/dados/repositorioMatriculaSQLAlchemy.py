@@ -2,8 +2,8 @@ from .iRepositorioMatricula import IRepositorioMatricula
 from sqlalchemy.orm import joinedload
 from entidades import Matricula
 
-
 from datetime import datetime
+
 
 class RepositorioMatriculaSQLAlchemy(IRepositorioMatricula):
     def __init__(self, Session):

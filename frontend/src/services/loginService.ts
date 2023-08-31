@@ -10,7 +10,7 @@ export const loginRequest = async (email: string, senha: string) => {
     senha,
   }
   try {
-    const response = await api.post('/login', data, {
+    const response = await api.post('/conta/login', data, {
       withCredentials: false,
       headers,
     })

@@ -22,5 +22,5 @@ class IRepositorioCadeira(ABC):
         pass
 
     @abstractmethod
-    def read_id_in_list(self, id_list):
+    def get_all(self):
         pass
